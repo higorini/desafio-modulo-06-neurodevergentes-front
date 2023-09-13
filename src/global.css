@@ -1,0 +1,77 @@
+:root {
+  --font-title: "Montserrat", sans-serif;
+  --font-subtitle: "Nunito", sans-serif;
+  --font-body: "Nunito", sans-serif;
+
+  --title-xl: 1.625rem;
+  --title-l: 1.5rem;
+  --title-s: 1.125rem;
+  --title-xs: 1rem;
+
+  --subtitle: 1rem;
+
+  --body-r: 1rem;
+  --body-s: 0.875rem;
+  --body-xs: 0.75rem;
+
+  --pink-700: #75003b;
+  --pink-500: #da0175;
+  --pink-300: #f5a8d0;
+
+  --green-700: #034a2a;
+  --green-500: #0e8750;
+  --green-300: #acd9c5;
+
+  --green-700: #034a2a;
+  --green-500: #0e8750;
+  --green-300: #acd9c5;
+
+  --blue-700: #243f80;
+  --blue-500: #5482f6;
+  --blue-300: #c3d4fe;
+
+  --orange-700: #cc7800;
+  --orange-500: #ef8f00;
+  --orange-300: #f5d9b0;
+
+  --red-700: #ae1100;
+  --red-500: #e70000;
+  --red-100: #f2d6d0;
+
+  --salmon-500: #f48c8c;
+  --salmon-300: #f5bdb2;
+
+  --gray-100: #f8f8f9;
+  --gray-200: #f0f0f5;
+  --gray-300: #dedee9;
+  --gray-400: #c8c8d7;
+  --gray-500: #9b9bb2;
+  --gray-600: #747488;
+  --gray-700: #3f3f55;
+  --gray-800: #343447;
+
+  --ruby-700: #971d1d;
+  --ruby-300: #e8caca;
+  --ruby-100: #ffefef;
+
+  --gold-700: #c5a605;
+  --gold-200: #e3dec8;
+  --gold-100: #fcf6dc;
+
+  --seagreen-700: #1fa7af;
+  --seagreen-200: #d2dfe0;
+  --seagreen-100: #eef6f6;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--body-r);
+}

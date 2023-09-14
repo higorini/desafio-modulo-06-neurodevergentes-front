@@ -1,18 +1,19 @@
-// import imagem from "../../assets/img-login.png";
 import "./style.css";
 
 
 function SingIn() {
+    const m = false
 
     return (
-        <div
-            className="container-login" >
+        <div className="container-signIn" >
             <div className="left-signIn">
-                <h3>Gerencie todos os pagamentos da sua empresa em um só lugar</h3>
+                <div>
+                    <h3>Gerencie todos os pagamentos da sua empresa em um só lugar</h3>
+                </div>
             </div>
             <div className="right-signIn">
                 <div className="box-login">
-                    <h1>Faça seu login</h1>
+                    <h1>Faça seu login!</h1>
                     <form action="">
                         <label htmlFor="email">E-mail</label>
                         <input
@@ -28,8 +29,11 @@ function SingIn() {
                             id="password"
                             name="password"
                         />
-                        <a href="">Esqueceu a senha?</a>
+                        <a className="recov-passwor" href="">Esqueceu a senha?</a>
                     </form>
+                    {m && (
+                        <p className="msg-error">error</p>
+                    )}
                     <div>
                         <button>
                             Entrar

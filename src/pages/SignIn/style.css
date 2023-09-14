@@ -1,0 +1,50 @@
+.container-login {
+    display: flex;
+    flex-direction: row;
+}
+
+.left-signIn {
+    width: 31.25rem;
+    height: 100vh;
+
+    background-image: url('../../assets/img-signIn.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top 70%;
+
+    text-align: center;
+}
+
+.left-signIn h3 {
+    width: 25.25rem;
+
+    margin-top: 10.19rem;
+    margin-left: 2.94rem;
+}
+
+.right-signIn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+.box-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 22.19rem;
+    height: 20.94rem;
+
+    border: 1px solid black;
+}
+
+.container-login form {
+    display: flex;
+    flex-direction: column;
+}

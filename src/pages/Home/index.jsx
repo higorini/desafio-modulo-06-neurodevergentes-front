@@ -1,10 +1,10 @@
-import LateralMenu from "../../components/LateralMenu";
+import SideNavigation from "../../components/sideNavigation";
 import "./style.css";
 
 function Home() {
   return (
     <div>
-      <LateralMenu />
+      <SideNavigation />
       <h1>Home</h1>
     </div>
   );

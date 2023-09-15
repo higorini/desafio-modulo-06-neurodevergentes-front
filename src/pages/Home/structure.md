@@ -1,0 +1,17 @@
+header
+  h1
+  div.user
+    span.name
+    img
+main
+  div.resume-charges
+    div.resume-charges__paidcharge
+    div.resume-charges__overduecharge
+    div.resume-charges__pendingcharge
+  div.charges
+    div.charges__paid
+    div.charges__overdue
+    div.charges__pending
+  div.clients
+    div.clients__defaulting
+    div.clients__loyal

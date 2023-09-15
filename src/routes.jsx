@@ -4,7 +4,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
 function ProtectedRoutes(redirectTo) {
-  const token = false;
+  const token = true;
 
   return token ? <Outlet /> : <Navigate to={redirectTo} />;
 }

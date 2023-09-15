@@ -1,9 +1,12 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
+import DefaultingCustomer from "../../assets/icons/defaultingCustomer.svg";
+import LoyalCustomer from "../../assets/icons/loyalCustomer.svg";
 import OverdueBill from "../../assets/icons/mainIcons/overdueBill.svg";
 import PaidBill from "../../assets/icons/mainIcons/paidBill.svg";
 import PendingBill from "../../assets/icons/mainIcons/pendingCharge.svg";
 import SideNavigation from "../../components/sideNavigation";
 import ChargesCard from "./components/ChargesCard";
+import ClientsCard from "./components/ClientsCard";
 import SummaryCharge from "./components/SummaryCharge";
 import "./style.css";
 
@@ -15,7 +18,7 @@ function Home() {
         // alignItems="center"
         width="100%"
         sx={{
-          padding: "40px 32px 0 32px",
+          padding: "40px 32px 40px 32px",
         }}
       >
         <Stack height="72px" direction="row" justifyContent="space-between">
@@ -82,26 +85,22 @@ function Home() {
             />
           </Grid>
           <Grid item xs={6}>
-            <Box
-              // width="100%"
-              height="400px"
-              sx={{
-                boxShadow: "0px 4px 4px rgba(172, 217, 197, 0.25)",
-              }}
-            >
-              1
-            </Box>
+            <ClientsCard
+              clientTitleIcon={LoyalCustomer}
+              clientTableTitle="Clientes em dia"
+              bgIndexColor="var(--seagreen-100)"
+              indexColor="var(--seagreen-700)"
+              indexNumber="10"
+            />
           </Grid>
           <Grid item xs={6}>
-            <Box
-              // width="100%"
-              height="400px"
-              sx={{
-                boxShadow: "0px 4px 4px rgba(172, 217, 197, 0.25)",
-              }}
-            >
-              1
-            </Box>
+            <ClientsCard
+              clientTitleIcon={DefaultingCustomer}
+              clientTableTitle="Clientes inadimplentes"
+              bgIndexColor="var(--ruby-100)"
+              indexColor="var(--ruby-700)"
+              indexNumber="08"
+            />
           </Grid>
         </Grid>
       </Stack>

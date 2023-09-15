@@ -3,6 +3,7 @@ import OverdueBill from "../../assets/icons/mainIcons/overdueBill.svg";
 import PaidBill from "../../assets/icons/mainIcons/paidBill.svg";
 import PendingBill from "../../assets/icons/mainIcons/pendingCharge.svg";
 import SideNavigation from "../../components/sideNavigation";
+import ChargesCard from "./components/ChargesCard";
 import SummaryCharge from "./components/SummaryCharge";
 import "./style.css";
 
@@ -57,37 +58,28 @@ function Home() {
             />
           </Grid>
           <Grid item xs={4}>
-            <Box
-              // width="100%"
-              height="400px"
-              sx={{
-                boxShadow: "0px 4px 4px rgba(172, 217, 197, 0.25)",
-              }}
-            >
-              1
-            </Box>
+            <ChargesCard
+              chargeTitle="Cobranças Pagas"
+              bgIndexColor="var(--seagreen-100)"
+              indexColor="var(--seagreen-700)"
+              indexNumber="10"
+            />
           </Grid>
           <Grid item xs={4}>
-            <Box
-              // width="100%"
-              height="400px"
-              sx={{
-                boxShadow: "0px 4px 4px rgba(172, 217, 197, 0.25)",
-              }}
-            >
-              1
-            </Box>
+            <ChargesCard
+              chargeTitle="Cobranças Vencidas"
+              bgIndexColor="var(--ruby-100)"
+              indexColor="var(--ruby-700)"
+              indexNumber="08"
+            />
           </Grid>
           <Grid item xs={4}>
-            <Box
-              // width="100%"
-              height="400px"
-              sx={{
-                boxShadow: "0px 4px 4px rgba(172, 217, 197, 0.25)",
-              }}
-            >
-              1
-            </Box>
+            <ChargesCard
+              chargeTitle="Cobranças Previstas"
+              bgIndexColor="var(--gold-100)"
+              indexColor="var(--gold-700)"
+              indexNumber="05"
+            />
           </Grid>
           <Grid item xs={6}>
             <Box

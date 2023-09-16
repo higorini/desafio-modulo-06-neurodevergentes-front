@@ -1,0 +1,56 @@
+.container-signUp {
+    display: flex;
+}
+
+.left-signUp {
+    display: flex;
+    justify-content: center;
+
+    width: 31.25rem;
+    height: 100vh;
+
+    background-color: var(--gray-200);
+}
+
+.left-signUp .step {
+    display: flex;
+
+    width: 24.4915rem;
+    height: 13.375rem;
+
+    margin-top: 10.875rem
+}
+
+.container-task {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    margin-top: 0.25rem;
+    margin-left: 1.30rem;
+}
+
+.container-task span {
+
+    font-weight: 700;
+    font-size: var(--title-s);
+    font-family: var(--font-title);
+
+    color: var(--green-500);
+}
+
+.container-task p {
+    font-weight: 600;
+    font-size: var(--title-s);
+
+    color: var(--gray-700);
+}
+
+.right-signUp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+
+    background-color: var(--gray-100);
+}

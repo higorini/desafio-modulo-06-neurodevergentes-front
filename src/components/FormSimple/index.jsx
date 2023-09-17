@@ -3,32 +3,81 @@ import iconDoesShowPassword from '../../assets/icon-does-show-password.png'
 import iconShowPassword from '../../assets/icon-show-password.png'
 import './style.css'
 
-function FormSimple({ title, input, button, nextStep }) {
+function FormSimple({ stateForm, sendData, setFormPassword, setFormNameEmail, setForm }) {
+    const { title, input, button } = stateForm
     const [showPassword, setShowPassword] = useState(title === 0 ? false : true)
-    const titleH1 = [
-        "Faça seu login!",
-        "Adicione seus dados",
-        "Escolha uma senha"
-    ]
-    const titleInput = [
-        "Nome",
-        "E-mail",
-        "Senha",
-    ]
+    const [msgError, setMsgError] = useState("")
+    const titleH1 = {
+        0: "Faça seu login!",
+        1: "Adicione seus dados",
+        2: "Escolha uma senha"
+    }
+    const titleInput = {
+        0: "Nome",
+        1: "E-mail",
+        2: "Senha",
+    }
     const titleButton = [
         "Entrar",
         "Continuar",
         "Finalizar Cadastro",
         "Ir para login"
     ]
-    const [valueInput, setValueInput] = useState([
-        titleInput[title[0]] = "",
-        titleInput[title[1]] = ""
-    ])
+    const [valueInput, setValueInput] = useState({
+        input1: "",
+        input2: ""
+    })
 
+    const inputName1 = titleInput[input.input1] + (title !== 0 ? "*" : "")
+    const inputName2 = titleInput[input.input2] + (title !== 0 ? "*" : "")
+    const handleNameImput1 = titleInput[input.input1].slice(0, 1).toLocaleLowerCase() + titleInput[input.input1].slice(1)
+    const handleNameImput2 = titleInput[input.input2].slice(0, 1).toLocaleLowerCase() + titleInput[input.input2].slice(1)
 
-    function handleNextStep(params) {
-        nextStep()
+    function handleInput(e) {
+        const valueInputEvent = e.target.value
+        const nameInputEvent = e.target.name
+        setValueInput((prevValue) => ({ ...prevValue, [nameInputEvent]: valueInputEvent }))
+    }
+
+    function handleForm(e) {
+        e.preventDefault()
+        if (!valueInput.input1.length || !valueInput.input2.length) {
+            setMsgError("Campos obrigatorios não preenchidos")
+            return
+        }
+
+        if (valueInput.input2.length < 6 && inputName2 === "Senha*") {
+
+            setMsgError("Quantidade minima de caracteres para a senha é 6 (seis)")
+            return
+        }
+
+        setMsgError("")
+        if (title !== 0) {
+            if (title === 1) {
+                setFormNameEmail((prevValue) => ({ ...prevValue, name: valueInput.input1 }))
+                setFormNameEmail((prevValue) => ({ ...prevValue, email: valueInput.input2 }))
+            }
+
+            if (title === 2) {
+                setFormPassword((prevValue) => ({ ...prevValue, password: valueInput.input2 }))
+
+            }
+
+            setValueInput({
+                input1: "",
+                input2: ""
+            })
+
+            sendData()
+            return
+        }
+        setForm({
+            email: valueInput.input1,
+            senha: valueInput.input2
+        })
+        sendData()
+
     }
 
     function handleShowPassword() {
@@ -40,24 +89,29 @@ function FormSimple({ title, input, button, nextStep }) {
 
             <h1> {titleH1[title]}</h1>
 
-            <form action="">
-                <label htmlFor={titleInput[input[0]]}>{titleInput[input[0]] + (title !== 0 ? "*" : "")}</label>
+            <form>
+                <label htmlFor="input1">{inputName1}</label>
                 <input
                     placeholder={
-                        `Digite seu ${titleInput[input[0]].slice(0, 1).toLocaleLowerCase() + titleInput[input[0]].slice(1)}`
+                        `Digite seu ${handleNameImput1}`
                     }
                     type="text"
-                    id="email"
-                    name="email"
+                    id={inputName1}
+                    name="input1"
+                    value={valueInput.input1}
+                    onChange={handleInput}
+
                 />
-                <label htmlFor={titleInput[input[1]]}>{titleInput[input[1]] + (title !== 0 ? "*" : "")}</label>
+                <label htmlFor="input2">{inputName2}</label>
                 <input
                     placeholder={
-                        `Digite seu ${titleInput[input[1]].slice(0, 1).toLocaleLowerCase() + titleInput[input[1]].slice(1)}`
+                        `Digite seu ${handleNameImput2} `
                     }
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
+                    type={(title === 0 ? (showPassword ? "text" : "password") : ('email'))}
+                    id={inputName2}
+                    name="input2"
+                    value={valueInput.input2}
+                    onChange={handleInput}
                 />
                 {title === 0 &&
                     <a className="recov-passwor" href="">Esqueceu a senha?</a>
@@ -65,7 +119,6 @@ function FormSimple({ title, input, button, nextStep }) {
             </form>
 
             {title === 0 &&
-
                 <button
                     className='showPassword'
                     onClick={handleShowPassword}>
@@ -73,13 +126,15 @@ function FormSimple({ title, input, button, nextStep }) {
                 </button>
             }
 
-            {/* {m && (
-            <p className="msg-error">error</p>
-        )} */}
+            {msgError && (
+                <p className="msg-error">
+                    {msgError}
+                </p>
+            )}
 
             <div>
                 <button
-                    onClick={nextStep}
+                    onClick={handleForm}
                     className="button-primary hover-simple">
                     {titleButton[button]}
                 </button>

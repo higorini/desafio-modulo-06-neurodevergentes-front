@@ -1,7 +1,27 @@
+import { useEffect, useState } from "react";
 import FormSimple from "../../components/FormSimple";
 import "./style.css";
 
 function SingIn() {
+    const [form, setForm] = useState("")
+    const dataForm = {
+        dataForm: {
+            title: 0,
+            input: {
+                input1: 1,
+                input2: 2
+            },
+            button: 0
+        }
+    }
+
+    function handleForm() {
+        const userData = {
+            email: form.email,
+            password: form.senha
+        }
+        console.log(userData)
+    }
 
     return (
         <div className="container-signIn" >
@@ -12,11 +32,9 @@ function SingIn() {
             </div>
             <div className="right-signIn">
                 <FormSimple
-                    title={0}
-                    input={[
-                        1, 2
-                    ]}
-                    button={0}
+                    stateForm={dataForm.dataForm}
+                    setForm={setForm}
+                    sendData={handleForm}
                 />
             </div>
         </div>

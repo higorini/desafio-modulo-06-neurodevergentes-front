@@ -170,7 +170,7 @@ function SignUp() {
                             />
                         </form>
                         {msgError && (
-                            <p className="msg-error redux">
+                            <p className="msg-error">
                                 {msgError}
                             </p>
                         )}
@@ -190,7 +190,7 @@ function SignUp() {
                 ) : (
                     <div className="box-form-simple">
                         <h1>Escolha uma senha</h1>
-                        <form className="redux2">
+                        <form>
                             <label htmlFor="password">Senha*</label>
                             <input
                                 placeholder={`Digite sua senha`}
@@ -211,21 +211,28 @@ function SignUp() {
                             />
                         </form>
                         <div className="div-showPassword">
-                            <button
-                                className='showPassword'
-                                onClick={handleShowPassword}>
-                                <img src={showPassword ? iconShowPassword : iconDoesShowPassword} alt="ver senha" />
-                            </button>
-                            <button
-                                className='showPassword'
-                                onClick={handleShowPassword}>
-                                <img src={showPassword ? iconShowPassword : iconDoesShowPassword} alt="ver senha" />
-                            </button>
+                            <div>
+                                <button
+                                    className='showPassword'
+                                    onClick={handleShowPassword}>
+                                    <img src={showPassword ? iconShowPassword : iconDoesShowPassword} alt="ver senha" />
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    className='showPassword'
+                                    onClick={handleShowPassword}>
+                                    <img src={showPassword ? iconShowPassword : iconDoesShowPassword} alt="ver senha" />
+                                </button>
+                            </div>
                         </div>
                         {msgError && (
-                            <p className="msg-error">
-                                {msgError}
-                            </p>
+                            <div className="div-msg-error">
+                                <p className={
+                                    (stepSignUp === 1 ? "msg-error" : "msg-error2")}>
+                                    {msgError}
+                                </p>
+                            </div>
                         )}
                         <div>
                             <button

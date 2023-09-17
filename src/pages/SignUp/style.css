@@ -195,12 +195,29 @@
     color: var(--gray-700);
 }
 
+.div-msg-error {
+    position: fixed;
+}
+
 .right-signUp .msg-error {
     display: flex;
     justify-content: center;
 
     margin-top: -45px;
     margin-bottom: -45px;
+
+    text-align: center;
+    font-size: var(--body-xs);
+    color: var(--red-500);
+}
+
+.right-signUp .msg-error2 {
+    display: flex;
+    justify-content: center;
+
+    position: relative;
+
+    top: 230px;
 
     text-align: center;
     font-size: var(--body-xs);
@@ -216,9 +233,9 @@
 
 .right-signUp .showPassword {
     display: flex;
-    position: relative;
 
-    bottom: 2.6865rem;
+    position: relative;
+    top: 6.25rem;
     left: 9.6875rem;
 
     background-color: transparent;
@@ -236,20 +253,9 @@
 }
 
 .div-showPassword {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
 
-    bottom: 106px;
-    left: 150px;
-
-    gap: 3.4rem;
-
-    margin-bottom: -3.6rem;
-}
-
-.redux {
-    top: 8px;
-}
-
-.redux2 {
-    margin-top: 39px;
+    position: fixed;
+    gap: 3.675rem;
 }

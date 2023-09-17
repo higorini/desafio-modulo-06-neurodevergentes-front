@@ -16,6 +16,7 @@ function SignUp() {
     const icons = [iconStep1, iconStep2, iconStep3]
     const [showPassword, setShowPassword] = useState(false)
     const [msgError, setMsgError] = useState("")
+    const [msgErrorServ, setMsgErrorServer] = useState("")
     const [valueInput, setValueInput] = useState({
         name: "",
         email: "",
@@ -32,7 +33,6 @@ function SignUp() {
             setImgStep(icons[0])
         }
         setStepSignUp(1)
-        setMsgError("")
     }
 
     async function handleNextStep() {
@@ -63,11 +63,11 @@ function SignUp() {
             const response = await handleSendForm()
 
             if (response === "E-mail já cadastrado.") {
-                console.log("fsaf")
                 handlePrevStep()
+                setMsgError(response)
                 return
             }
-            console.log(response)
+
         }
 
         if (stepSignUp < 3) {
@@ -92,11 +92,9 @@ function SignUp() {
 
         try {
             const response = await newUser(user);
-            console.log(response)
             return response.status
 
         } catch (erro) {
-            setMsgError(erro.response.data.message)
             return erro.response.data.message
         }
 

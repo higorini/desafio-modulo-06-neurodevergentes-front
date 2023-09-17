@@ -1,9 +1,10 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import DefaultingCustomer from "../../assets/icons/mainIcons/defaultingCustomerHome.svg";
 import LoyalCustomer from "../../assets/icons/mainIcons/loyalCustomerHome.svg";
 import OverdueBill from "../../assets/icons/mainIcons/overdueBill.svg";
 import PaidBill from "../../assets/icons/mainIcons/paidBill.svg";
 import PendingBill from "../../assets/icons/mainIcons/pendingCharge.svg";
+import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import ChargesCard from "./components/ChargesCard";
 import ClientsCard from "./components/ClientsCard";
@@ -21,20 +22,7 @@ function Home() {
           backgroundColor: "var(--gray-100)",
         }}
       >
-        <Stack height="72px" direction="row" justifyContent="space-between">
-          <Typography
-            component="h1"
-            sx={{
-              fontFamily: "var(--font-title)",
-              fontSize: "var(--title-xl)",
-            }}
-          >
-            Resumo das contas
-          </Typography>
-          <Box>
-            <Typography>Nome</Typography>
-          </Box>
-        </Stack>
+        <Header userName="Lorena" headerTitle="Resumo das contas" />
         <Grid container spacing={4}>
           <Grid item xs={4}>
             <SummaryCharge

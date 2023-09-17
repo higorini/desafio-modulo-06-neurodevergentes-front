@@ -32,6 +32,7 @@ function SignUp() {
             setImgStep(icons[0])
         }
         setStepSignUp(1)
+        setMsgError("")
     }
 
     async function handleNextStep() {

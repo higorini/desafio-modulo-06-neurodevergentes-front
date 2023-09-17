@@ -1,82 +1,103 @@
 import { useEffect, useState } from "react";
-import FormSimple from "../../components/FormSimple";
+import { Link } from "react-router-dom";
+import iconFinishSignUp from '../../assets/imgs/SignUp/icon-finish-signUp.png';
+import iconStep1 from '../../assets/imgs/SignUp/icon-step1-signUp.png';
+import iconStep2 from '../../assets/imgs/SignUp/icon-step2-signUp.png';
+import iconStep3 from '../../assets/imgs/SignUp/icon-step3-signUp.png';
+import iconDoesShowPassword from '../../assets/imgs/SignUp/icon-does-show-password.png';
+import iconShowPassword from '../../assets/imgs/SignUp/icon-show-password.png';
+import { newUser } from "../../services";
 import "./style.css";
-import iconStep1 from '../../assets/icon-step1-signUp.png'
-import iconStep2 from '../../assets/icon-step2-signUp.png'
-import iconStep3 from '../../assets/icon-step3-signUp.png'
-import iconFinishSignUp from '../../assets/icon-finish-signUp.png'
 
 function SignUp() {
-    const [stepSignUp, setStepSignUp] = useState({
-        stepActive: 1,
-        dataForm: {
-            title: 1,
-            input: {
-                input1: 0,
-                input2: 1
-            },
-            button: 1
-        }
-    })
-    const [formNameEmail, setFormNameEmail] = useState({})
-    const [formPassword, setFormPassword] = useState({})
+    const [stepSignUp, setStepSignUp] = useState(1)
+    const [sendForm, setSendForm] = useState(false)
     const [imgStep, setImgStep] = useState(iconStep1)
-    const icons = [
-        iconStep1, iconStep2, iconStep3
-    ]
-
-    useEffect(() => {
-    }, [stepSignUp])
+    const icons = [iconStep1, iconStep2, iconStep3]
+    const [showPassword, setShowPassword] = useState(false)
+    const [msgError, setMsgError] = useState("")
+    const [valueInput, setValueInput] = useState({
+        name: "",
+        email: "",
+        password1: "",
+        password2: "",
+    })
+    function handleShowPassword() {
+        setShowPassword(!showPassword)
+    }
 
     function handlePrevStep() {
-        if (stepSignUp.stepActive === 2) {
-            setStepSignUp({
-                stepActive: 0,
-                dataForm: {
-                    title: 1,
-                    input: {
-                        input1: 0,
-                        input2: 1
-                    },
-                    button: 1
-                }
-            })
+        if (stepSignUp === 2) {
+            setStepSignUp(0)
             setImgStep(icons[0])
-
         }
-        setStepSignUp((prevValue) => ({ ...prevValue, stepActive: 1 }))
+        setStepSignUp(1)
     }
 
-    function handleNextStep() {
-
-
-        if (stepSignUp.stepActive < 3) {
-            setStepSignUp({
-                stepActive: stepSignUp.stepActive + 1,
-                dataForm: {
-                    title: 2,
-                    input: {
-                        input1: 2,
-                        input2: 2
-                    },
-                    button: 2
-                }
-            })
-            setImgStep(icons[stepSignUp.stepActive])
-
+    async function handleNextStep() {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!valueInput.name.length || !valueInput.email.length) {
+            setMsgError("Por favor, preencha todos os campos obrigatórios antes de continuar.")
+            return
         }
 
+        if (!emailRegex.test(valueInput.email) && stepSignUp === 1) {
+            setMsgError("Por favor, insira um endereço de email válido.")
+            return
+        }
+
+        setMsgError("")
+
+        if (stepSignUp === 2) {
+            if (valueInput.password2.length < 6 && stepSignUp === 2) {
+                setMsgError("A senha deve ter pelo menos 6 caracteres.")
+                return
+            }
+            if (valueInput.password1 !== valueInput.password2 && stepSignUp === 2) {
+                setMsgError("As senhas não coincidem. Por favor, tente novamente.")
+                return
+            }
+            setMsgError("")
+
+            const response = await handleSendForm()
+
+            if (response === "E-mail já cadastrado.") {
+                console.log("fsaf")
+                handlePrevStep()
+                return
+            }
+            console.log(response)
+        }
+
+        if (stepSignUp < 3) {
+            setStepSignUp(stepSignUp + 1)
+            setImgStep(icons[stepSignUp])
+        }
     }
 
-    function handleForm() {
+    function handleInput(e) {
+        const valueInputEvent = e.target.value
+        const nameInputEvent = e.target.id
+        setValueInput((prevValue) => ({ ...prevValue, [nameInputEvent]: valueInputEvent }))
+    }
 
+
+    async function handleSendForm() {
         const user = {
-            name: formNameEmail.name,
-            email: formNameEmail.email,
-            password: formPassword.password
+            name: valueInput.name,
+            email: valueInput.email,
+            password: valueInput.password2
         }
 
-        console.log(user);
+        try {
+            const response = await newUser(user);
+            console.log(response)
+            return response.status
+
+        } catch (erro) {
+            setMsgError(erro.response.data.message)
+            return erro.response.data.message
+        }
 
     }
 
@@ -124,43 +145,134 @@ function SignUp() {
                 </div>
             </div>
             <div className="right-signUp">
-                {stepSignUp.stepActive < 3 ? (
-                    <FormSimple
-                        sendData={handleNextStep}
-                        stateForm={stepSignUp.dataForm}
-                        setFormPassword={setFormPassword}
-                        setFormNameEmail={setFormNameEmail}
-                    />
+                {stepSignUp < 3 ? (stepSignUp === 1 ? (
+                    <div className="box-form-simple">
+                        <h1>Adicione seus dados</h1>
+                        <form>
+                            <label htmlFor="name">Nome*</label>
+                            <input
+                                placeholder={`Digite seu nome`}
+                                type='text'
+                                id='name'
+                                name="name"
+                                value={valueInput.name}
+                                onChange={handleInput}
+
+                            />
+                            <label htmlFor="email">E-mail*</label>
+                            <input
+                                placeholder={`Digite seu e-mail`}
+                                type='email'
+                                id="email"
+                                name="email"
+                                value={valueInput.email}
+                                onChange={handleInput}
+                            />
+                        </form>
+                        {msgError && (
+                            <p className="msg-error redux">
+                                {msgError}
+                            </p>
+                        )}
+                        <div>
+                            <button
+                                onClick={handleNextStep}
+                                className="button-primary hover-simple">
+                                Continuar
+                            </button>
+                            <p>Já possui uma conta? Faça seu
+                                <Link to="../sign-in">
+                                    Login
+                                </Link>
+                            </p>
+                        </div>
+                    </div >
                 ) : (
+                    <div className="box-form-simple">
+                        <h1>Escolha uma senha</h1>
+                        <form className="redux2">
+                            <label htmlFor="password">Senha*</label>
+                            <input
+                                placeholder={`Digite sua senha`}
+                                type={(showPassword ? "text" : "password")}
+                                id='password1'
+                                name="password"
+                                value={valueInput.password1}
+                                onChange={handleInput}
+                            />
+                            <label htmlFor="password">Repita a senha*</label>
+                            <input
+                                placeholder={`Digite sua senha`}
+                                type={(showPassword ? "text" : "password")}
+                                id="password2"
+                                name="password"
+                                value={valueInput.password2}
+                                onChange={handleInput}
+                            />
+                        </form>
+                        <div className="div-showPassword">
+                            <button
+                                className='showPassword'
+                                onClick={handleShowPassword}>
+                                <img src={showPassword ? iconShowPassword : iconDoesShowPassword} alt="ver senha" />
+                            </button>
+                            <button
+                                className='showPassword'
+                                onClick={handleShowPassword}>
+                                <img src={showPassword ? iconShowPassword : iconDoesShowPassword} alt="ver senha" />
+                            </button>
+                        </div>
+                        {msgError && (
+                            <p className="msg-error">
+                                {msgError}
+                            </p>
+                        )}
+                        <div>
+                            <button
+                                onClick={handleNextStep}
+                                className="button-primary hover-simple">
+                                Continuar
+                            </button>
+                            <p>Já possui uma conta? Faça seu
+                                <Link to="../sign-in">
+                                    Login
+                                </Link>
+                            </p>
+                        </div>
+                    </div >
+                )) : (
                     <div className="div-finish">
                         <div className="finish-signUp">
                             <img src={iconFinishSignUp} alt="Fim do cadastro" />
                             <h1>Cadastro realizado com sucesso!</h1>
                         </div>
-                        <button className="button-primary"
-                            onClick={handleForm}
-                        >
-                            Ir para Login
-                        </button>
+                        <Link to="../sign-in">
+                            <button className="button-primary">
+                                Ir para Login
+                            </button>
+                        </Link>
                     </div>
                 )}
                 <div className="bar-progress">
                     <div
                         style={{ cursor: 'pointer' }}
                         onClick={handlePrevStep}
-                        className={`bar ${stepSignUp.stepActive === 1 ? "bar-active" : "bar-idle"}`} />
+                        className={`bar ${stepSignUp === 1 ? "bar-active" : "bar-idle"}`} />
                     <div
                         style={{ cursor: 'pointer' }}
                         onClick={handleNextStep}
-                        className={`bar ${stepSignUp.stepActive === 2 ? "bar-active" : "bar-idle"}`} />
+                        className={`bar ${stepSignUp === 2 ? "bar-active" : "bar-idle"}`} />
                     <div
                         style={{ cursor: 'not-allowed' }}
-                        className={`bar ${stepSignUp.stepActive === 3 ? "bar-active" : "bar-idle"}`} />
+                        className={`bar ${stepSignUp === 3 ? "bar-active" : "bar-idle"}`} />
 
                 </div>
             </div>
 
         </div>
+
     );
 }
+
+
 export default SignUp;

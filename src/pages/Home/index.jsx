@@ -1,6 +1,6 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import DefaultingCustomer from "../../assets/icons/defaultingCustomer.svg";
-import LoyalCustomer from "../../assets/icons/loyalCustomer.svg";
+import DefaultingCustomer from "../../assets/icons/mainIcons/defaultingCustomerHome.svg";
+import LoyalCustomer from "../../assets/icons/mainIcons/loyalCustomerHome.svg";
 import OverdueBill from "../../assets/icons/mainIcons/overdueBill.svg";
 import PaidBill from "../../assets/icons/mainIcons/paidBill.svg";
 import PendingBill from "../../assets/icons/mainIcons/pendingCharge.svg";
@@ -15,10 +15,10 @@ function Home() {
     <Stack width="100%" maxWidth="1440px" direction="row">
       <SideNavigation />
       <Stack
-        // alignItems="center"
         width="100%"
         sx={{
           padding: "40px 32px 40px 32px",
+          backgroundColor: "var(--gray-100)",
         }}
       >
         <Stack height="72px" direction="row" justifyContent="space-between">

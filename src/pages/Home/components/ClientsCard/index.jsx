@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
 import ClientsTable from "../ClientsTable";
 
 function ClientsCard({
@@ -14,6 +13,7 @@ function ClientsCard({
       borderRadius="32px"
       sx={{
         boxShadow: "0px 4px 4px rgba(172, 217, 197, 0.25)",
+        backgroundColor: "white",
       }}
     >
       <Stack

@@ -7,6 +7,7 @@ function ChargesCard({ chargeTitle, bgIndexColor, indexColor, indexNumber }) {
       borderRadius="32px"
       sx={{
         boxShadow: "0px 4px 4px rgba(172, 217, 197, 0.25)",
+        backgroundColor: "white",
       }}
     >
       <Stack

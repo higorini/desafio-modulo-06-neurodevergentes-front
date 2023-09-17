@@ -21,6 +21,7 @@ function Home() {
           padding: "40px 32px 40px 32px",
           backgroundColor: "var(--gray-100)",
         }}
+        marginLeft="108px"
       >
         <Header userName="Lorena" headerTitle="Resumo das contas" />
         <Grid container spacing={4}>

@@ -8,7 +8,10 @@ function Header({ userName, headerTitle }) {
       justifyContent="space-between"
       borderBottom="1px solid var(--green-300)"
       marginBottom="19px"
-      padding="0 100px 24px 50px"
+      padding="40px 100px 24px 50px"
+      position= "sticky"
+      top="0px"
+      backgroundColor='var(--gray-100)'
     >
       <Typography
         component="h1"

@@ -48,6 +48,16 @@ function SignUp() {
             return
         }
 
+        if (stepSignUp === 1) {
+            const email = valueInput.email
+            const response = await handleValidateEmail(email)
+            if (response.status === 400) {
+                setMsgError(response.statusText)
+                return
+            }
+
+        }
+
         setMsgError("")
 
         if (stepSignUp === 2) {
@@ -63,7 +73,7 @@ function SignUp() {
 
             const response = await handleSendForm()
 
-            if (response.status === 400) {
+            if (response === 400) {
                 handlePrevStep()
                 setMsgError(response.data.message)
                 return
@@ -83,6 +93,11 @@ function SignUp() {
         setValueInput((prevValue) => ({ ...prevValue, [nameInputEvent]: valueInputEvent }))
     }
 
+    async function handleValidateEmail(email) {
+        const response = await validateEmail(email)
+        console.log(response)
+        return response
+    }
 
     async function handleSendForm() {
         const user = {
@@ -90,12 +105,7 @@ function SignUp() {
             email: valueInput.email,
             password: valueInput.password2
         }
-        try {
-            const response = await newUser(user);
-            return response.status
-        } catch (erro) {
-            return erro.response
-        }
+        const response = await newUser(user);
     }
 
     return (

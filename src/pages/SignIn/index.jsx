@@ -40,15 +40,13 @@ function SingIn() {
             email: valueInput.email,
             password: valueInput.password
         }
-
-        try {
-            const response = await login(user);
-            localStorage.setItem("token", response.data.token);
-            navigateTo("../home");
-        } catch (erro) {
-            setMsgError(erro.response.data.message);
+        const response = await login(user);
+        localStorage.setItem("token", response.data.token);
+        if (response.status !== 200) {
+            setMsgError(response.data.message);
+            return
         }
-
+        navigateTo("../home");
     }
 
     return (

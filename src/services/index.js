@@ -14,13 +14,32 @@ const config = {
 };
 
 export async function newUser(body) {
-    const data = await api.post('signup', body)
-    return data
+    try {
+        const data = await api.post('signup', body)
+        return data
+    } catch (erro) {
+        return erro.response
+    }
 }
 
 export async function login(body) {
-    const data = await api.post('login', body)
-    return data
+
+    try {
+        const data = await api.post('login', body)
+        return data
+    } catch (erro) {
+        return erro.response
+    }
+
+}
+export async function validateEmail(body) {
+    try {
+        const data = await api.post('validateEmail', body)
+        console.log(data)
+        return data
+    } catch (error) {
+        return error.response
+    }
 }
 
-export default (newUser, login)
+export default (newUser, login, validateEmail)

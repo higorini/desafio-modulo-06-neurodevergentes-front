@@ -49,10 +49,11 @@ function SignUp() {
         }
 
         if (stepSignUp === 1) {
+
             const email = valueInput.email
             const response = await handleValidateEmail(email)
             if (response.status === 400) {
-                setMsgError(response.statusText)
+                setMsgError(response.data.message)
                 return
             }
 
@@ -71,14 +72,7 @@ function SignUp() {
             }
             setMsgError("")
 
-            const response = await handleSendForm()
-
-            if (response === 400) {
-                handlePrevStep()
-                setMsgError(response.data.message)
-                return
-            }
-
+            const response = handleSendForm()
         }
 
         if (stepSignUp < 3) {
@@ -95,7 +89,6 @@ function SignUp() {
 
     async function handleValidateEmail(email) {
         const response = await validateEmail(email)
-        console.log(response)
         return response
     }
 
@@ -106,6 +99,7 @@ function SignUp() {
             password: valueInput.password2
         }
         const response = await newUser(user);
+        return response
     }
 
     return (

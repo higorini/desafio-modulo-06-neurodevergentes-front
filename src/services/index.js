@@ -34,8 +34,9 @@ export async function login(body) {
 }
 export async function validateEmail(body) {
     try {
-        const data = await api.post('validateEmail', body)
-        console.log(data)
+        const data = await api.post('validateEmail', {
+            "email": body
+        })
         return data
     } catch (error) {
         return error.response

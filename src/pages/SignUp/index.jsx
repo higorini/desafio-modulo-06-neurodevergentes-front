@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import iconDoesShowPassword from '../../assets/imgs/SignUp/icon-does-show-password.png';
 import iconFinishSignUp from '../../assets/imgs/SignUp/icon-finish-signUp.png';
+import iconShowPassword from '../../assets/imgs/SignUp/icon-show-password.png';
 import iconStep1 from '../../assets/imgs/SignUp/icon-step1-signUp.png';
 import iconStep2 from '../../assets/imgs/SignUp/icon-step2-signUp.png';
 import iconStep3 from '../../assets/imgs/SignUp/icon-step3-signUp.png';
-import iconDoesShowPassword from '../../assets/imgs/SignUp/icon-does-show-password.png';
-import iconShowPassword from '../../assets/imgs/SignUp/icon-show-password.png';
-import { newUser } from "../../services";
+import { newUser, validateEmail } from "../../services";
 import "./style.css";
 
 function SignUp() {
@@ -23,6 +23,7 @@ function SignUp() {
         password1: "",
         password2: "",
     })
+
     function handleShowPassword() {
         setShowPassword(!showPassword)
     }
@@ -62,9 +63,9 @@ function SignUp() {
 
             const response = await handleSendForm()
 
-            if (response === "E-mail já cadastrado.") {
+            if (response.status === 400) {
                 handlePrevStep()
-                setMsgError(response)
+                setMsgError(response.data.message)
                 return
             }
 
@@ -89,15 +90,12 @@ function SignUp() {
             email: valueInput.email,
             password: valueInput.password2
         }
-
         try {
             const response = await newUser(user);
             return response.status
-
         } catch (erro) {
-            return erro.response.data.message
+            return erro.response
         }
-
     }
 
     return (

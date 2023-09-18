@@ -13,6 +13,7 @@ function LateralMenu() {
       justifyContent="start"
       paddingTop="45px"
       gap="72px"
+      position="fixed"
       sx={{
         width: 108,
         height: "100vh",

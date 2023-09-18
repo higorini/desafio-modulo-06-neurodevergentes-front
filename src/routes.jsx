@@ -2,6 +2,7 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Customer from "./pages/Customer";
 
 function ProtectedRoutes(redirectTo) {
   const token = true;
@@ -20,6 +21,8 @@ function AllRoutes() {
       <Route element={<ProtectedRoutes redirectTo={"/sign-in"} />}>
         <Route path="/home" element={<Home />} />
       </Route>
+
+      <Route path="/customer" element={<Customer />} />
 
       <Route path="/sign-up" element={<SignUp />} />
 

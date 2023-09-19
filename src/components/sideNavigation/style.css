@@ -1,0 +1,25 @@
+.link-active {
+  color: var(--pink-500);
+  position: relative;
+  text-decoration: none;
+}
+
+.link {
+  color: var(--gray-800);
+  text-decoration: none;
+}
+
+.link-active::after {
+  content: "";
+  display: block;
+  width: 2px;
+  height: 82px;
+  background-color: var(--pink-500);
+  position: absolute;
+  right: -32px;
+  bottom: 0;
+}
+
+.navicon {
+  stroke: currentColor;
+}

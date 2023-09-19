@@ -1,7 +1,11 @@
 import { Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
+import HeaderPopUp from "../HeaderPopUp";
 
-function Header({ userName, headerTitle }) {
+function Header({ userName, headerTitle, openModal, setOpenModal }) {
+  const [openPopUp, setOpenPopUp] = useState(false);
+
   return (
     <Stack
       direction="row"
@@ -9,9 +13,9 @@ function Header({ userName, headerTitle }) {
       borderBottom="1px solid var(--green-300)"
       marginBottom="19px"
       padding="40px 100px 24px 50px"
-      position= "sticky"
+      position="sticky"
       top="0px"
-      backgroundColor='var(--gray-100)'
+      backgroundColor="var(--gray-100)"
     >
       <Typography
         component="h1"
@@ -43,7 +47,14 @@ function Header({ userName, headerTitle }) {
             LR
           </Typography>
         </Stack>
-        <Stack direction="row" alignItems="center">
+        <Stack
+          direction="row"
+          alignItems="center"
+          onClick={() => setOpenPopUp(!openPopUp)}
+          sx={{
+            cursor: "pointer",
+          }}
+        >
           <Typography
             fontFamily="var(--font-subtitle)"
             fontWeight="600"
@@ -54,6 +65,9 @@ function Header({ userName, headerTitle }) {
           </Typography>
           <img src={ArrowDown} alt="" />
         </Stack>
+        {openPopUp && (
+          <HeaderPopUp openModal={openModal} setOpenModal={setOpenModal} />
+        )}
       </Stack>
     </Stack>
   );

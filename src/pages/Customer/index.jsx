@@ -20,7 +20,7 @@ function Customer() {
         <Stack
           width="100%"
           sx={{
-            padding: "40px 32px 40px 32px",
+            padding: "40px 32px 40px",
             backgroundColor: "var(--gray-100)",
           }}
           marginLeft="108px"

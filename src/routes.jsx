@@ -4,18 +4,16 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
 function ProtectedRoutes(redirectTo) {
-  const token = true;
+  const token = localStorage.getItem("token");
 
-  return token ? <Outlet /> : <Navigate to={redirectTo} />;
+  return token ? <Outlet /> : <Navigate to="/sign-in" replace />;
 }
 
 function AllRoutes() {
   return (
     <Routes>
-      <Route path="/">
-        <Route path="/" element={<SignIn />} />
-        <Route path="/sign-in" element={<SignIn />} />
-      </Route>
+      <Route path="/" element={<SignIn />} />
+      <Route path="/sign-in" element={<SignIn />} />
 
       <Route element={<ProtectedRoutes redirectTo={"/sign-in"} />}>
         <Route path="/home" element={<Home />} />

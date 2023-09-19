@@ -1,0 +1,144 @@
+.container-signIn {
+    display: flex;
+}
+
+.left-signIn {
+    width: 31.25rem;
+    height: 100vh;
+
+    background-image: url('../../assets/imgs/SignIn/img-signIn.png');
+    background-repeat: no-repeat;
+    background-position: center top 78%;
+    background-size: cover;
+
+    text-align: center;
+}
+
+.left-signIn div {
+    margin: 9.875rem 3.5rem 0 3.5rem;
+}
+
+.left-signIn h3 {
+    font-weight: 600;
+    font-size: var(--title-l);
+    font-family: var(--font-title);
+
+    color: var(--green-700);
+}
+
+.right-signIn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+
+    background-color: var(--gray-100);
+}
+
+.right-signIn .box-form-simple {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 22.1875rem;
+    height: 20.9375rem;
+}
+
+.right-signIn .box-form-simple h1 {
+    font-weight: 700;
+    font-size: var(--title-l);
+    font-family: var(--font-title);
+
+    color: var(--gray-800);
+}
+
+.right-signIn .box-form-simple form {
+    display: flex;
+    flex-direction: column;
+
+    width: 21.5rem;
+    height: 10rem;
+
+}
+
+.right-signIn .box-form-simple label {
+    margin-top: 1.25rem;
+
+    font-weight: 600;
+    font-size: var(--body-s);
+
+    color: var(--gray-700);
+}
+
+.right-signIn .box-form-simple input {
+    margin-top: 0.375rem;
+
+    padding: 0.625rem 2rem 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+
+    border: 0.0625rem solid var(--gray-300);
+}
+
+.right-signIn .box-form-simple input::placeholder {
+    font-size: var(--body-r);
+
+    color: var(--gray-500);
+}
+
+.right-signIn .recov-passwor {
+    position: relative;
+
+    top: -62px;
+    left: 220px;
+}
+
+.right-signIn .box-form-simple div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-size: var(--body-s);
+
+    color: var(--gray-700);
+}
+
+.right-signIn .msg-error {
+    display: flex;
+    justify-content: center;
+
+    margin-top: -1.875rem;
+
+    font-size: var(--body-xs);
+    color: var(--red-500);
+}
+
+.right-signIn .box-form-simple a {
+    font-weight: 600;
+    font-size: var(--body-s);
+
+    color: var(--pink-500);
+}
+
+.right-signIn .showPassword {
+    display: flex;
+    position: relative;
+
+    bottom: 2.6865rem;
+    left: 9.6875rem;
+
+    background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+
+    transition: 0.5s;
+
+    &:hover {
+        border-radius: 100%;
+        background-color: rgba(0, 0, 0, 0.108);
+    }
+
+}

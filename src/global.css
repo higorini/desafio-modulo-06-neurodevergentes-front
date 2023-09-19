@@ -75,3 +75,25 @@ body {
   font-family: var(--font-body);
   font-size: var(--body-r);
 }
+
+.button-primary {
+  width: 10rem;
+  height: 2.0625rem;
+  margin-bottom: 0.9375rem;
+
+  border-radius: 0.625rem;
+  border: none;
+
+  cursor: pointer;
+
+  background-color: var(--pink-500);
+
+  color: var(--gray-100);
+  font-size: var(--title-s);
+
+  transition: 0.5s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

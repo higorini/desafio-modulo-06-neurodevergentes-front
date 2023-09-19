@@ -18,6 +18,7 @@
 
 .customer__add {
   display: flex;
+  align-items: center;
   width: 50%;
   justify-content: space-between;
 }
@@ -33,6 +34,7 @@
   font-family: var(--font-subtitle);
   font-size: 18px;
   line-height: 24.55px;
+  cursor: pointer;
 }
 
 .customer__search {
@@ -56,4 +58,8 @@
   font-size: 18px;
   line-height: 24.55px;
   border: none;
+}
+
+.customer__main {
+  margin: 1.1rem 0;
 }

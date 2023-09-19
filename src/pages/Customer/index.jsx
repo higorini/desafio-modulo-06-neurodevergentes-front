@@ -1,16 +1,22 @@
+import { useState } from "react";
 import { Stack } from "@mui/material";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
+import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
 import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
+import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import "./style.css";
 
 function Customer() {
+  const [openAdd, setOpenAdd] = useState(false);
+
   return (
     <>
-      <Stack width="100%" maxWidth="1440px" direction="row">
+      <Stack width="100%" direction="row">
         <SideNavigation />
+        {openAdd && <AddCustomer setOpenAdd={setOpenAdd} />}
         <Stack
           width="100%"
           sx={{
@@ -28,9 +34,12 @@ function Customer() {
             </div>
 
             <div className="customer__add">
-              <button className="customer__add-button">
+              <button className="customer__add-button" onClick={setOpenAdd}>
                 + Adicionar Cliente
               </button>
+
+              <img src={ClientFilter} />
+
               <div className="customer__search">
                 <input
                   type="text"

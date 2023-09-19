@@ -5,7 +5,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Charge from "../../../../assets/icons/charge.svg";
+import ClientOrder from "../../../../assets/icons/clientIcons/clientOrder.svg";
+import ClientCharge from "../../../../assets/icons/clientIcons/clientCharge.svg";
 
 function createData(client, cpf, email, number, status) {
   return { client, cpf, email, number, status };
@@ -98,12 +99,14 @@ function CustomerTable() {
           <TableRow>
             <TableCell
               sx={{
+                display: "flex",
                 color: "var(--gray-700)",
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
               }}
             >
+              <img src={ClientOrder} alt="Cobrança" />
               Cliente
             </TableCell>
             <TableCell
@@ -246,7 +249,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                <img src={Charge} alt="Cobrança" />
+                <img src={ClientCharge} alt="Cobrança" />
               </TableCell>
             </TableRow>
           ))}

@@ -1,3 +1,5 @@
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   Box,
   Button,
@@ -6,11 +8,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 import React from "react";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 
 function EditUserModal({ setOpenModal }) {
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   return (
     <Stack
       alignItems="center"
@@ -20,7 +29,7 @@ function EditUserModal({ setOpenModal }) {
         height: "100vh",
         backgroundColor: "rgba(145, 154, 150, 0.3)",
         zIndex: 1,
-        position: "absolute",
+        position: "fixed",
       }}
     >
       <Stack
@@ -122,7 +131,7 @@ function EditUserModal({ setOpenModal }) {
                   CPF
                 </InputLabel>
                 <TextField
-                  name="cpf"
+                  id="cpf"
                   variant="outlined"
                   placeholder="Digite seu CPF"
                   sx={{
@@ -174,9 +183,8 @@ function EditUserModal({ setOpenModal }) {
               >
                 Nova Senha*
               </InputLabel>
-              <TextField
-                name="senha"
-                variant="outlined"
+              <OutlinedInput
+                id="senha"
                 placeholder="Digite sua senha"
                 sx={{
                   width: "380px",
@@ -186,6 +194,19 @@ function EditUserModal({ setOpenModal }) {
                     fontFamily: "var(--font-body)",
                   },
                 }}
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      // onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
             </Stack>
             <Stack direction="column">
@@ -200,9 +221,8 @@ function EditUserModal({ setOpenModal }) {
               >
                 Confirmar Senha*
               </InputLabel>
-              <TextField
-                name="confirmarSenha"
-                variant="outlined"
+              <OutlinedInput
+                id="senha"
                 placeholder="Digite sua senha"
                 sx={{
                   width: "380px",
@@ -212,13 +232,28 @@ function EditUserModal({ setOpenModal }) {
                     fontFamily: "var(--font-body)",
                   },
                 }}
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      // onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
             </Stack>
             <Button
               variant="contained"
               sx={{
+                textTransform: "capitalize",
                 width: "160px",
                 fontSize: "var(--title-s)",
+                fontFamily: "var(--font-body)",
                 backgroundColor: "var(--pink-500)",
                 color: "var(--gray-100)",
                 cursor: "pointer",

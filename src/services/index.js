@@ -38,9 +38,28 @@ export async function validateEmail(body) {
             "email": body
         })
         return data
-    } catch (error) {
-        return error.response
+    } catch (erro) {
+        return erro.response
     }
 }
 
-export default (newUser, login, validateEmail)
+export async function getUserData() {
+    try {
+        const data = await api.get("user", config)
+        return data.data
+    } catch (erro) {
+        return erro.response
+    }
+}
+
+export async function edityUserData(body, idUser) {
+
+    try {
+        const data = await api.put(`user/edit`, body, config)
+        return data.data
+    } catch (erro) {
+        return erro.response
+    }
+}
+
+export default (newUser, login, validateEmail, edityUserData, getUserData)

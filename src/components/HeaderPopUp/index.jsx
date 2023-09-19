@@ -2,7 +2,16 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import editIcon from "../../assets/icons/edit.svg";
 import logOutIcon from "../../assets/icons/logout.svg";
 
+import { useNavigate } from "react-router-dom";
+
 function HeaderPopUp({ openModal, setOpenModal }) {
+
+  const navigator = useNavigate();
+  function handleClickLogout() {
+    localStorage.removeItem("token");
+    navigator("/sign-in");
+  }
+
   return (
     <Paper
       elevation={24}
@@ -49,6 +58,7 @@ function HeaderPopUp({ openModal, setOpenModal }) {
           direction="column"
           gap="4px"
           alignItems="center"
+          onClick={() => handleClickLogout()}
           sx={{
             cursor: "pointer",
           }}

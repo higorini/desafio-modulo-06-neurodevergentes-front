@@ -15,8 +15,85 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import React from "react";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 
+import { validateEmail, edityUserData, getUserData } from "../../services";
+import { useState, useEffect } from "react";
+
 function EditUserModal({ setOpenModal }) {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [msgError, setMsgError] = useState("")
+  const [valueInput, setValueInput] = useState({
+    name: "",
+    email: "",
+    cpf: "",
+    telephone: "",
+    password1: "",
+    password2: "",
+    id: ""
+  })
+
+  useEffect(() => {
+    async function gettingOldData() {
+      const response = await getUserData()
+
+      setValueInput((prevValue) => ({ ...prevValue, id: response.id }))
+    }
+    gettingOldData()
+  }, [])
+
+  async function handleValidateEmail() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(valueInput.email)) {
+      setMsgError("Por favor, insira um endereço de email válido.")
+      return
+    }
+
+    const email = valueInput.email
+    const response = await validateEmail(email)
+    if (response.status === 400) {
+      setMsgError(response.data.message)
+      return
+    }
+    setMsgError("")
+  }
+
+  function handleInput(e) {
+    const valueInputEvent = e.target.value
+    const nameInputEvent = e.target.name
+    setValueInput((prevValue) => ({ ...prevValue, [nameInputEvent]: valueInputEvent }))
+  }
+
+  async function handleSendForm() {
+
+    if (!valueInput.name.length || !valueInput.email.length) {
+      setMsgError("Por favor, preencha todos os campos obrigatórios antes de continuar.")
+      return
+    }
+
+    if (valueInput.password2.length < 6) {
+      setMsgError("A senha deve ter pelo menos 6 caracteres.")
+      return
+    }
+
+    if (valueInput.password1 !== valueInput.password2) {
+      setMsgError("As senhas não coincidem. Por favor, tente novamente.")
+      return
+    }
+    setMsgError("")
+
+    const user = {
+      name: valueInput.name,
+      email: valueInput.email,
+      password: valueInput.password2,
+      cpf: (valueInput.cpf ? valueInput.cpf : ""),
+      telephone: (valueInput.telephone ? valueInput.telephone : ""),
+    }
+
+    const response = await edityUserData(user, valueInput.id);
+    setOpenModal(false)
+    return response.message
+  }
+
+
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -79,8 +156,10 @@ function EditUserModal({ setOpenModal }) {
               </InputLabel>
               <TextField
                 id="name"
+                name="name"
                 variant="outlined"
                 placeholder="Digite seu nome"
+                onChange={handleInput}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -107,6 +186,8 @@ function EditUserModal({ setOpenModal }) {
                 name="email"
                 variant="outlined"
                 placeholder="Digite seu email"
+                onChange={handleInput}
+                onBlur={handleValidateEmail}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -132,8 +213,10 @@ function EditUserModal({ setOpenModal }) {
                 </InputLabel>
                 <TextField
                   id="cpf"
+                  name="cpf"
                   variant="outlined"
                   placeholder="Digite seu CPF"
+                  onChange={handleInput}
                   sx={{
                     width: "178px",
                     "input:first-of-type": {
@@ -157,9 +240,10 @@ function EditUserModal({ setOpenModal }) {
                   Telefone
                 </InputLabel>
                 <TextField
-                  name="telefone"
+                  name="telephone"
                   variant="outlined"
                   placeholder="Digite seu Telefone"
+                  onChange={handleInput}
                   sx={{
                     width: "178px",
                     "input:first-of-type": {
@@ -184,8 +268,10 @@ function EditUserModal({ setOpenModal }) {
                 Nova Senha*
               </InputLabel>
               <OutlinedInput
-                id="senha"
+                id="senha1"
+                name="password1"
                 placeholder="Digite sua senha"
+                onChange={handleInput}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -222,8 +308,10 @@ function EditUserModal({ setOpenModal }) {
                 Confirmar Senha*
               </InputLabel>
               <OutlinedInput
-                id="senha"
+                id="senha2"
+                name="password2"
                 placeholder="Digite sua senha"
+                onChange={handleInput}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -241,7 +329,7 @@ function EditUserModal({ setOpenModal }) {
                       // onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -249,6 +337,7 @@ function EditUserModal({ setOpenModal }) {
             </Stack>
             <Button
               variant="contained"
+              onClick={handleSendForm}
               sx={{
                 textTransform: "capitalize",
                 width: "160px",
@@ -268,6 +357,7 @@ function EditUserModal({ setOpenModal }) {
             </Button>
           </Stack>
         </form>
+        {msgError && (<p>{msgError}</p>)}
       </Stack>
     </Stack>
   );

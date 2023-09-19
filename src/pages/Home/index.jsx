@@ -9,9 +9,14 @@ import SideNavigation from "../../components/sideNavigation";
 import ChargesCard from "./components/ChargesCard";
 import ClientsCard from "./components/ClientsCard";
 import SummaryCharge from "./components/SummaryCharge";
+
+import { useState } from "react";
+
 import "./style.css";
 
 function Home() {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <Stack width="100%" maxWidth="1440px" direction="row">
       <SideNavigation />
@@ -23,7 +28,12 @@ function Home() {
         }}
         marginLeft="108px"
       >
-        <Header userName="Lorena" headerTitle="Resumo das contas" />
+        <Header
+          userName="Lorena"
+          headerTitle="Resumo das contas"
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+        />
         <Grid container spacing={4}>
           <Grid item xs={4}>
             <SummaryCharge

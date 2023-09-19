@@ -3,7 +3,7 @@ import editIcon from "../../assets/icons/edit.svg";
 import logOutIcon from "../../assets/icons/logout.svg";
 import ButtonIcon from "../ButtonIcon";
 
-function HeaderPopUp() {
+function HeaderPopUp({ openModal, setOpenModal }) {
   return (
     <Paper
       elevation={24}
@@ -27,7 +27,11 @@ function HeaderPopUp() {
         }}
       ></Box>
       <Stack direction="row" gap="16px">
-        <ButtonIcon path={editIcon} text="Editar" />
+        <ButtonIcon
+          path={editIcon}
+          text="Editar"
+          onClick={() => setOpenModal(true)}
+        />
         <ButtonIcon path={logOutIcon} text="Sair" />
       </Stack>
     </Paper>

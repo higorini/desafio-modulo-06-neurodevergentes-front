@@ -3,7 +3,7 @@ import { useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
 import HeaderPopUp from "../HeaderPopUp";
 
-function Header({ userName, headerTitle }) {
+function Header({ userName, headerTitle, openModal, setOpenModal }) {
   const [openPopUp, setOpenPopUp] = useState(false);
 
   return (
@@ -64,7 +64,9 @@ function Header({ userName, headerTitle }) {
             {userName}
           </Typography>
           <img src={ArrowDown} alt="" />
-          {openPopUp && <HeaderPopUp />}
+          {openPopUp && (
+            <HeaderPopUp openModal={openModal} setOpenModal={setOpenModal} />
+          )}
         </Stack>
       </Stack>
     </Stack>

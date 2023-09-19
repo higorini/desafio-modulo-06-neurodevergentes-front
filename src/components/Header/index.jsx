@@ -64,10 +64,10 @@ function Header({ userName, headerTitle, openModal, setOpenModal }) {
             {userName}
           </Typography>
           <img src={ArrowDown} alt="" />
-          {openPopUp && (
-            <HeaderPopUp openModal={openModal} setOpenModal={setOpenModal} />
-          )}
         </Stack>
+        {openPopUp && (
+          <HeaderPopUp openModal={openModal} setOpenModal={setOpenModal} />
+        )}
       </Stack>
     </Stack>
   );

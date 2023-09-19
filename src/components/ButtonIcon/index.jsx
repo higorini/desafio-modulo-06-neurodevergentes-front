@@ -3,7 +3,14 @@ import React from "react";
 
 function ButtonIcon({ path, text }) {
   return (
-    <Stack direction="column" gap="4px" alignItems="center">
+    <Stack
+      direction="column"
+      gap="4px"
+      alignItems="center"
+      sx={{
+        cursor: "pointer",
+      }}
+    >
       <img src={path} alt="" />
       <Typography
         color="var(--gray-600)"

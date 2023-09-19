@@ -12,6 +12,7 @@ import SummaryCharge from "./components/SummaryCharge";
 
 import { useState } from "react";
 
+import EditUserModal from "../../components/EditUserModal";
 import "./style.css";
 
 function Home() {
@@ -19,6 +20,7 @@ function Home() {
 
   return (
     <Stack width="100%" maxWidth="1440px" direction="row">
+      {openModal && <EditUserModal setOpenModal={setOpenModal} />}
       <SideNavigation />
       <Stack
         width="100%"

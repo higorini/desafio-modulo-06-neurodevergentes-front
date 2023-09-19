@@ -1,7 +1,6 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import editIcon from "../../assets/icons/edit.svg";
 import logOutIcon from "../../assets/icons/logout.svg";
-import ButtonIcon from "../ButtonIcon";
 
 function HeaderPopUp({ openModal, setOpenModal }) {
   return (
@@ -27,12 +26,43 @@ function HeaderPopUp({ openModal, setOpenModal }) {
         }}
       ></Box>
       <Stack direction="row" gap="16px">
-        <ButtonIcon
-          path={editIcon}
-          text="Editar"
-          onClick={() => setOpenModal(true)}
-        />
-        <ButtonIcon path={logOutIcon} text="Sair" />
+        <Stack
+          direction="column"
+          gap="4px"
+          alignItems="center"
+          sx={{
+            cursor: "pointer",
+          }}
+          onClick={() => setOpenModal(!openModal)}
+        >
+          <img src={editIcon} alt="" />
+          <Typography
+            color="var(--gray-600)"
+            component="span"
+            fontFamily="var(--font-body)"
+            fontSize="10px"
+          >
+            Editar
+          </Typography>
+        </Stack>
+        <Stack
+          direction="column"
+          gap="4px"
+          alignItems="center"
+          sx={{
+            cursor: "pointer",
+          }}
+        >
+          <img src={logOutIcon} alt="" />
+          <Typography
+            color="var(--gray-600)"
+            component="span"
+            fontFamily="var(--font-body)"
+            fontSize="10px"
+          >
+            Sair
+          </Typography>
+        </Stack>
       </Stack>
     </Paper>
   );

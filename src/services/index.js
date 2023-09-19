@@ -32,13 +32,16 @@ export async function login(body) {
     }
 
 }
-export async function validateEmail(body) {
+export async function validateEmail(email, name) {
     try {
         const data = await api.post('validateEmail', {
-            "email": body
+            "email": email,
+            "name": name
         })
         return data
+        console.log(data)
     } catch (erro) {
+        console.log(erro)
         return erro.response
     }
 }

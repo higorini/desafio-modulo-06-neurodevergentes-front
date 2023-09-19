@@ -18,9 +18,9 @@ function AllRoutes() {
 
       <Route element={<ProtectedRoutes redirectTo={"/sign-in"} />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/customer" element={<Customer />} />
       </Route>
 
-      <Route path="/customer" element={<Customer />} />
 
       <Route path="/sign-up" element={<SignUp />} />
 

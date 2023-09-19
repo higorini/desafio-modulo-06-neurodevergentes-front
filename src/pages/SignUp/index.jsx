@@ -50,8 +50,10 @@ function SignUp() {
 
         if (stepSignUp === 1) {
 
+            const name = valueInput.name
             const email = valueInput.email
-            const response = await handleValidateEmail(email)
+            const response = await handleValidateEmail(email, name)
+            console.log(response)
             if (response.status === 400) {
                 setMsgError(response.data.message)
                 return
@@ -87,8 +89,8 @@ function SignUp() {
         setValueInput((prevValue) => ({ ...prevValue, [nameInputEvent]: valueInputEvent }))
     }
 
-    async function handleValidateEmail(email) {
-        const response = await validateEmail(email)
+    async function handleValidateEmail(email, name) {
+        const response = await validateEmail(email, name)
         return response
     }
 

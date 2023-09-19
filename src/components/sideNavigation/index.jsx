@@ -66,7 +66,7 @@ function LateralMenu() {
         </Stack>
       </NavLink>
       <NavLink
-        to="/customers"
+        to="/customer"
         className={({ isActive }) => (isActive ? "link-active" : "link")}
       >
         <Stack

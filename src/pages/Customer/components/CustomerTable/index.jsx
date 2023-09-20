@@ -92,6 +92,10 @@ function CustomerTable() {
       backgroundColor="var(--white)"
       sx={{
         overflow: "hidden",
+        padding: "8px 16px",
+        borderRadius: "40px",
+        maxWidth: "90%",
+        marginLeft: "2rem",
       }}
     >
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">

@@ -1,6 +1,7 @@
 .charge__header {
   display: flex;
   justify-content: space-between;
+  margin-left: 2rem;
   margin-bottom: 1.5rem;
 }
 

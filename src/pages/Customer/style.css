@@ -1,12 +1,14 @@
 .customer__header {
   display: flex;
   justify-content: space-between;
+  margin-left: 2rem;
+  margin-right: 6rem;
   margin-bottom: 1.5rem;
 }
 
 .customer__title {
   display: flex;
-  width: 50%;
+  width: 30%;
   align-items: center;
   gap: 0.5rem;
 }
@@ -19,7 +21,7 @@
 .customer__add {
   display: flex;
   align-items: center;
-  width: 50%;
+  width: 54%;
   justify-content: space-between;
 }
 

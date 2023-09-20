@@ -2,7 +2,9 @@ import { Stack } from "@mui/material";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import ChargeTable from "./components/ChargeTable";
-import ClientIcon from "../../assets/icons/clients.svg";
+import ChargeIcon from "../../assets/icons/chargeIcons/chargeIcon.svg";
+import ChargeSearch from "../../assets/icons/chargeIcons/chargeSearch.svg";
+import ChargeFilter from "../../assets/icons/chargeIcons/chargeFilter.svg";
 import "./style.css";
 
 function Charge() {
@@ -22,8 +24,21 @@ function Charge() {
 
           <div className="charge__header">
             <div className="charge__title">
-              <img src={ClientIcon} alt="Icone Cliente" />
+              <img src={ChargeIcon} alt="Icone Cliente" />
               <h1>Cobranças</h1>
+            </div>
+
+            <div className="charge__filters">
+              <img src={ChargeFilter} />
+
+              <div className="charge__search">
+                <input
+                  type="text"
+                  className="charge__search-box"
+                  placeholder="Pesquisa"
+                />
+                <img src={ChargeSearch} id="searchBtn" alt="Pesquisa" />
+              </div>
             </div>
           </div>
 

@@ -20,7 +20,7 @@ function Charge() {
           }}
           marginLeft="108px"
         >
-          <Header userName="Lorena" headerTitle="Clientes" />
+          <Header userName="Lorena" headerTitle="Cobranças" />
 
           <div className="charge__header">
             <div className="charge__title">

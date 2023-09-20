@@ -1,0 +1,17 @@
+.charge__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.charge__title {
+  display: flex;
+  width: 50%;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.charge__title img {
+  width: 32px;
+  height: 32px;
+}

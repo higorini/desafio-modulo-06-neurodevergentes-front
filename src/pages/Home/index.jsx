@@ -20,7 +20,9 @@ function Home() {
 
   return (
     <Stack width="100%" maxWidth="1440px" direction="row">
-      {openModal && <EditUserModal setOpenModal={setOpenModal} />}
+      {openModal && <EditUserModal
+        setOpenModal={setOpenModal}
+        openModal={openModal} />}
       <SideNavigation />
       <Stack
         width="100%"

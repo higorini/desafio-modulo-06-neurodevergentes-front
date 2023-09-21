@@ -18,14 +18,17 @@ import CloseIcon from "../../assets/icons/closeIcon.svg";
 import { validateEmail, edityUserData, getUserData } from "../../services";
 import { useState, useEffect } from "react";
 
-function EditUserModal({ setOpenModal }) {
-  const [showPassword, setShowPassword] = React.useState(false);
+function EditUserModal({ setOpenModal, openModal }) {
   const [msgError, setMsgError] = useState("")
+  const [showPassword, setShowPassword] = useState({
+    input1: false,
+    input2: false,
+  });
   const [valueInput, setValueInput] = useState({
     name: "",
     email: "",
     cpf: "",
-    telephone: "",
+    phone: "",
     password1: "",
     password2: "",
     id: ""
@@ -33,12 +36,17 @@ function EditUserModal({ setOpenModal }) {
 
   useEffect(() => {
     async function gettingOldData() {
-      const response = await getUserData()
-
-      setValueInput((prevValue) => ({ ...prevValue, id: response.id }))
+      const response = await getUserData();
+      Object.entries(response).forEach(([key, value]) => {
+        setValueInput((prevValue) => ({
+          ...prevValue,
+          [key]: value === null ? " " : value
+        }));
+      });
     }
-    gettingOldData()
-  }, [])
+    gettingOldData();
+
+  }, [openModal])
 
   async function handleValidateEmail() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -85,7 +93,7 @@ function EditUserModal({ setOpenModal }) {
       email: valueInput.email,
       password: valueInput.password2,
       cpf: (valueInput.cpf ? valueInput.cpf : ""),
-      telephone: (valueInput.telephone ? valueInput.telephone : ""),
+      phone: (valueInput.phone ? valueInput.phone : ""),
     }
 
     const response = await edityUserData(user, valueInput.id);
@@ -93,9 +101,10 @@ function EditUserModal({ setOpenModal }) {
     return response.message
   }
 
-
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  function handleClickShowPassword(input) {
+    input ? setShowPassword((prevValue) => ({ ...prevValue, input2: !showPassword.input2 }))
+      : setShowPassword((prevValue) => ({ ...prevValue, input1: !showPassword.input1 }))
+  }
 
   return (
     <Stack
@@ -136,6 +145,7 @@ function EditUserModal({ setOpenModal }) {
             position: "absolute",
             top: "24px",
             right: "24px",
+            cursor: "pointer",
           }}
         >
           <img src={CloseIcon} alt="" />
@@ -159,6 +169,7 @@ function EditUserModal({ setOpenModal }) {
                 name="name"
                 variant="outlined"
                 placeholder="Digite seu nome"
+                value={valueInput.name}
                 onChange={handleInput}
                 sx={{
                   width: "380px",
@@ -186,6 +197,7 @@ function EditUserModal({ setOpenModal }) {
                 name="email"
                 variant="outlined"
                 placeholder="Digite seu email"
+                value={valueInput.email}
                 onChange={handleInput}
                 onBlur={handleValidateEmail}
                 sx={{
@@ -216,6 +228,7 @@ function EditUserModal({ setOpenModal }) {
                   name="cpf"
                   variant="outlined"
                   placeholder="Digite seu CPF"
+                  value={valueInput.cpf}
                   onChange={handleInput}
                   sx={{
                     width: "178px",
@@ -240,9 +253,10 @@ function EditUserModal({ setOpenModal }) {
                   Telefone
                 </InputLabel>
                 <TextField
-                  name="telephone"
+                  name="phone"
                   variant="outlined"
                   placeholder="Digite seu Telefone"
+                  value={valueInput.phone}
                   onChange={handleInput}
                   sx={{
                     width: "178px",
@@ -268,9 +282,10 @@ function EditUserModal({ setOpenModal }) {
                 Nova Senha*
               </InputLabel>
               <OutlinedInput
-                id="senha1"
+                id="password1"
                 name="password1"
                 placeholder="Digite sua senha"
+                value={valueInput.password1}
                 onChange={handleInput}
                 sx={{
                   width: "380px",
@@ -280,16 +295,15 @@ function EditUserModal({ setOpenModal }) {
                     fontFamily: "var(--font-body)",
                   },
                 }}
-                type={showPassword ? "text" : "password"}
+                type={showPassword.input1 ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      // onMouseDown={handleMouseDownPassword}
+                      onClick={() => handleClickShowPassword(0)}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword.input1 ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -308,9 +322,10 @@ function EditUserModal({ setOpenModal }) {
                 Confirmar Senha*
               </InputLabel>
               <OutlinedInput
-                id="senha2"
+                id="password2"
                 name="password2"
                 placeholder="Digite sua senha"
+                value={valueInput.password2}
                 onChange={handleInput}
                 sx={{
                   width: "380px",
@@ -320,16 +335,15 @@ function EditUserModal({ setOpenModal }) {
                     fontFamily: "var(--font-body)",
                   },
                 }}
-                type={showPassword ? "text" : "password"}
+                type={showPassword.input2 ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      // onMouseDown={handleMouseDownPassword}
+                      onClick={() => handleClickShowPassword(1)}
                       edge="end"
                     >
-                      {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
+                      {showPassword.input2 ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }

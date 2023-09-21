@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 
 function EditUserModal({ setOpenModal, openModal }) {
   const [msgError, setMsgError] = useState("")
-  const [showPassword, setShowPassword] = React.useState({
+  const [showPassword, setShowPassword] = useState({
     input1: false,
     input2: false,
   });
@@ -102,7 +102,6 @@ function EditUserModal({ setOpenModal, openModal }) {
   }
 
   function handleClickShowPassword(input) {
-    console.log(showPassword)
     input ? setShowPassword((prevValue) => ({ ...prevValue, input2: !showPassword.input2 }))
       : setShowPassword((prevValue) => ({ ...prevValue, input1: !showPassword.input1 }))
   }
@@ -302,7 +301,6 @@ function EditUserModal({ setOpenModal, openModal }) {
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={() => handleClickShowPassword(0)}
-                      // onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
                       {showPassword.input1 ? <VisibilityOff /> : <Visibility />}
@@ -343,7 +341,6 @@ function EditUserModal({ setOpenModal, openModal }) {
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={() => handleClickShowPassword(1)}
-                      // onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
                       {showPassword.input2 ? <VisibilityOff /> : <Visibility />}

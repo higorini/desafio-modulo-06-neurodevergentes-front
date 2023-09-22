@@ -5,7 +5,7 @@ import { getUserData } from "../../services";
 import EditUserModal from "../EditUserModal";
 import HeaderPopUp from "../HeaderPopUp";
 
-function Header({ headerTitle }) {
+function Header({ headerTitle, pageTitle }) {
   const [openUserEditModal, setOpenUserEditModal] = useState(false);
 
   const [openPopUp, setOpenPopUp] = useState(false);
@@ -53,16 +53,34 @@ function Header({ headerTitle }) {
           setOpenUserEditModal={setOpenUserEditModal}
         />
       )}
-      <Typography
-        component="h1"
-        sx={{
-          fontFamily: "var(--font-title)",
-          fontSize: "var(--title-xl)",
-          marginTop: "14px",
-        }}
-      >
-        {headerTitle}
-      </Typography>
+      {headerTitle.length > 0 ? (
+        <Typography
+          component="h1"
+          color="var(--gray-800)"
+          sx={{
+            fontFamily: "var(--font-title)",
+            fontSize: "var(--title-xl)",
+            marginTop: "14px",
+          }}
+        >
+          {headerTitle}
+        </Typography>
+      ) : (
+        <Typography
+          component="span"
+          color="var(--green-500)"
+          fontWeight="400"
+          sx={{
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--subtitle)",
+            alignSelf: "end",
+            position: "relative",
+            bottom: "-18px",
+          }}
+        >
+          {pageTitle}
+        </Typography>
+      )}
       <Stack direction="row" alignItems="center" gap="16px">
         <Stack
           width="48px"

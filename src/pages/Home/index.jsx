@@ -24,7 +24,7 @@ function Home() {
         }}
         marginLeft="108px"
       >
-        <Header headerTitle="Resumo das contas" />
+        <Header headerTitle="Resumo das cobranças" pageTitle="" />
         <Grid container spacing={4}>
           <Grid item xs={4}>
             <SummaryCharge

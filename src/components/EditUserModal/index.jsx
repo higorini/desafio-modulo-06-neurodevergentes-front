@@ -12,14 +12,19 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
-import React from "react";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 
-import { validateEmail, edityUserData, getUserData } from "../../services";
-import { useState, useEffect } from "react";
+import iconDoesShowPassword from '../../assets/imgs/SignIn/icon-does-show-password.png';
+import iconShowPassword from '../../assets/imgs/SignIn/icon-show-password.png';
+import { useEffect, useState } from "react";
+import { edityUserData, getUserData, validateEmail } from "../../services";
 
 function EditUserModal({ setOpenModal, openModal }) {
-  const [msgError, setMsgError] = useState("")
+  const [errorName, setErrorName] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorCpf, setErrorCpf] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorPassword2, setErrorPassword2] = useState("");
   const [showPassword, setShowPassword] = useState({
     input1: false,
     input2: false,
@@ -31,8 +36,8 @@ function EditUserModal({ setOpenModal, openModal }) {
     phone: "",
     password1: "",
     password2: "",
-    id: ""
-  })
+    id: "",
+  });
 
   useEffect(() => {
     async function gettingOldData() {
@@ -40,70 +45,93 @@ function EditUserModal({ setOpenModal, openModal }) {
       Object.entries(response).forEach(([key, value]) => {
         setValueInput((prevValue) => ({
           ...prevValue,
-          [key]: value === null ? " " : value
+          [key]: value === null ? "" : value,
         }));
       });
     }
     gettingOldData();
+  }, [openModal]);
 
-  }, [openModal])
-
-  async function handleValidateEmail() {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(valueInput.email)) {
-      setMsgError("Por favor, insira um endereço de email válido.")
-      return
+  function handleValidatePassword() {
+    if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
+      setErrorPassword("A senha deve ter pelo menos 6 caracteres.");
+      return;
     }
 
-    const email = valueInput.email
-    const response = await validateEmail(email)
-    if (response.status === 400) {
-      setMsgError(response.data.message)
-      return
+    if (valueInput.password1 !== valueInput.password2 && valueInput.password2.length > 1) {
+      setErrorPassword2("As senhas não coincidem. Por favor, tente novamente.");
+      return;
     }
-    setMsgError("")
+    setErrorPassword("");
+    setErrorPassword2("");
   }
 
   function handleInput(e) {
-    const valueInputEvent = e.target.value
-    const nameInputEvent = e.target.name
-    setValueInput((prevValue) => ({ ...prevValue, [nameInputEvent]: valueInputEvent }))
+    const valueInputEvent = e.target.value;
+    const nameInputEvent = e.target.name;
+    setValueInput((prevValue) => ({
+      ...prevValue,
+      [nameInputEvent]: valueInputEvent,
+    }));
   }
 
   async function handleSendForm() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const cpfRegex = /^[0-9]$/;
 
-    if (!valueInput.name.length || !valueInput.email.length) {
-      setMsgError("Por favor, preencha todos os campos obrigatórios antes de continuar.")
+    if (!valueInput.name.length) {
+      setErrorName("O campo nome é obrigatório");
+      return;
+    }
+
+    if (!valueInput.email.length) {
+      setErrorEmail("O campo e-mail é obrigatório");
+      return;
+    }
+
+    if (!emailRegex.test(valueInput.email)) {
+      setErrorEmail("Por favor, insira um endereço de email válido.")
       return
     }
 
-    if (valueInput.password2.length < 6) {
-      setMsgError("A senha deve ter pelo menos 6 caracteres.")
-      return
+    if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
+      setErrorPassword("A senha deve ter pelo menos 6 caracteres.");
+      return;
     }
 
     if (valueInput.password1 !== valueInput.password2) {
-      setMsgError("As senhas não coincidem. Por favor, tente novamente.")
-      return
+      setErrorPassword2("As senhas não coincidem. Por favor, tente novamente.");
+      return;
     }
-    setMsgError("")
+
+    // if (valueInput.cpf.length > 0 && valueInput.cpf.length !== 11) {
+    //   setErrorCpf("Número de caracteres inválido");
+    //   return;
+    // }
 
     const user = {
       name: valueInput.name,
       email: valueInput.email,
       password: valueInput.password2,
-      cpf: (valueInput.cpf ? valueInput.cpf : ""),
-      phone: (valueInput.phone ? valueInput.phone : ""),
-    }
+      cpf: valueInput.cpf,
+      phone: valueInput.phone,
+    };
 
     const response = await edityUserData(user, valueInput.id);
-    setOpenModal(false)
-    return response.message
+    setOpenModal(false);
+    return response.message;
   }
 
   function handleClickShowPassword(input) {
-    input ? setShowPassword((prevValue) => ({ ...prevValue, input2: !showPassword.input2 }))
-      : setShowPassword((prevValue) => ({ ...prevValue, input1: !showPassword.input1 }))
+    input
+      ? setShowPassword((prevValue) => ({
+        ...prevValue,
+        input2: !showPassword.input2,
+      }))
+      : setShowPassword((prevValue) => ({
+        ...prevValue,
+        input1: !showPassword.input1,
+      }));
   }
 
   return (
@@ -169,6 +197,8 @@ function EditUserModal({ setOpenModal, openModal }) {
                 name="name"
                 variant="outlined"
                 placeholder="Digite seu nome"
+                error={!!errorName}
+                helperText={errorName}
                 value={valueInput.name}
                 onChange={handleInput}
                 sx={{
@@ -197,9 +227,10 @@ function EditUserModal({ setOpenModal, openModal }) {
                 name="email"
                 variant="outlined"
                 placeholder="Digite seu email"
+                error={!!errorEmail}
+                helperText={errorEmail}
                 value={valueInput.email}
                 onChange={handleInput}
-                onBlur={handleValidateEmail}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -226,6 +257,8 @@ function EditUserModal({ setOpenModal, openModal }) {
                 <TextField
                   id="cpf"
                   name="cpf"
+                  error={!!errorCpf}
+                  helperText={errorCpf}
                   variant="outlined"
                   placeholder="Digite seu CPF"
                   value={valueInput.cpf}
@@ -279,9 +312,12 @@ function EditUserModal({ setOpenModal, openModal }) {
                   color: "var(--gray-700)",
                 }}
               >
-                Nova Senha*
+                Nova Senha
               </InputLabel>
-              <OutlinedInput
+              <TextField
+                error={!!errorPassword}
+                helperText={errorPassword}
+                onBlur={handleValidatePassword}
                 id="password1"
                 name="password1"
                 placeholder="Digite sua senha"
@@ -296,18 +332,36 @@ function EditUserModal({ setOpenModal, openModal }) {
                   },
                 }}
                 type={showPassword.input1 ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => handleClickShowPassword(0)}
-                      edge="end"
-                    >
-                      {showPassword.input1 ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
+              <Box
+                sx={{
+                  position: "fixed"
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => handleClickShowPassword(0)}
+                  sx={{
+                    position: "relative",
+                    minWidth: "16px",
+                    minHeight: "16px",
+                    width: "16px",
+                    height: "px",
+                    borderRadius: "50%",
+                    top: "24px",
+                    left: "345px",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                    ":hover": {
+                      boxShadow: "none",
+                      backgroundColor: " rgba(0, 0, 0, 0.108)",
+                    },
+                  }}
+                >
+                  <img src={showPassword.input1 ? iconShowPassword : iconDoesShowPassword}
+                    alt="icone mostrar senha" />
+                </Button>
+              </Box>
             </Stack>
             <Stack direction="column">
               <InputLabel
@@ -319,14 +373,17 @@ function EditUserModal({ setOpenModal, openModal }) {
                   color: "var(--gray-700)",
                 }}
               >
-                Confirmar Senha*
+                Confirmar Senha
               </InputLabel>
-              <OutlinedInput
+              <TextField
                 id="password2"
                 name="password2"
                 placeholder="Digite sua senha"
                 value={valueInput.password2}
                 onChange={handleInput}
+                onBlur={handleValidatePassword}
+                error={!!errorPassword2}
+                helperText={errorPassword2}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -336,18 +393,36 @@ function EditUserModal({ setOpenModal, openModal }) {
                   },
                 }}
                 type={showPassword.input2 ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => handleClickShowPassword(1)}
-                      edge="end"
-                    >
-                      {showPassword.input2 ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
+              <Box
+                sx={{
+                  position: "fixed"
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => handleClickShowPassword(1)}
+                  sx={{
+                    position: "relative",
+                    minWidth: "16px",
+                    minHeight: "16px",
+                    width: "16px",
+                    height: "px",
+                    borderRadius: "50%",
+                    top: "24px",
+                    left: "345px",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                    ":hover": {
+                      boxShadow: "none",
+                      backgroundColor: " rgba(0, 0, 0, 0.108)",
+                    },
+                  }}
+                >
+                  <img src={showPassword.input2 ? iconShowPassword : iconDoesShowPassword}
+                    alt="icone mostrar senha" />
+                </Button>
+              </Box>
             </Stack>
             <Button
               variant="contained"
@@ -371,7 +446,6 @@ function EditUserModal({ setOpenModal, openModal }) {
             </Button>
           </Stack>
         </form>
-        {msgError && (<p>{msgError}</p>)}
       </Stack>
     </Stack>
   );

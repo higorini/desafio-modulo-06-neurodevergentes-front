@@ -1,10 +1,34 @@
 import { Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
 import HeaderPopUp from "../HeaderPopUp";
+import { getUserData } from "../../services";
 
-function Header({ userName, headerTitle, openModal, setOpenModal }) {
+function Header({ headerTitle, openModal, setOpenModal }) {
   const [openPopUp, setOpenPopUp] = useState(false);
+  const [userName, setUserName] = useState({
+    logo: "",
+    name: ""
+  });
+
+  useEffect(() => {
+    async function loadUserName() {
+      const response = await getUserData()
+      const name = response.name
+
+      if (name.split(" ").length > 1) {
+        const nameLogo = name.split(" ")[0].slice(0, 1) + name.split(" ")[1].slice(0, 1)
+        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }))
+      } else {
+        const nameLogo = name.slice(0, 1)
+        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }))
+      }
+
+      setUserName((prevValuer) => ({ ...prevValuer, name: name.split(" ")[0] }))
+    }
+    loadUserName()
+  }, [])
+
 
   return (
     <Stack
@@ -44,7 +68,7 @@ function Header({ userName, headerTitle, openModal, setOpenModal }) {
             fontSize="var(--title-l)"
             color="var(--green-500)"
           >
-            LR
+            {userName.logo}
           </Typography>
         </Stack>
         <Stack
@@ -61,7 +85,7 @@ function Header({ userName, headerTitle, openModal, setOpenModal }) {
             fontSize="var(--title-s)"
             color="var(--green-500)"
           >
-            {userName}
+            {userName.name}
           </Typography>
           <img src={ArrowDown} alt="" />
         </Stack>

@@ -12,14 +12,19 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
-import React from "react";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 
-import { validateEmail, edityUserData, getUserData } from "../../services";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { edityUserData, getUserData, validateEmail } from "../../services";
+
+const MAX_LENGHT = 11;
 
 function EditUserModal({ setOpenModal, openModal }) {
-  const [msgError, setMsgError] = useState("")
+  // const [msgError, setMsgError] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorCpf, setErrorCpf] = useState("");
   const [showPassword, setShowPassword] = useState({
     input1: false,
     input2: false,
@@ -31,8 +36,8 @@ function EditUserModal({ setOpenModal, openModal }) {
     phone: "",
     password1: "",
     password2: "",
-    id: ""
-  })
+    id: "",
+  });
 
   useEffect(() => {
     async function gettingOldData() {
@@ -40,70 +45,107 @@ function EditUserModal({ setOpenModal, openModal }) {
       Object.entries(response).forEach(([key, value]) => {
         setValueInput((prevValue) => ({
           ...prevValue,
-          [key]: value === null ? " " : value
+          [key]: value === null ? " " : value,
         }));
       });
     }
     gettingOldData();
-
-  }, [openModal])
+  }, [openModal]);
 
   async function handleValidateEmail() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(valueInput.email)) {
-      setMsgError("Por favor, insira um endereço de email válido.")
-      return
+      setErrorEmail("Por favor, insira um endereço de email válido.");
+      return;
     }
 
-    const email = valueInput.email
-    const response = await validateEmail(email)
+    const email = valueInput.email;
+    const name = valueInput.name;
+    const response = await validateEmail(email, name);
     if (response.status === 400) {
-      setMsgError(response.data.message)
-      return
+      setErrorEmail(response.data.message);
+      return;
     }
-    setMsgError("")
+    setErrorEmail("");
   }
 
-  function handleInput(e) {
-    const valueInputEvent = e.target.value
-    const nameInputEvent = e.target.name
-    setValueInput((prevValue) => ({ ...prevValue, [nameInputEvent]: valueInputEvent }))
-  }
-
-  async function handleSendForm() {
-
-    if (!valueInput.name.length || !valueInput.email.length) {
-      setMsgError("Por favor, preencha todos os campos obrigatórios antes de continuar.")
-      return
-    }
-
-    if (valueInput.password2.length < 6) {
-      setMsgError("A senha deve ter pelo menos 6 caracteres.")
-      return
+  function handleValidatePassword() {
+    if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
+      setErrorPassword("A senha deve ter pelo menos 6 caracteres.");
+      return;
     }
 
     if (valueInput.password1 !== valueInput.password2) {
-      setMsgError("As senhas não coincidem. Por favor, tente novamente.")
-      return
+      setErrorPassword("As senhas não coincidem. Por favor, tente novamente.");
+      return;
     }
-    setMsgError("")
+    setErrorPassword("");
+  }
+
+  function handleInput(e) {
+    const valueInputEvent = e.target.value;
+    const nameInputEvent = e.target.name;
+    setValueInput((prevValue) => ({
+      ...prevValue,
+      [nameInputEvent]: valueInputEvent,
+    }));
+  }
+
+  async function handleSendForm() {
+    // if (!valueInput.name.length || !valueInput.email.length) {
+    //   setMsgError(
+    //     "Por favor, preencha todos os campos obrigatórios antes de continuar."
+    //   );
+    //   return;
+    // }
+
+    if (!valueInput.name.length) {
+      setErrorName("O campo nome é obrigatório");
+      return;
+    }
+
+    if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
+      setErrorPassword("A senha deve ter pelo menos 6 caracteres.");
+      return;
+    }
+
+    if (valueInput.password1 !== valueInput.password2) {
+      setErrorPassword("As senhas não coincidem. Por favor, tente novamente.");
+      return;
+    }
+
+    if (errorEmail) {
+      return;
+    }
+
+    if (errorCpf) {
+      setErrorCpf("O cpf possui número de caracteres inválido");
+      return;
+    }
 
     const user = {
       name: valueInput.name,
       email: valueInput.email,
       password: valueInput.password2,
-      cpf: (valueInput.cpf ? valueInput.cpf : ""),
-      phone: (valueInput.phone ? valueInput.phone : ""),
-    }
+      cpf: valueInput.cpf ? valueInput.cpf : "",
+      phone: valueInput.phone ? valueInput.phone : "",
+    };
 
     const response = await edityUserData(user, valueInput.id);
-    setOpenModal(false)
-    return response.message
+    setOpenModal(false);
+    return response.message;
   }
 
   function handleClickShowPassword(input) {
-    input ? setShowPassword((prevValue) => ({ ...prevValue, input2: !showPassword.input2 }))
-      : setShowPassword((prevValue) => ({ ...prevValue, input1: !showPassword.input1 }))
+    input
+      ? setShowPassword((prevValue) => ({
+          ...prevValue,
+          input2: !showPassword.input2,
+        }))
+      : setShowPassword((prevValue) => ({
+          ...prevValue,
+          input1: !showPassword.input1,
+        }));
   }
 
   return (
@@ -169,6 +211,9 @@ function EditUserModal({ setOpenModal, openModal }) {
                 name="name"
                 variant="outlined"
                 placeholder="Digite seu nome"
+                error={!!errorName}
+                helperText={errorName}
+                onBlur={handleValidateEmail}
                 value={valueInput.name}
                 onChange={handleInput}
                 sx={{
@@ -197,6 +242,8 @@ function EditUserModal({ setOpenModal, openModal }) {
                 name="email"
                 variant="outlined"
                 placeholder="Digite seu email"
+                error={!!errorEmail}
+                helperText={errorEmail}
                 value={valueInput.email}
                 onChange={handleInput}
                 onBlur={handleValidateEmail}
@@ -226,6 +273,8 @@ function EditUserModal({ setOpenModal, openModal }) {
                 <TextField
                   id="cpf"
                   name="cpf"
+                  // error={valueInput.cpf > MAX_LENGHT}
+                  // helperText={errorCpf}
                   variant="outlined"
                   placeholder="Digite seu CPF"
                   value={valueInput.cpf}
@@ -279,9 +328,12 @@ function EditUserModal({ setOpenModal, openModal }) {
                   color: "var(--gray-700)",
                 }}
               >
-                Nova Senha*
+                Nova Senha
               </InputLabel>
               <OutlinedInput
+                // error={!!errorPassword}
+                // helperText={errorPassword}
+                onBlur={handleValidatePassword}
                 id="password1"
                 name="password1"
                 placeholder="Digite sua senha"
@@ -319,7 +371,7 @@ function EditUserModal({ setOpenModal, openModal }) {
                   color: "var(--gray-700)",
                 }}
               >
-                Confirmar Senha*
+                Confirmar Senha
               </InputLabel>
               <OutlinedInput
                 id="password2"
@@ -371,7 +423,6 @@ function EditUserModal({ setOpenModal, openModal }) {
             </Button>
           </Stack>
         </form>
-        {msgError && (<p>{msgError}</p>)}
       </Stack>
     </Stack>
   );

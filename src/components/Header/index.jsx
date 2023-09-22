@@ -1,34 +1,37 @@
 import { Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
-import HeaderPopUp from "../HeaderPopUp";
 import { getUserData } from "../../services";
+import HeaderPopUp from "../HeaderPopUp";
 
 function Header({ headerTitle, openModal, setOpenModal }) {
   const [openPopUp, setOpenPopUp] = useState(false);
   const [userName, setUserName] = useState({
     logo: "",
-    name: ""
+    name: "",
   });
 
   useEffect(() => {
     async function loadUserName() {
-      const response = await getUserData()
-      const name = response.name
+      const response = await getUserData();
+      const name = response.name;
 
       if (name.split(" ").length > 1) {
-        const nameLogo = name.split(" ")[0].slice(0, 1) + name.split(" ")[1].slice(0, 1)
-        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }))
+        const nameLogo =
+          name.split(" ")[0].slice(0, 1) + name.split(" ")[1].slice(0, 1);
+        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }));
       } else {
-        const nameLogo = name.slice(0, 1)
-        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }))
+        const nameLogo = name.slice(0, 1);
+        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }));
       }
 
-      setUserName((prevValuer) => ({ ...prevValuer, name: name.split(" ")[0] }))
+      setUserName((prevValuer) => ({
+        ...prevValuer,
+        name: name.split(" ")[0],
+      }));
     }
-    loadUserName()
-  }, [])
-
+    loadUserName();
+  }, [openModal]);
 
   return (
     <Stack

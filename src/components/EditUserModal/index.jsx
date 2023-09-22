@@ -19,15 +19,12 @@ import iconShowPassword from '../../assets/imgs/SignIn/icon-show-password.png';
 import { useEffect, useState } from "react";
 import { edityUserData, getUserData, validateEmail } from "../../services";
 
-const MAX_LENGHT = 11;
-
 function EditUserModal({ setOpenModal, openModal }) {
-  // const [msgError, setMsgError] = useState("");
   const [errorName, setErrorName] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
+  const [errorCpf, setErrorCpf] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
   const [errorPassword2, setErrorPassword2] = useState("");
-  const [errorCpf, setErrorCpf] = useState("");
   const [showPassword, setShowPassword] = useState({
     input1: false,
     input2: false,
@@ -48,29 +45,12 @@ function EditUserModal({ setOpenModal, openModal }) {
       Object.entries(response).forEach(([key, value]) => {
         setValueInput((prevValue) => ({
           ...prevValue,
-          [key]: value === null ? " " : value,
+          [key]: value === null ? "" : value,
         }));
       });
     }
     gettingOldData();
   }, [openModal]);
-
-  async function handleValidateEmail() {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(valueInput.email)) {
-      setErrorEmail("Por favor, insira um endereço de email válido.");
-      return;
-    }
-
-    const email = valueInput.email;
-    const name = valueInput.name;
-    const response = await validateEmail(email, name);
-    if (response.status === 400) {
-      setErrorEmail(response.data.message);
-      return;
-    }
-    setErrorEmail("");
-  }
 
   function handleValidatePassword() {
     if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
@@ -79,7 +59,6 @@ function EditUserModal({ setOpenModal, openModal }) {
     }
 
     if (valueInput.password1 !== valueInput.password2 && valueInput.password2.length > 1) {
-      console.log("fasf")
       setErrorPassword2("As senhas não coincidem. Por favor, tente novamente.");
       return;
     }
@@ -97,16 +76,22 @@ function EditUserModal({ setOpenModal, openModal }) {
   }
 
   async function handleSendForm() {
-    // if (!valueInput.name.length || !valueInput.email.length) {
-    //   setMsgError(
-    //     "Por favor, preencha todos os campos obrigatórios antes de continuar."
-    //   );
-    //   return;
-    // }
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const cpfRegex = /^[0-9]$/;
 
     if (!valueInput.name.length) {
       setErrorName("O campo nome é obrigatório");
       return;
+    }
+
+    if (!valueInput.email.length) {
+      setErrorEmail("O campo e-mail é obrigatório");
+      return;
+    }
+
+    if (!emailRegex.test(valueInput.email)) {
+      setErrorEmail("Por favor, insira um endereço de email válido.")
+      return
     }
 
     if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
@@ -115,25 +100,21 @@ function EditUserModal({ setOpenModal, openModal }) {
     }
 
     if (valueInput.password1 !== valueInput.password2) {
-      setErrorPassword("As senhas não coincidem. Por favor, tente novamente.");
+      setErrorPassword2("As senhas não coincidem. Por favor, tente novamente.");
       return;
     }
 
-    if (errorEmail) {
-      return;
-    }
-
-    if (errorCpf) {
-      setErrorCpf("O cpf possui número de caracteres inválido");
-      return;
-    }
+    // if (valueInput.cpf.length > 0 && valueInput.cpf.length !== 11) {
+    //   setErrorCpf("Número de caracteres inválido");
+    //   return;
+    // }
 
     const user = {
       name: valueInput.name,
       email: valueInput.email,
       password: valueInput.password2,
-      cpf: valueInput.cpf ? valueInput.cpf : "",
-      phone: valueInput.phone ? valueInput.phone : "",
+      cpf: valueInput.cpf,
+      phone: valueInput.phone,
     };
 
     const response = await edityUserData(user, valueInput.id);
@@ -218,7 +199,6 @@ function EditUserModal({ setOpenModal, openModal }) {
                 placeholder="Digite seu nome"
                 error={!!errorName}
                 helperText={errorName}
-                onBlur={handleValidateEmail}
                 value={valueInput.name}
                 onChange={handleInput}
                 sx={{
@@ -251,7 +231,6 @@ function EditUserModal({ setOpenModal, openModal }) {
                 helperText={errorEmail}
                 value={valueInput.email}
                 onChange={handleInput}
-                onBlur={handleValidateEmail}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -278,8 +257,8 @@ function EditUserModal({ setOpenModal, openModal }) {
                 <TextField
                   id="cpf"
                   name="cpf"
-                  // error={valueInput.cpf > MAX_LENGHT}
-                  // helperText={errorCpf}
+                  error={!!errorCpf}
+                  helperText={errorCpf}
                   variant="outlined"
                   placeholder="Digite seu CPF"
                   value={valueInput.cpf}

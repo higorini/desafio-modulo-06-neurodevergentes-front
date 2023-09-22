@@ -4,8 +4,7 @@ import logOutIcon from "../../assets/icons/logout.svg";
 
 import { useNavigate } from "react-router-dom";
 
-function HeaderPopUp({ openModal, setOpenModal }) {
-
+function HeaderPopUp({ openUserEditModal, setOpenUserEditModal }) {
   const navigator = useNavigate();
   function handleClickLogout() {
     localStorage.removeItem("token");
@@ -42,7 +41,7 @@ function HeaderPopUp({ openModal, setOpenModal }) {
           sx={{
             cursor: "pointer",
           }}
-          onClick={() => setOpenModal(!openModal)}
+          onClick={() => setOpenUserEditModal(!openUserEditModal)}
         >
           <img src={editIcon} alt="" />
           <Typography

@@ -2,9 +2,12 @@ import { Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
 import { getUserData } from "../../services";
+import EditUserModal from "../EditUserModal";
 import HeaderPopUp from "../HeaderPopUp";
 
-function Header({ headerTitle, openModal, setOpenModal }) {
+function Header({ headerTitle }) {
+  const [openUserEditModal, setOpenUserEditModal] = useState(false);
+
   const [openPopUp, setOpenPopUp] = useState(false);
   const [userName, setUserName] = useState({
     logo: "",
@@ -31,7 +34,7 @@ function Header({ headerTitle, openModal, setOpenModal }) {
       }));
     }
     loadUserName();
-  }, [openModal]);
+  }, [openUserEditModal]);
 
   return (
     <Stack
@@ -44,6 +47,12 @@ function Header({ headerTitle, openModal, setOpenModal }) {
       top="0px"
       backgroundColor="var(--gray-100)"
     >
+      {openUserEditModal && (
+        <EditUserModal
+          openUserEditModal={openUserEditModal}
+          setOpenUserEditModal={setOpenUserEditModal}
+        />
+      )}
       <Typography
         component="h1"
         sx={{
@@ -93,7 +102,10 @@ function Header({ headerTitle, openModal, setOpenModal }) {
           <img src={ArrowDown} alt="" />
         </Stack>
         {openPopUp && (
-          <HeaderPopUp openModal={openModal} setOpenModal={setOpenModal} />
+          <HeaderPopUp
+            openUserEditModal={openUserEditModal}
+            setOpenUserEditModal={setOpenUserEditModal}
+          />
         )}
       </Stack>
     </Stack>

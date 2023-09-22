@@ -7,13 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import React from "react";
 import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import ClientIcon from "../../../../assets/icons/clients.svg";
 
 function AddCustomer({ setOpenAdd }) {
-  const [showPassword, setShowPassword] = React.useState(false);
-
   return (
     <Stack
       alignItems="center"

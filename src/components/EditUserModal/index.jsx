@@ -1,5 +1,3 @@
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   Box,
   Button,
@@ -8,16 +6,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
 
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 
-import iconDoesShowPassword from '../../assets/imgs/SignIn/icon-does-show-password.png';
-import iconShowPassword from '../../assets/imgs/SignIn/icon-show-password.png';
 import { useEffect, useState } from "react";
-import { edityUserData, getUserData, validateEmail } from "../../services";
+import iconDoesShowPassword from "../../assets/imgs/SignIn/icon-does-show-password.png";
+import iconShowPassword from "../../assets/imgs/SignIn/icon-show-password.png";
+import { edityUserData, getUserData } from "../../services";
 
 function EditUserModal({ setOpenModal, openModal }) {
   const [errorName, setErrorName] = useState("");
@@ -58,7 +53,10 @@ function EditUserModal({ setOpenModal, openModal }) {
       return;
     }
 
-    if (valueInput.password1 !== valueInput.password2 && valueInput.password2.length > 1) {
+    if (
+      valueInput.password1 !== valueInput.password2 &&
+      valueInput.password2.length > 1
+    ) {
       setErrorPassword2("As senhas não coincidem. Por favor, tente novamente.");
       return;
     }
@@ -90,8 +88,8 @@ function EditUserModal({ setOpenModal, openModal }) {
     }
 
     if (!emailRegex.test(valueInput.email)) {
-      setErrorEmail("Por favor, insira um endereço de email válido.")
-      return
+      setErrorEmail("Por favor, insira um endereço de email válido.");
+      return;
     }
 
     if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
@@ -125,13 +123,13 @@ function EditUserModal({ setOpenModal, openModal }) {
   function handleClickShowPassword(input) {
     input
       ? setShowPassword((prevValue) => ({
-        ...prevValue,
-        input2: !showPassword.input2,
-      }))
+          ...prevValue,
+          input2: !showPassword.input2,
+        }))
       : setShowPassword((prevValue) => ({
-        ...prevValue,
-        input1: !showPassword.input1,
-      }));
+          ...prevValue,
+          input1: !showPassword.input1,
+        }));
   }
 
   return (
@@ -335,7 +333,7 @@ function EditUserModal({ setOpenModal, openModal }) {
               />
               <Box
                 sx={{
-                  position: "fixed"
+                  position: "fixed",
                 }}
               >
                 <Button
@@ -358,8 +356,14 @@ function EditUserModal({ setOpenModal, openModal }) {
                     },
                   }}
                 >
-                  <img src={showPassword.input1 ? iconShowPassword : iconDoesShowPassword}
-                    alt="icone mostrar senha" />
+                  <img
+                    src={
+                      showPassword.input1
+                        ? iconShowPassword
+                        : iconDoesShowPassword
+                    }
+                    alt="icone mostrar senha"
+                  />
                 </Button>
               </Box>
             </Stack>
@@ -396,7 +400,7 @@ function EditUserModal({ setOpenModal, openModal }) {
               />
               <Box
                 sx={{
-                  position: "fixed"
+                  position: "fixed",
                 }}
               >
                 <Button
@@ -419,8 +423,14 @@ function EditUserModal({ setOpenModal, openModal }) {
                     },
                   }}
                 >
-                  <img src={showPassword.input2 ? iconShowPassword : iconDoesShowPassword}
-                    alt="icone mostrar senha" />
+                  <img
+                    src={
+                      showPassword.input2
+                        ? iconShowPassword
+                        : iconDoesShowPassword
+                    }
+                    alt="icone mostrar senha"
+                  />
                 </Button>
               </Box>
             </Stack>

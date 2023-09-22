@@ -5,8 +5,14 @@ import {
   Stack,
   TextField,
   Typography,
+  OutlinedInput,
 } from "@mui/material";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import InputAdornment from "@mui/material/InputAdornment";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 
@@ -88,7 +94,7 @@ function AddCharge({ setOpenCharge }) {
             </Stack>
             <Stack direction="column">
               <InputLabel
-                htmlFor="clientEmail"
+                htmlFor="description"
                 sx={{
                   fontSize: "var(--body-s)",
                   fontFamily: "var(--font-body)",
@@ -96,15 +102,15 @@ function AddCharge({ setOpenCharge }) {
                   color: "var(--gray-700)",
                 }}
               >
-                Email*
+                Descrição*
               </InputLabel>
               <TextField
-                name="email"
                 variant="outlined"
-                placeholder="Digite o email"
+                placeholder="Digite a descrição"
                 sx={{
-                  width: "487px",
+                  width: "485px",
                   "input:first-of-type": {
+                    height: "68px",
                     color: "var(--gray-600)",
                     padding: "10px 14px",
                     fontFamily: "var(--font-body)",
@@ -115,7 +121,7 @@ function AddCharge({ setOpenCharge }) {
             <Stack direction="row" gap="24px">
               <Stack direction="column">
                 <InputLabel
-                  htmlFor="clientCpf"
+                  htmlFor="expireDate"
                   sx={{
                     fontSize: "var(--body-s)",
                     fontFamily: "var(--font-body)",
@@ -123,12 +129,12 @@ function AddCharge({ setOpenCharge }) {
                     color: "var(--gray-700)",
                   }}
                 >
-                  CPF*
+                  Vencimento*
                 </InputLabel>
                 <TextField
-                  id="clientCpf"
+                  id="expireDate"
                   variant="outlined"
-                  placeholder="Digite o CPF"
+                  placeholder="Data de Vencimento"
                   sx={{
                     width: "235px",
                     "input:first-of-type": {
@@ -149,12 +155,14 @@ function AddCharge({ setOpenCharge }) {
                     color: "var(--gray-700)",
                   }}
                 >
-                  Telefone*
+                  Valor*
                 </InputLabel>
-                <TextField
-                  name="telefone"
-                  variant="outlined"
-                  placeholder="Digite o Telefone"
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  startAdornment={
+                    <InputAdornment position="start">R$</InputAdornment>
+                  }
+                  placeholder="Digite o valor"
                   sx={{
                     width: "224px",
                     "input:first-of-type": {
@@ -166,161 +174,59 @@ function AddCharge({ setOpenCharge }) {
                 />
               </Stack>
             </Stack>
-            <Stack direction="column">
+            <Stack
+              direction="column"
+              sx={{
+                width: "482px",
+              }}
+            >
               <InputLabel
-                htmlFor="clientAdress"
+                htmlFor="clientName"
                 sx={{
                   fontSize: "var(--body-s)",
                   fontFamily: "var(--font-body)",
                   fontWeight: "600",
                   color: "var(--gray-700)",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
                 }}
               >
-                Endereço
+                Status*
               </InputLabel>
-              <OutlinedInput
-                placeholder="Digite o endereço"
+              <RadioGroup
                 sx={{
+                  gap: "0.5rem",
+                  marginLeft: "0.5rem",
                   width: "487px",
-                  "input:first-of-type": {
-                    color: "var(--gray-600)",
-                    padding: "10px 14px",
-                    fontFamily: "var(--font-body)",
-                  },
-                }}
-              />
-            </Stack>
-            <Stack direction="column">
-              <InputLabel
-                htmlFor="clientContinued"
-                sx={{
-                  fontSize: "var(--body-s)",
-                  fontFamily: "var(--font-body)",
-                  fontWeight: "600",
-                  color: "var(--gray-700)",
                 }}
               >
-                Complemento
-              </InputLabel>
-              <OutlinedInput
-                id="senha"
-                placeholder="Digite o complemento"
-                sx={{
-                  width: "487px",
-                  "input:first-of-type": {
-                    color: "var(--gray-600)",
-                    padding: "10px 14px",
-                    fontFamily: "var(--font-body)",
-                  },
-                }}
-              />
-            </Stack>
-            <Stack direction="row" gap="24px">
-              <Stack direction="column">
-                <InputLabel
-                  htmlFor="clientCep"
+                <FormControlLabel
+                  value="paid"
+                  control={<Radio />}
+                  label="Cobrança Paga"
                   sx={{
                     fontSize: "var(--body-s)",
                     fontFamily: "var(--font-body)",
                     fontWeight: "600",
                     color: "var(--gray-700)",
-                  }}
-                >
-                  CEP
-                </InputLabel>
-                <TextField
-                  variant="outlined"
-                  placeholder="Digite o CEP"
-                  sx={{
-                    width: "228px",
-                    "input:first-of-type": {
-                      color: "var(--gray-600)",
-                      padding: "10px 14px",
-                      fontFamily: "var(--font-body)",
-                    },
+                    background: "var(--gray-200)",
+                    borderRadius: "0.5rem",
                   }}
                 />
-              </Stack>
-              <Stack direction="column">
-                <InputLabel
-                  htmlFor="clientDistrict"
+                <FormControlLabel
+                  value="pending"
+                  control={<Radio />}
+                  label="Cobrança Pendente"
                   sx={{
                     fontSize: "var(--body-s)",
                     fontFamily: "var(--font-body)",
                     fontWeight: "600",
                     color: "var(--gray-700)",
-                  }}
-                >
-                  Bairro
-                </InputLabel>
-                <TextField
-                  name="bairro"
-                  variant="outlined"
-                  placeholder="Digite o Bairro"
-                  sx={{
-                    width: "235px",
-                    "input:first-of-type": {
-                      color: "var(--gray-600)",
-                      padding: "10px 14px",
-                      fontFamily: "var(--font-body)",
-                    },
+                    background: "var(--gray-200)",
+                    borderRadius: "0.5rem",
                   }}
                 />
-              </Stack>
-            </Stack>
-            <Stack direction="row" gap="24px">
-              <Stack direction="column">
-                <InputLabel
-                  htmlFor="clientCity"
-                  sx={{
-                    fontSize: "var(--body-s)",
-                    fontFamily: "var(--font-body)",
-                    fontWeight: "600",
-                    color: "var(--gray-700)",
-                  }}
-                >
-                  Cidade
-                </InputLabel>
-                <TextField
-                  id="clientCpf"
-                  variant="outlined"
-                  placeholder="Digite a Cidade"
-                  sx={{
-                    width: "303px",
-                    "input:first-of-type": {
-                      color: "var(--gray-600)",
-                      padding: "10px 14px",
-                      fontFamily: "var(--font-body)",
-                    },
-                  }}
-                />
-              </Stack>
-              <Stack direction="column">
-                <InputLabel
-                  htmlFor="clientState"
-                  sx={{
-                    fontSize: "var(--body-s)",
-                    fontFamily: "var(--font-body)",
-                    fontWeight: "600",
-                    color: "var(--gray-700)",
-                  }}
-                >
-                  UF
-                </InputLabel>
-                <TextField
-                  name="estado"
-                  variant="outlined"
-                  placeholder="Digite a UF"
-                  sx={{
-                    width: "160px",
-                    "input:first-of-type": {
-                      color: "var(--gray-600)",
-                      padding: "10px 14px",
-                      fontFamily: "var(--font-body)",
-                    },
-                  }}
-                />
-              </Stack>
+              </RadioGroup>
             </Stack>
             <Stack
               display="flex"

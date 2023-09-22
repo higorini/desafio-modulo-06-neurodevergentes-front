@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
-import ClientCharge from "../../../../assets/icons/clientIcons/clientCharge.svg";
 import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
 

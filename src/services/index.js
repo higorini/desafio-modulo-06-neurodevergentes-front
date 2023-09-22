@@ -6,7 +6,7 @@ export const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-function getToken(params) {
+function getToken() {
   const token = localStorage.getItem("token");
   const config = {
     headers: {
@@ -57,6 +57,15 @@ export async function getUserData() {
 export async function edityUserData(body) {
   try {
     const data = await api.put(`user/edit`, body, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export async function registerCostumers(body) {
+  try {
+    const data = await api.post(`costumer/signup`, body, getToken());
     return data.data;
   } catch (erro) {
     return erro.response;

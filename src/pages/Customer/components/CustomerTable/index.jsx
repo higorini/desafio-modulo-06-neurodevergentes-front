@@ -40,49 +40,7 @@ const rows = [
     "darlener@cubos.io",
     "71 9 9562 8653",
     false
-  ),
-  createData(
-    "Marvin Mckinney",
-    "054 365 255 87",
-    "marvinm@cubos.io",
-    "71 9 9462 8652",
-    false
-  ),
-  createData(
-    "Sandra dos Santos",
-    "054 365 255 87",
-    "sandrasantos@cubos.io",
-    "71 9 9762 8652",
-    false
-  ),
-  createData(
-    "Marvin Mckinney",
-    "054 365 255 87",
-    "marvinm@cubos.io",
-    "71 9 9462 8652",
-    true
-  ),
-  createData(
-    "Marvin Mckinney",
-    "054 365 255 87",
-    "marvinm@cubos.io",
-    "71 9 9462 8652",
-    true
-  ),
-  createData(
-    "Marvin Mckinney",
-    "054 365 255 87",
-    "marvinm@cubos.io",
-    "71 9 9462 8652",
-    true
-  ),
-  createData(
-    "Marvin Mckinney",
-    "054 365 255 87",
-    "marvinm@cubos.io",
-    "71 9 9462 8652",
-    true
-  ),
+  )
 ];
 
 function CustomerTable() {

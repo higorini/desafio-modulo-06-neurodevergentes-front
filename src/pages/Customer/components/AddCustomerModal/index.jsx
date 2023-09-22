@@ -7,12 +7,57 @@ import {
   Typography,
 } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import React from "react";
+import React, { useState } from "react";
 import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import ClientIcon from "../../../../assets/icons/clients.svg";
 
 function AddCustomer({ setOpenAdd }) {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [errorMsg, setErrorMsg] = useState({
+    name: "",
+    email: "",
+    cpf: "",
+    telephone: "",
+  })
+
+  const [valueInput, setValueInput] = useState({
+    name: "",
+    email: "",
+    cpf: "",
+    telephone: "",
+    cep: "",
+    public_place: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: ""
+  });
+
+
+  async function handleSendForm() {
+    const user = {
+      name: valueInput.name,
+      email: valueInput.email,
+      cpf: valueInput.cpf,
+      telephone: valueInput.telephone,
+      cep: valueInput.cep || null,
+      public_place: valueInput.public_place || null,
+      complement: valueInput.complement || null,
+      neighborhood: valueInput.neighborhood || null,
+      city: valueInput.city || null,
+      state: valueInput.state || null,
+    };
+
+    console.log(user)
+  }
+
+  function handleInput(e) {
+    const valueInputEvent = e.target.value;
+    const nameInputEvent = e.target.name;
+    setValueInput((prevValue) => ({
+      ...prevValue,
+      [nameInputEvent]: valueInputEvent,
+    }));
+  }
 
   return (
     <Stack
@@ -52,6 +97,7 @@ function AddCustomer({ setOpenAdd }) {
         <Box
           onClick={() => setOpenAdd(false)}
           sx={{
+            cursor: "pointer",
             position: "absolute",
             top: "24px",
             right: "24px",
@@ -74,9 +120,14 @@ function AddCustomer({ setOpenAdd }) {
                 Nome*
               </InputLabel>
               <TextField
-                id="clientName"
+                id="name"
+                name="name"
                 variant="outlined"
                 placeholder="Digite o nome"
+                error={!!errorMsg.name}
+                helperText={errorMsg.name}
+                value={valueInput.name}
+                onChange={handleInput}
                 sx={{
                   width: "487px",
                   "input:first-of-type": {
@@ -100,9 +151,14 @@ function AddCustomer({ setOpenAdd }) {
                 Email*
               </InputLabel>
               <TextField
+                id="email"
                 name="email"
                 variant="outlined"
                 placeholder="Digite o email"
+                error={!!errorMsg.email}
+                helperText={errorMsg.email}
+                value={valueInput.email}
+                onChange={handleInput}
                 sx={{
                   width: "487px",
                   "input:first-of-type": {
@@ -127,9 +183,14 @@ function AddCustomer({ setOpenAdd }) {
                   CPF*
                 </InputLabel>
                 <TextField
-                  id="clientCpf"
+                  id="cpf"
+                  name="cpf"
                   variant="outlined"
                   placeholder="Digite o CPF"
+                  error={!!errorMsg.cpf}
+                  helperText={errorMsg.cpf}
+                  value={valueInput.cpf}
+                  onChange={handleInput}
                   sx={{
                     width: "235px",
                     "input:first-of-type": {
@@ -153,9 +214,14 @@ function AddCustomer({ setOpenAdd }) {
                   Telefone*
                 </InputLabel>
                 <TextField
-                  name="telefone"
+                  id="telephone"
+                  name="telephone"
                   variant="outlined"
-                  placeholder="Digite o Telefone"
+                  placeholder="Digite o telefone"
+                  error={!!errorMsg.telephone}
+                  helperText={errorMsg.telephone}
+                  value={valueInput.telephone}
+                  onChange={handleInput}
                   sx={{
                     width: "224px",
                     "input:first-of-type": {
@@ -180,7 +246,12 @@ function AddCustomer({ setOpenAdd }) {
                 Endereço
               </InputLabel>
               <OutlinedInput
+                id="public_place"
+                name="public_place"
+                variant="outlined"
                 placeholder="Digite o endereço"
+                value={valueInput.public_place}
+                onChange={handleInput}
                 sx={{
                   width: "487px",
                   "input:first-of-type": {
@@ -204,8 +275,12 @@ function AddCustomer({ setOpenAdd }) {
                 Complemento
               </InputLabel>
               <OutlinedInput
-                id="senha"
+                id="complement"
+                name="complement"
+                variant="outlined"
                 placeholder="Digite o complemento"
+                value={valueInput.complement}
+                onChange={handleInput}
                 sx={{
                   width: "487px",
                   "input:first-of-type": {
@@ -230,8 +305,12 @@ function AddCustomer({ setOpenAdd }) {
                   CEP
                 </InputLabel>
                 <TextField
+                  id="cep"
+                  name="cep"
                   variant="outlined"
                   placeholder="Digite o CEP"
+                  value={valueInput.cep}
+                  onChange={handleInput}
                   sx={{
                     width: "228px",
                     "input:first-of-type": {
@@ -255,9 +334,12 @@ function AddCustomer({ setOpenAdd }) {
                   Bairro
                 </InputLabel>
                 <TextField
-                  name="bairro"
+                  id="neighborhood"
+                  name="neighborhood"
                   variant="outlined"
-                  placeholder="Digite o Bairro"
+                  placeholder="Digite o bairro"
+                  value={valueInput.neighborhood}
+                  onChange={handleInput}
                   sx={{
                     width: "235px",
                     "input:first-of-type": {
@@ -283,9 +365,12 @@ function AddCustomer({ setOpenAdd }) {
                   Cidade
                 </InputLabel>
                 <TextField
-                  id="clientCpf"
+                  id="city"
+                  name="city"
                   variant="outlined"
-                  placeholder="Digite a Cidade"
+                  placeholder="Digite a cidade"
+                  value={valueInput.city}
+                  onChange={handleInput}
                   sx={{
                     width: "303px",
                     "input:first-of-type": {
@@ -309,9 +394,12 @@ function AddCustomer({ setOpenAdd }) {
                   UF
                 </InputLabel>
                 <TextField
-                  name="estado"
+                  id="state"
+                  name="state"
                   variant="outlined"
                   placeholder="Digite a UF"
+                  value={valueInput.state}
+                  onChange={handleInput}
                   sx={{
                     width: "160px",
                     "input:first-of-type": {
@@ -353,6 +441,7 @@ function AddCustomer({ setOpenAdd }) {
               </Button>
               <Button
                 variant="contained"
+                onClick={handleSendForm}
                 sx={{
                   textTransform: "capitalize",
                   width: "231.5px",

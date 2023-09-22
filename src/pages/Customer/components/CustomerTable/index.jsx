@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ClientOrder from "../../../../assets/icons/clientIcons/clientOrder.svg";
 import ClientCharge from "../../../../assets/icons/clientIcons/clientCharge.svg";
+import AddCharge from "../../../../components/ChargeModal";
 
 function createData(client, cpf, email, number, status) {
   return { client, cpf, email, number, status };
@@ -86,6 +88,8 @@ const rows = [
 ];
 
 function CustomerTable() {
+  const [openCharge, setOpenCharge] = useState(false);
+
   return (
     <TableContainer
       component={Box}
@@ -94,6 +98,7 @@ function CustomerTable() {
         overflow: "hidden",
       }}
     >
+      {openCharge && <AddCharge setOpenCharge={setOpenCharge} />}
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -249,7 +254,12 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                <img src={ClientCharge} alt="Cobrança" />
+                <img
+                  src={ClientCharge}
+                  alt="Cobrança"
+                  className="customar__table-charge"
+                  onClick={setOpenCharge}
+                />
               </TableCell>
             </TableRow>
           ))}

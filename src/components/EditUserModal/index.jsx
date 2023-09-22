@@ -14,6 +14,8 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 
+import iconDoesShowPassword from '../../assets/imgs/SignIn/icon-does-show-password.png';
+import iconShowPassword from '../../assets/imgs/SignIn/icon-show-password.png';
 import { useEffect, useState } from "react";
 import { edityUserData, getUserData, validateEmail } from "../../services";
 
@@ -24,6 +26,7 @@ function EditUserModal({ setOpenModal, openModal }) {
   const [errorName, setErrorName] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
+  const [errorPassword2, setErrorPassword2] = useState("");
   const [errorCpf, setErrorCpf] = useState("");
   const [showPassword, setShowPassword] = useState({
     input1: false,
@@ -75,11 +78,13 @@ function EditUserModal({ setOpenModal, openModal }) {
       return;
     }
 
-    if (valueInput.password1 !== valueInput.password2) {
-      setErrorPassword("As senhas não coincidem. Por favor, tente novamente.");
+    if (valueInput.password1 !== valueInput.password2 && valueInput.password2.length > 1) {
+      console.log("fasf")
+      setErrorPassword2("As senhas não coincidem. Por favor, tente novamente.");
       return;
     }
     setErrorPassword("");
+    setErrorPassword2("");
   }
 
   function handleInput(e) {
@@ -139,13 +144,13 @@ function EditUserModal({ setOpenModal, openModal }) {
   function handleClickShowPassword(input) {
     input
       ? setShowPassword((prevValue) => ({
-          ...prevValue,
-          input2: !showPassword.input2,
-        }))
+        ...prevValue,
+        input2: !showPassword.input2,
+      }))
       : setShowPassword((prevValue) => ({
-          ...prevValue,
-          input1: !showPassword.input1,
-        }));
+        ...prevValue,
+        input1: !showPassword.input1,
+      }));
   }
 
   return (
@@ -330,9 +335,9 @@ function EditUserModal({ setOpenModal, openModal }) {
               >
                 Nova Senha
               </InputLabel>
-              <OutlinedInput
-                // error={!!errorPassword}
-                // helperText={errorPassword}
+              <TextField
+                error={!!errorPassword}
+                helperText={errorPassword}
                 onBlur={handleValidatePassword}
                 id="password1"
                 name="password1"
@@ -348,18 +353,36 @@ function EditUserModal({ setOpenModal, openModal }) {
                   },
                 }}
                 type={showPassword.input1 ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => handleClickShowPassword(0)}
-                      edge="end"
-                    >
-                      {showPassword.input1 ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
+              <Box
+                sx={{
+                  position: "fixed"
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => handleClickShowPassword(0)}
+                  sx={{
+                    position: "relative",
+                    minWidth: "16px",
+                    minHeight: "16px",
+                    width: "16px",
+                    height: "px",
+                    borderRadius: "50%",
+                    top: "24px",
+                    left: "345px",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                    ":hover": {
+                      boxShadow: "none",
+                      backgroundColor: " rgba(0, 0, 0, 0.108)",
+                    },
+                  }}
+                >
+                  <img src={showPassword.input1 ? iconShowPassword : iconDoesShowPassword}
+                    alt="icone mostrar senha" />
+                </Button>
+              </Box>
             </Stack>
             <Stack direction="column">
               <InputLabel
@@ -373,12 +396,15 @@ function EditUserModal({ setOpenModal, openModal }) {
               >
                 Confirmar Senha
               </InputLabel>
-              <OutlinedInput
+              <TextField
                 id="password2"
                 name="password2"
                 placeholder="Digite sua senha"
                 value={valueInput.password2}
                 onChange={handleInput}
+                onBlur={handleValidatePassword}
+                error={!!errorPassword2}
+                helperText={errorPassword2}
                 sx={{
                   width: "380px",
                   "input:first-of-type": {
@@ -388,18 +414,36 @@ function EditUserModal({ setOpenModal, openModal }) {
                   },
                 }}
                 type={showPassword.input2 ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => handleClickShowPassword(1)}
-                      edge="end"
-                    >
-                      {showPassword.input2 ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
+              <Box
+                sx={{
+                  position: "fixed"
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => handleClickShowPassword(1)}
+                  sx={{
+                    position: "relative",
+                    minWidth: "16px",
+                    minHeight: "16px",
+                    width: "16px",
+                    height: "px",
+                    borderRadius: "50%",
+                    top: "24px",
+                    left: "345px",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                    ":hover": {
+                      boxShadow: "none",
+                      backgroundColor: " rgba(0, 0, 0, 0.108)",
+                    },
+                  }}
+                >
+                  <img src={showPassword.input2 ? iconShowPassword : iconDoesShowPassword}
+                    alt="icone mostrar senha" />
+                </Button>
+              </Box>
             </Stack>
             <Button
               variant="contained"

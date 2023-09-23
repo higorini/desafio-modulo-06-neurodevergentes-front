@@ -2,9 +2,12 @@ import { Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
 import { getUserData } from "../../services";
+import EditUserModal from "../EditUserModal";
 import HeaderPopUp from "../HeaderPopUp";
 
-function Header({ headerTitle, openModal, setOpenModal }) {
+function Header({ headerTitle, pageTitle }) {
+  const [openUserEditModal, setOpenUserEditModal] = useState(false);
+
   const [openPopUp, setOpenPopUp] = useState(false);
   const [userName, setUserName] = useState({
     logo: "",
@@ -31,7 +34,7 @@ function Header({ headerTitle, openModal, setOpenModal }) {
       }));
     }
     loadUserName();
-  }, [openModal]);
+  }, [openUserEditModal]);
 
   return (
     <Stack
@@ -44,16 +47,40 @@ function Header({ headerTitle, openModal, setOpenModal }) {
       top="0px"
       backgroundColor="var(--gray-100)"
     >
-      <Typography
-        component="h1"
-        sx={{
-          fontFamily: "var(--font-title)",
-          fontSize: "var(--title-xl)",
-          marginTop: "14px",
-        }}
-      >
-        {headerTitle}
-      </Typography>
+      {openUserEditModal && (
+        <EditUserModal
+          openUserEditModal={openUserEditModal}
+          setOpenUserEditModal={setOpenUserEditModal}
+        />
+      )}
+      {headerTitle.length > 0 ? (
+        <Typography
+          component="h1"
+          color="var(--gray-800)"
+          sx={{
+            fontFamily: "var(--font-title)",
+            fontSize: "var(--title-xl)",
+            marginTop: "14px",
+          }}
+        >
+          {headerTitle}
+        </Typography>
+      ) : (
+        <Typography
+          component="span"
+          color="var(--green-500)"
+          fontWeight="400"
+          sx={{
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--subtitle)",
+            alignSelf: "end",
+            position: "relative",
+            bottom: "-18px",
+          }}
+        >
+          {pageTitle}
+        </Typography>
+      )}
       <Stack direction="row" alignItems="center" gap="16px">
         <Stack
           width="48px"
@@ -93,7 +120,10 @@ function Header({ headerTitle, openModal, setOpenModal }) {
           <img src={ArrowDown} alt="" />
         </Stack>
         {openPopUp && (
-          <HeaderPopUp openModal={openModal} setOpenModal={setOpenModal} />
+          <HeaderPopUp
+            openUserEditModal={openUserEditModal}
+            setOpenUserEditModal={setOpenUserEditModal}
+          />
         )}
       </Stack>
     </Stack>

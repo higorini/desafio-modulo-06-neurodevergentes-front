@@ -14,7 +14,7 @@ import iconDoesShowPassword from "../../assets/imgs/SignIn/icon-does-show-passwo
 import iconShowPassword from "../../assets/imgs/SignIn/icon-show-password.png";
 import { edityUserData, getUserData } from "../../services";
 
-function EditUserModal({ setOpenModal, openModal }) {
+function EditUserModal({ setOpenUserEditModal, openUserEditModal }) {
   const [errorName, setErrorName] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorCpf, setErrorCpf] = useState("");
@@ -45,7 +45,7 @@ function EditUserModal({ setOpenModal, openModal }) {
       });
     }
     gettingOldData();
-  }, [openModal]);
+  }, [openUserEditModal]);
 
   function handleValidatePassword() {
     if (valueInput.password1.length > 0 && valueInput.password1.length < 6) {
@@ -116,7 +116,7 @@ function EditUserModal({ setOpenModal, openModal }) {
     };
 
     const response = await edityUserData(user, valueInput.id);
-    setOpenModal(false);
+    setOpenUserEditModal(false);
     return response.message;
   }
 
@@ -137,11 +137,13 @@ function EditUserModal({ setOpenModal, openModal }) {
       alignItems="center"
       justifyContent="center"
       sx={{
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "calc(100% + 16rem)",
         backgroundColor: "rgba(145, 154, 150, 0.3)",
         zIndex: 1,
         position: "fixed",
+        top: "-120px",
+        left: 0,
       }}
     >
       <Stack
@@ -166,7 +168,7 @@ function EditUserModal({ setOpenModal, openModal }) {
           Edite seu cadastro
         </Typography>
         <Box
-          onClick={() => setOpenModal(false)}
+          onClick={() => setOpenUserEditModal(false)}
           sx={{
             position: "absolute",
             top: "24px",

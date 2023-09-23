@@ -75,7 +75,6 @@ export async function registerCostumers(body) {
 export async function listCustumers(body) {
   try {
     const data = await api.get(`costumers`, getToken());
-    console.log(data)
     return data.data;
   } catch (erro) {
     return erro.response;

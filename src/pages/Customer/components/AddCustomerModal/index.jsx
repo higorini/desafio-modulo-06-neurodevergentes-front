@@ -7,9 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import React, { useState } from "react";
-import ClientIcon from "../../../../assets/icons/clients.svg";
+import { useState } from "react";
 import CloseIcon from "../../../../assets/icons/closeIcon.svg";
+import ClientIcon from "../../../../assets/icons/clients.svg";
 import { registerCostumers } from "../../../../services";
 
 function AddCustomer({ setOpenAdd, setShowAlert }) {
@@ -46,6 +46,7 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
 
     if (!valueInput.email.length) {
       setErrorMsg((prevValue) => ({ ...prevValue, email: "O campo email é obrigatório" }));
+      return;
     }
 
     if (!emailRegex.test(valueInput.email)) {
@@ -65,6 +66,7 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
 
     if (valueInput.cpf.length !== 11) {
       setErrorMsg((prevValue) => ({ ...prevValue, cpf: "Quantidade de caracteres inválida" }));
+      return;
     }
 
     if (!valueInput.phone.length) {
@@ -79,7 +81,7 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
 
     if (valueInput.phone.length !== 11) {
       setErrorMsg((prevValue) => ({ ...prevValue, phone: "Quantidade de caracteres inválida" }));
-      return
+      return;
     }
 
     setErrorMsg({
@@ -122,7 +124,6 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
       [nameInputEvent]: valueInputEvent,
     }));
   }
-
   return (
     <Stack
       alignItems="center"

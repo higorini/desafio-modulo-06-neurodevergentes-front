@@ -1,49 +1,95 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import ClientOrder from "../../../../assets/icons/clientIcons/clientOrder.svg";
-import ClientCharge from "../../../../assets/icons/clientIcons/clientCharge.svg";
+import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
+import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
+import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
+import ChargeType from "../ChargeType";
 
-function createData(client, cpf, email, number, status) {
-  return { client, cpf, email, number, status };
+function createData(client, id, value, date, description, status) {
+  return { client, id, value, date, description, status };
 }
 
 const rows = [
   createData(
     "Sara da Silva",
-    "054 365 255 87",
-    "sarasilva@cubos.io",
-    "71 9 9462 8654",
-    false
+    "248563147",
+    "500,00",
+    "26/01/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    3
   ),
   createData(
-    "Camerom Williamson",
-    "054 365 255 87",
-    "cameronw@cubos.io",
-    "71 9 9962 8658",
-    false
+    "Carlos Prado",
+    "148563148",
+    "400,00",
+    "26/01/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    3
   ),
   createData(
-    "Savannah Nguyen",
-    "054 365 255 87",
-    "snguyen@cubos.io",
-    "71 9 9762 8658",
-    false
+    "Lara Brito",
+    "648563148",
+    "300,00",
+    "26/01/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    3
+  ),
+  createData(
+    "Soraia Neves",
+    "5348563145",
+    "900,00",
+    "26/01/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    3
+  ),
+  createData(
+    "Sara da Silva",
+    "458563145",
+    "2000,00",
+    "27/11/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    2
+  ),
+  createData(
+    "Carlos Prado",
+    "368563147",
+    "700,00",
+    "27/11/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    2
+  ),
+  createData(
+    "Lara Brito",
+    "488563147",
+    "500,00",
+    "27/11/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    2
   ),
   createData(
     "Darlene Robertson",
-    "054 365 255 87",
-    "darlener@cubos.io",
-    "71 9 9562 8653",
-    false
-  )
+    "578563147",
+    "300,00",
+    "22/01/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    1
+  ),
+  createData(
+    "Cameron Williamson",
+    "598563147",
+    "1000,00",
+    "22/01/2021",
+    "lorem ipsum  lorem ipsum lorem ... ",
+    1
+  ),
 ];
 
-function CustomerTable() {
+function ChargeTable() {
   return (
     <TableContainer
       component={Box}
@@ -61,14 +107,13 @@ function CustomerTable() {
           <TableRow>
             <TableCell
               sx={{
-                display: "flex",
                 color: "var(--gray-700)",
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
               }}
             >
-              <img src={ClientOrder} alt="Cobrança" />
+              <img src={ChargeOrder} alt="Cobrança" />
               Cliente
             </TableCell>
             <TableCell
@@ -80,7 +125,8 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              CPF
+              <img src={ChargeOrder} alt="Cobrança" />
+              ID Cob.
             </TableCell>
             <TableCell
               align="left"
@@ -91,7 +137,7 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              E-mail
+              Valor
             </TableCell>
             <TableCell
               align="left"
@@ -102,7 +148,7 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              Telefone
+              Data de venc.
             </TableCell>
             <TableCell
               align="left"
@@ -124,8 +170,17 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              Criar Cobrança
+              Descrição
             </TableCell>
+            <TableCell
+              align="left"
+              sx={{
+                color: "var(--gray-700)",
+                fontFamily: "var(--font-body)",
+                fontWeight: "700",
+                fontSize: "var(--subtitle)",
+              }}
+            ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -143,7 +198,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.cpf}
+                {row.id}
               </TableCell>
               <TableCell
                 align="left"
@@ -151,7 +206,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.email}
+                R$ {row.value}
               </TableCell>
               <TableCell
                 align="left"
@@ -159,7 +214,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.number}
+                {row.date}
               </TableCell>
               <TableCell
                 align="left"
@@ -167,43 +222,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.status ? (
-                  <Box
-                    borderRadius="8px"
-                    sx={{
-                      backgroundColor: "var(--seagreen-100)",
-                    }}
-                  >
-                    <Typography
-                      textAlign="center"
-                      component="p"
-                      color="var(--seagreen-700)"
-                      fontWeight="600"
-                      fontFamily="var(--font-body)"
-                      fontSize="var(--title-xs)"
-                    >
-                      Em dia
-                    </Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    borderRadius="8px"
-                    sx={{
-                      backgroundColor: "var(--ruby-100)",
-                    }}
-                  >
-                    <Typography
-                      textAlign="center"
-                      component="p"
-                      color="var(--ruby-700)"
-                      fontWeight="600"
-                      fontFamily="var(--font-body)"
-                      fontSize="var(--title-xs)"
-                    >
-                      Inadimplente
-                    </Typography>
-                  </Box>
-                )}
+                <ChargeType type={row.status} />
               </TableCell>
               <TableCell
                 align="left"
@@ -211,7 +230,17 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                <img src={ClientCharge} alt="Cobrança" />
+                {row.description}
+              </TableCell>
+              <TableCell
+                align="left"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                }}
+              >
+                <img src={ChargeEdit} alt="Cobrança" />
+                <img src={ChargeDelete} alt="Cobrança" />
               </TableCell>
             </TableRow>
           ))}
@@ -221,4 +250,4 @@ function CustomerTable() {
   );
 }
 
-export default CustomerTable;
+export default ChargeTable;

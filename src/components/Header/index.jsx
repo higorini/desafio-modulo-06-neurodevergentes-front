@@ -1,10 +1,40 @@
 import { Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
+import { getUserData } from "../../services";
+import EditUserModal from "../EditUserModal";
 import HeaderPopUp from "../HeaderPopUp";
 
-function Header({ userName, headerTitle, openModal, setOpenModal }) {
+function Header({ headerTitle, pageTitle }) {
+  const [openUserEditModal, setOpenUserEditModal] = useState(false);
+
   const [openPopUp, setOpenPopUp] = useState(false);
+  const [userName, setUserName] = useState({
+    logo: "",
+    name: "",
+  });
+
+  useEffect(() => {
+    async function loadUserName() {
+      const response = await getUserData();
+      const name = response.name;
+
+      if (name.split(" ").length > 1) {
+        const nameLogo =
+          name.split(" ")[0].slice(0, 1) + name.split(" ")[1].slice(0, 1);
+        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }));
+      } else {
+        const nameLogo = name.slice(0, 1);
+        setUserName((prevValuer) => ({ ...prevValuer, logo: nameLogo }));
+      }
+
+      setUserName((prevValuer) => ({
+        ...prevValuer,
+        name: name.split(" ")[0],
+      }));
+    }
+    loadUserName();
+  }, [openUserEditModal]);
 
   return (
     <Stack
@@ -17,16 +47,40 @@ function Header({ userName, headerTitle, openModal, setOpenModal }) {
       top="0px"
       backgroundColor="var(--gray-100)"
     >
-      <Typography
-        component="h1"
-        sx={{
-          fontFamily: "var(--font-title)",
-          fontSize: "var(--title-xl)",
-          marginTop: "14px",
-        }}
-      >
-        {headerTitle}
-      </Typography>
+      {openUserEditModal && (
+        <EditUserModal
+          openUserEditModal={openUserEditModal}
+          setOpenUserEditModal={setOpenUserEditModal}
+        />
+      )}
+      {headerTitle.length > 0 ? (
+        <Typography
+          component="h1"
+          color="var(--gray-800)"
+          sx={{
+            fontFamily: "var(--font-title)",
+            fontSize: "var(--title-xl)",
+            marginTop: "14px",
+          }}
+        >
+          {headerTitle}
+        </Typography>
+      ) : (
+        <Typography
+          component="span"
+          color="var(--green-500)"
+          fontWeight="400"
+          sx={{
+            fontFamily: "var(--font-body)",
+            fontSize: "var(--subtitle)",
+            alignSelf: "end",
+            position: "relative",
+            bottom: "-18px",
+          }}
+        >
+          {pageTitle}
+        </Typography>
+      )}
       <Stack direction="row" alignItems="center" gap="16px">
         <Stack
           width="48px"
@@ -44,7 +98,7 @@ function Header({ userName, headerTitle, openModal, setOpenModal }) {
             fontSize="var(--title-l)"
             color="var(--green-500)"
           >
-            LR
+            {userName.logo}
           </Typography>
         </Stack>
         <Stack
@@ -61,12 +115,15 @@ function Header({ userName, headerTitle, openModal, setOpenModal }) {
             fontSize="var(--title-s)"
             color="var(--green-500)"
           >
-            {userName}
+            {userName.name}
           </Typography>
           <img src={ArrowDown} alt="" />
         </Stack>
         {openPopUp && (
-          <HeaderPopUp openModal={openModal} setOpenModal={setOpenModal} />
+          <HeaderPopUp
+            openUserEditModal={openUserEditModal}
+            setOpenUserEditModal={setOpenUserEditModal}
+          />
         )}
       </Stack>
     </Stack>

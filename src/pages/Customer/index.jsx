@@ -1,22 +1,37 @@
-import { useState } from "react";
 import { Stack } from "@mui/material";
+import Alert from '@mui/material/Alert';
+import { useEffect, useState } from "react";
+import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
+import ClientIcon from "../../assets/icons/clients.svg";
+import SearchIcon from "../../assets/icons/search.svg";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
-import ClientIcon from "../../assets/icons/clients.svg";
-import SearchIcon from "../../assets/icons/search.svg";
-import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import "./style.css";
 
 function Customer() {
   const [openAdd, setOpenAdd] = useState(false);
+  const [showAlert, setShowAlert] = useState(false)
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false)
+      }, 5000)
+
+      return () => {
+        clearTimeout(timer)
+      };
+    }
+  }, [showAlert]);
 
   return (
     <>
       <Stack width="100%" direction="row">
         <SideNavigation />
-        {openAdd && <AddCustomer setOpenAdd={setOpenAdd} />}
+        {openAdd && <AddCustomer setOpenAdd={setOpenAdd} setShowAlert={setShowAlert} />}
         <Stack
           width="100%"
           sx={{
@@ -25,7 +40,7 @@ function Customer() {
           }}
           marginLeft="108px"
         >
-          <Header userName="Lorena" headerTitle="Clientes" />
+          <Header headerTitle="Clientes" />
 
           <div className="customer__header">
             <div className="customer__title">
@@ -54,8 +69,35 @@ function Customer() {
           <div className="customer__main">
             <CustomerTable />
           </div>
+          <Stack position="relative">
+            {showAlert && (
+              <Alert
+                iconMapping={{
+                  success: <CheckCircleOutlineIcon color="info" fontSize="inherit" />,
+                }}
+                onClose={() => setShowAlert(false)}
+                sx={{
+                  position: "fixed",
+                  bottom: "4.125rem",
+                  right: "7rem",
+
+                  width: "20.625rem",
+                  height: "3.375rem",
+                  paddingTop: "9px",
+
+                  fontFamily: "var(--font-subtitle)",
+                  color: "var(--blue-700)",
+
+                  borderRadius: "10px",
+                  backgroundColor: "var(--blue-300)",
+                }}
+              >
+                Cadastro concluído com sucesso
+              </Alert>
+            )}
+          </Stack>
         </Stack>
-      </Stack>
+      </Stack >
     </>
   );
 }

@@ -10,19 +10,11 @@ import ChargesCard from "./components/ChargesCard";
 import ClientsCard from "./components/ClientsCard";
 import SummaryCharge from "./components/SummaryCharge";
 
-import { useState } from "react";
-
-import EditUserModal from "../../components/EditUserModal";
 import "./style.css";
 
 function Home() {
-  const [openModal, setOpenModal] = useState(false);
-
   return (
     <Stack width="100%" maxWidth="1440px" direction="row">
-      {openModal && <EditUserModal
-        setOpenModal={setOpenModal}
-        openModal={openModal} />}
       <SideNavigation />
       <Stack
         width="100%"
@@ -32,12 +24,7 @@ function Home() {
         }}
         marginLeft="108px"
       >
-        <Header
-          userName="Lorena"
-          headerTitle="Resumo das contas"
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
+        <Header headerTitle="Resumo das cobranças" pageTitle="" />
         <Grid container spacing={4}>
           <Grid item xs={4}>
             <SummaryCharge

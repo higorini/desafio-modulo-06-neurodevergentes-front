@@ -10,7 +10,6 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { useState } from "react";
 import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import ClientIcon from "../../../../assets/icons/clients.svg";
-import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import { registerCostumers } from "../../../../services";
 
 function AddCustomer({ setOpenAdd, setShowAlert }) {

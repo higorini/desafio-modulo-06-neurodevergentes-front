@@ -103,16 +103,15 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
     };
 
     const response = await registerCostumers(user)
-    console.log(response)
-
     if (response.status === 400) {
-      setErrorMsg((prevValue) => ({ ...prevValue, email: response.data.message }))
+      for (const field in response.data.fields) {
+        setErrorMsg((prevValue) => ({ ...prevValue, [field]: response.data.fields[field] }))
+      }
       return
     }
 
     setOpenAdd(false)
     setShowAlert(true)
-    return response
   }
 
   function handleInput(e) {

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import AddCustomer from "./components/AddCustomerModal";
@@ -71,6 +72,9 @@ function Customer() {
           <Stack position="relative">
             {showAlert && (
               <Alert
+                iconMapping={{
+                  success: <CheckCircleOutlineIcon color="info" fontSize="inherit" />,
+                }}
                 onClose={() => setShowAlert(false)}
                 sx={{
                   position: "fixed",
@@ -79,6 +83,7 @@ function Customer() {
 
                   width: "20.625rem",
                   height: "3.375rem",
+                  paddingTop: "9px",
 
                   fontFamily: "var(--font-subtitle)",
                   color: "var(--blue-700)",

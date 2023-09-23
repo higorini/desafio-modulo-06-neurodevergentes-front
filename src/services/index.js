@@ -57,7 +57,7 @@ export async function getUserData() {
 export async function edityUserData(body) {
   try {
     const data = await api.put(`user/edit`, body, getToken());
-    return data.data;
+    return data;
   } catch (erro) {
     return erro.response;
   }
@@ -72,4 +72,20 @@ export async function registerCostumers(body) {
   }
 }
 
-export default (newUser, login, validateEmail, edityUserData, getUserData);
+export async function listCustumers(body) {
+  try {
+    const data = await api.get(`costumers`, getToken());
+    console.log(data)
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export default (
+  newUser,
+  login,
+  validateEmail,
+  edityUserData,
+  getUserData,
+  listCustumers);

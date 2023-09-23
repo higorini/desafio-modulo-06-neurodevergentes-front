@@ -8,22 +8,23 @@ import {
 } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import React, { useState } from "react";
-import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import ClientIcon from "../../../../assets/icons/clients.svg";
+import CloseIcon from "../../../../assets/icons/closeIcon.svg";
+import { registerCostumers } from "../../../../services";
 
-function AddCustomer({ setOpenAdd }) {
+function AddCustomer({ setOpenAdd, setShowAlert }) {
   const [errorMsg, setErrorMsg] = useState({
     name: "",
     email: "",
     cpf: "",
-    telephone: "",
+    phone: "",
   })
 
   const [valueInput, setValueInput] = useState({
     name: "",
     email: "",
     cpf: "",
-    telephone: "",
+    phone: "",
     cep: "",
     public_place: "",
     complement: "",
@@ -34,11 +35,65 @@ function AddCustomer({ setOpenAdd }) {
 
 
   async function handleSendForm() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const numberRegex = /^[0-9]+$/;
+
+
+    if (!valueInput.name.length) {
+      setErrorMsg((prevValue) => ({ ...prevValue, name: "O campo nome é obrigatório" }));
+      return;
+    }
+
+    if (!valueInput.email.length) {
+      setErrorMsg((prevValue) => ({ ...prevValue, email: "O campo email é obrigatório" }));
+    }
+
+    if (!emailRegex.test(valueInput.email)) {
+      setErrorMsg((prevValue) => ({ ...prevValue, email: "Por favor, insira um endereço de email válido." }));
+      return;
+    }
+
+    if (!valueInput.cpf.length) {
+      setErrorMsg((prevValue) => ({ ...prevValue, cpf: "O campo cpf é obrigatório" }));
+      return;
+    }
+
+    if (!numberRegex.test(valueInput.cpf)) {
+      setErrorMsg((prevValue) => ({ ...prevValue, cpf: "'Por favor, insira apenas numeros, sem '.' ou '-'." }));
+      return;
+    }
+
+    if (valueInput.cpf.length !== 11) {
+      setErrorMsg((prevValue) => ({ ...prevValue, cpf: "Quantidade de caracteres inválida" }));
+    }
+
+    if (!valueInput.phone.length) {
+      setErrorMsg((prevValue) => ({ ...prevValue, phone: "O campo phone é obrigatório" }));
+      return;
+    }
+
+    if (!numberRegex.test(valueInput.phone)) {
+      setErrorMsg((prevValue) => ({ ...prevValue, phone: "'Por favor, insira apenas numeros, sem '.' ou '-'." }));
+      return;
+    }
+
+    if (valueInput.phone.length !== 11) {
+      setErrorMsg((prevValue) => ({ ...prevValue, phone: "Quantidade de caracteres inválida" }));
+      return
+    }
+
+    setErrorMsg({
+      name: "",
+      email: "",
+      cpf: "",
+      phone: "",
+    })
+
     const user = {
       name: valueInput.name,
       email: valueInput.email,
       cpf: valueInput.cpf,
-      telephone: valueInput.telephone,
+      phone: valueInput.phone,
       cep: valueInput.cep || null,
       public_place: valueInput.public_place || null,
       complement: valueInput.complement || null,
@@ -47,7 +102,17 @@ function AddCustomer({ setOpenAdd }) {
       state: valueInput.state || null,
     };
 
-    console.log(user)
+    const response = await registerCostumers(user)
+    console.log(response)
+
+    if (response.status === 400) {
+      setErrorMsg((prevValue) => ({ ...prevValue, email: response.data.message }))
+      return
+    }
+
+    setOpenAdd(false)
+    setShowAlert(true)
+    return response
   }
 
   function handleInput(e) {
@@ -191,6 +256,12 @@ function AddCustomer({ setOpenAdd }) {
                   helperText={errorMsg.cpf}
                   value={valueInput.cpf}
                   onChange={handleInput}
+                  type="text"
+                  inputProps={{
+                    pattern: '[0-9]*',
+                    inputMode: 'numeric',
+                    maxLength: 11,
+                  }}
                   sx={{
                     width: "235px",
                     "input:first-of-type": {
@@ -214,14 +285,19 @@ function AddCustomer({ setOpenAdd }) {
                   Telefone*
                 </InputLabel>
                 <TextField
-                  id="telephone"
-                  name="telephone"
+                  id="phone"
+                  name="phone"
                   variant="outlined"
                   placeholder="Digite o telefone"
-                  error={!!errorMsg.telephone}
-                  helperText={errorMsg.telephone}
-                  value={valueInput.telephone}
+                  error={!!errorMsg.phone}
+                  helperText={errorMsg.phone}
+                  value={valueInput.phone}
                   onChange={handleInput}
+                  inputProps={{
+                    pattern: '[0-9]*',
+                    inputMode: 'numeric',
+                    maxLength: 11,
+                  }}
                   sx={{
                     width: "224px",
                     "input:first-of-type": {
@@ -311,6 +387,8 @@ function AddCustomer({ setOpenAdd }) {
                   placeholder="Digite o CEP"
                   value={valueInput.cep}
                   onChange={handleInput}
+                  inputMode="none"
+                  pattern="[0-9]*"
                   sx={{
                     width: "228px",
                     "input:first-of-type": {

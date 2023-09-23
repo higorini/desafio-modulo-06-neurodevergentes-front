@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import { useEffect, useState } from "react";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
@@ -6,13 +6,24 @@ import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
+import { listCustumers } from "../../services";
 import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
+
+import Table from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import ClientOrder from "../../assets/icons/clientIcons/clientOrder.svg";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+
+
 function Customer() {
   const [openAdd, setOpenAdd] = useState(false);
   const [showAlert, setShowAlert] = useState(false)
+  const [custumers, setCustumers] = useState("")
 
   useEffect(() => {
     if (showAlert) {
@@ -25,6 +36,15 @@ function Customer() {
       };
     }
   }, [showAlert]);
+
+  useEffect(() => {
+    async function custumers() {
+      const response = await listCustumers()
+      setCustumers(response)
+    }
+
+    custumers()
+  }, [openAdd])
 
   return (
     <>
@@ -66,8 +86,101 @@ function Customer() {
           </div>
 
           <div className="customer__main">
-            <CustomerTable />
+            <TableContainer
+              component={Box}
+              backgroundColor="var(--white)"
+              sx={{
+                overflow: "hidden",
+              }}
+            >
+              <Table sx={{ minWidth: "100%" }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        display: "flex",
+                        color: "var(--gray-700)",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: "700",
+                        fontSize: "var(--subtitle)",
+                      }}
+                    >
+                      <img src={ClientOrder} alt="Cobrança" />
+                      Cliente
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        color: "var(--gray-700)",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: "700",
+                        fontSize: "var(--subtitle)",
+                      }}
+                    >
+                      CPF
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        color: "var(--gray-700)",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: "700",
+                        fontSize: "var(--subtitle)",
+                      }}
+                    >
+                      E-mail
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        color: "var(--gray-700)",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: "700",
+                        fontSize: "var(--subtitle)",
+                      }}
+                    >
+                      Telefone
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        color: "var(--gray-700)",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: "700",
+                        fontSize: "var(--subtitle)",
+                      }}
+                    >
+                      Status
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        color: "var(--gray-700)",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: "700",
+                        fontSize: "var(--subtitle)",
+                      }}
+                    >
+                      Criar Cobrança
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                {custumers &&
+                  custumers.map((custumer) => {
+                    const { id, name, cpf, email, phone, status, ...rest } = custumer
+                    return <CustomerTable
+                      key={id}
+                      name={name}
+                      cpf={cpf}
+                      email={email}
+                      phone={phone}
+                      status={status} />
+                  })}
+              </Table>
+            </TableContainer>
           </div>
+
+
           <Stack position="relative">
             {showAlert && (
               <Alert

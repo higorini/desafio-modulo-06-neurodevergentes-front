@@ -1,0 +1,50 @@
+.charge__header {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.charge__title {
+  display: flex;
+  width: 50%;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.charge__title img {
+  width: 32px;
+  height: 32px;
+}
+
+.charge__filters {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-right: 6.5rem;
+}
+
+.charge__search {
+  width: 318px;
+  height: 39px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--white);
+  border: none;
+  border-radius: 10px;
+}
+
+.charge__search-box {
+  width: 280px;
+  height: 30px;
+  float: left;
+  background-color: transparent;
+  padding-left: 0.5rem;
+  font-family: var(--font-subtitle);
+  font-size: 18px;
+  line-height: 24.55px;
+  border: none;
+}

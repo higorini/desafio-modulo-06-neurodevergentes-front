@@ -2,6 +2,8 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Customer from "./pages/Customer";
+import Charge from "./pages/Charge";
 
 function ProtectedRoutes(redirectTo) {
   const token = localStorage.getItem("token");
@@ -17,6 +19,8 @@ function AllRoutes() {
 
       <Route element={<ProtectedRoutes redirectTo={"/sign-in"} />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/customer" element={<Customer />} />
+        <Route path="/charge" element={<Charge />} />
       </Route>
 
       <Route path="/sign-up" element={<SignUp />} />

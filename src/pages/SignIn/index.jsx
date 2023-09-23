@@ -86,18 +86,18 @@ function SingIn() {
                         <img src={showPassword ? iconShowPassword : iconDoesShowPassword} alt="ver senha" />
                     </button>
                     {msgError && (
-                        <p className="msg-error redux">
+                        <p className="msg-error">
                             {msgError}
                         </p>
                     )}
                     <div>
                         <button
                             onClick={handleSendForm}
-                            className="button-primary redux3">
-                            Continuar
+                            className="button-primary">
+                            Entrar
                         </button>
                         <p>
-                            Ainda não possui uma conta?
+                            {`Ainda não possui uma conta? `}
                             <Link to="../sign-up">
                                 Cadastre-se
                             </Link>

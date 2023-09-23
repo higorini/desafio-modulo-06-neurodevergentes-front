@@ -1,0 +1,23 @@
+.details__header {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-right: 6rem;
+  margin-bottom: 1.5rem;
+}
+
+.details__title {
+  display: flex;
+  width: 30%;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.details__title img {
+  width: 32px;
+  height: 32px;
+}
+
+.details__main {
+  margin: 1.1rem 0;
+}

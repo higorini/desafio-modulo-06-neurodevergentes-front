@@ -1,7 +1,8 @@
 import { Stack } from "@mui/material";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
-
+import DetailsClient from "./components/DetailsClient";
+import DetailsCharge from "./components/DetailsCharge";
 import ClientIcon from "../../assets/icons/clients.svg";
 import "./style.css";
 
@@ -20,14 +21,21 @@ function Details() {
         >
           <Header userName="Lorena" headerTitle="Clientes" />
 
-          <div className="customer__header">
-            <div className="customer__title">
+          <div className="details__header">
+            <div className="details__title">
               <img src={ClientIcon} alt="Icone Cliente" />
               <h1>Sara Lage Silva</h1>
             </div>
           </div>
 
-          <div className="customer__main"></div>
+          <div className="details__main">
+            <div>
+              <DetailsClient />
+            </div>
+            <div>
+              <DetailsCharge />
+            </div>
+          </div>
         </Stack>
       </Stack>
     </>

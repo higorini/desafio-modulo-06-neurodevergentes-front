@@ -8,17 +8,20 @@ import {
 } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { useState } from "react";
-import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import ClientIcon from "../../../../assets/icons/clients.svg";
+import CloseIcon from "../../../../assets/icons/closeIcon.svg";
+import useGlobal from "../../../../hooks/useGlobal";
 import { registerCostumers } from "../../../../services";
 
-function AddCustomer({ setOpenAdd, setShowAlert }) {
+function AddCustomer({ setOpenAdd }) {
+  const { setAddClientSuccessAlert } = useGlobal();
+
   const [errorMsg, setErrorMsg] = useState({
     name: "",
     email: "",
     cpf: "",
     phone: "",
-  })
+  });
 
   const [valueInput, setValueInput] = useState({
     name: "",
@@ -30,57 +33,82 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
     complement: "",
     neighborhood: "",
     city: "",
-    state: ""
+    state: "",
   });
-
 
   async function handleSendForm() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const numberRegex = /^[0-9]+$/;
 
-
     if (!valueInput.name.length) {
-      setErrorMsg((prevValue) => ({ ...prevValue, name: "O campo nome é obrigatório" }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        name: "O campo nome é obrigatório",
+      }));
       return;
     }
 
     if (!valueInput.email.length) {
-      setErrorMsg((prevValue) => ({ ...prevValue, email: "O campo email é obrigatório" }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        email: "O campo email é obrigatório",
+      }));
       return;
     }
 
     if (!emailRegex.test(valueInput.email)) {
-      setErrorMsg((prevValue) => ({ ...prevValue, email: "Por favor, insira um endereço de email válido." }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        email: "Por favor, insira um endereço de email válido.",
+      }));
       return;
     }
 
     if (!valueInput.cpf.length) {
-      setErrorMsg((prevValue) => ({ ...prevValue, cpf: "O campo cpf é obrigatório" }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        cpf: "O campo cpf é obrigatório",
+      }));
       return;
     }
 
     if (!numberRegex.test(valueInput.cpf)) {
-      setErrorMsg((prevValue) => ({ ...prevValue, cpf: "'Por favor, insira apenas numeros, sem '.' ou '-'." }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        cpf: "'Por favor, insira apenas numeros, sem '.' ou '-'.",
+      }));
       return;
     }
 
     if (valueInput.cpf.length !== 11) {
-      setErrorMsg((prevValue) => ({ ...prevValue, cpf: "Quantidade de caracteres inválida" }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        cpf: "Quantidade de caracteres inválida",
+      }));
       return;
     }
 
     if (!valueInput.phone.length) {
-      setErrorMsg((prevValue) => ({ ...prevValue, phone: "O campo phone é obrigatório" }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        phone: "O campo phone é obrigatório",
+      }));
       return;
     }
 
     if (!numberRegex.test(valueInput.phone)) {
-      setErrorMsg((prevValue) => ({ ...prevValue, phone: "'Por favor, insira apenas numeros, sem '.' ou '-'." }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        phone: "'Por favor, insira apenas numeros, sem '.' ou '-'.",
+      }));
       return;
     }
 
     if (valueInput.phone.length !== 11) {
-      setErrorMsg((prevValue) => ({ ...prevValue, phone: "Quantidade de caracteres inválida" }));
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        phone: "Quantidade de caracteres inválida",
+      }));
       return;
     }
 
@@ -89,7 +117,7 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
       email: "",
       cpf: "",
       phone: "",
-    })
+    });
 
     const user = {
       name: valueInput.name,
@@ -104,16 +132,19 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
       state: valueInput.state || null,
     };
 
-    const response = await registerCostumers(user)
+    const response = await registerCostumers(user);
     if (response.status === 400) {
       for (const field in response.data.fields) {
-        setErrorMsg((prevValue) => ({ ...prevValue, [field]: response.data.fields[field] }))
+        setErrorMsg((prevValue) => ({
+          ...prevValue,
+          [field]: response.data.fields[field],
+        }));
       }
-      return
+      return;
     }
 
-    setOpenAdd(false)
-    setShowAlert(true)
+    setOpenAdd(false);
+    setAddClientSuccessAlert(true);
   }
 
   function handleInput(e) {
@@ -258,8 +289,8 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
                   onChange={handleInput}
                   type="text"
                   inputProps={{
-                    pattern: '[0-9]*',
-                    inputMode: 'numeric',
+                    pattern: "[0-9]*",
+                    inputMode: "numeric",
                     maxLength: 11,
                   }}
                   sx={{
@@ -294,8 +325,8 @@ function AddCustomer({ setOpenAdd, setShowAlert }) {
                   value={valueInput.phone}
                   onChange={handleInput}
                   inputProps={{
-                    pattern: '[0-9]*',
-                    inputMode: 'numeric',
+                    pattern: "[0-9]*",
+                    inputMode: "numeric",
                     maxLength: 11,
                   }}
                   sx={{

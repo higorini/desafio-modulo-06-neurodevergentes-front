@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -54,6 +54,26 @@ function DetailsCharge() {
         marginLeft: "2rem",
       }}
     >
+      <Stack direction="row" padding="19px 16px" justifyContent="space-between">
+        <Typography
+          textAlign="center"
+          component="p"
+          color="var(--gray-700)"
+          fontWeight="700"
+          fontFamily="var(--font-title)"
+          fontSize="var(--title-s)"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          Cobranças do Cliente
+        </Typography>
+        <Box padding="0 18px" borderRadius="8px">
+          <button className="details__charge-button">+ Nova Cobrança</button>
+        </Box>
+      </Stack>
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
         <TableHead>
           <TableRow>

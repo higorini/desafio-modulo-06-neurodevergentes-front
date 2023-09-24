@@ -1,37 +1,38 @@
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Stack } from "@mui/material";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
+import useGlobal from "../../hooks/useGlobal";
 import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
   const [openAdd, setOpenAdd] = useState(false);
-  const [showAlert, setShowAlert] = useState(false)
+  const { addClientSuccessAlert, setAddClientSuccessAlert } = useGlobal();
 
   useEffect(() => {
-    if (showAlert) {
+    if (addClientSuccessAlert) {
       const timer = setTimeout(() => {
-        setShowAlert(false)
-      }, 5000)
+        setAddClientSuccessAlert(false);
+      }, 5000);
 
       return () => {
-        clearTimeout(timer)
+        clearTimeout(timer);
       };
     }
-  }, [showAlert]);
+  }, [addClientSuccessAlert]);
 
   return (
     <>
       <Stack width="100%" direction="row">
         <SideNavigation />
-        {openAdd && <AddCustomer setOpenAdd={setOpenAdd} setShowAlert={setShowAlert} />}
+        {openAdd && <AddCustomer setOpenAdd={setOpenAdd} />}
         <Stack
           width="100%"
           sx={{
@@ -70,12 +71,14 @@ function Customer() {
             <CustomerTable />
           </div>
           <Stack position="relative">
-            {showAlert && (
+            {addClientSuccessAlert && (
               <Alert
                 iconMapping={{
-                  success: <CheckCircleOutlineIcon color="info" fontSize="inherit" />,
+                  success: (
+                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
+                  ),
                 }}
-                onClose={() => setShowAlert(false)}
+                onClose={() => setAddClientSuccessAlert(false)}
                 sx={{
                   position: "fixed",
                   bottom: "4.125rem",
@@ -97,7 +100,7 @@ function Customer() {
             )}
           </Stack>
         </Stack>
-      </Stack >
+      </Stack>
     </>
   );
 }

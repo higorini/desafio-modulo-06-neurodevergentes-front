@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { listCustumers } from "../services";
 
 function useGlobalProvider() {
-  const [count, setCount] = useState(0);
+  const [clients, setClients] = useState([]);
+  const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
+
+  useEffect(() => {
+    async function loadClients() {
+      try {
+        const response = await listCustumers();
+        setClients(response);
+      } catch (erro) {
+        return erro;
+      }
+    }
+    loadClients();
+  }, [addClientSuccessAlert]);
 
   return {
-    count,
-    setCount,
+    clients,
+    setClients,
+    addClientSuccessAlert,
+    setAddClientSuccessAlert,
   };
 }
 export default useGlobalProvider;

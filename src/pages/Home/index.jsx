@@ -10,9 +10,12 @@ import ChargesCard from "./components/ChargesCard";
 import ClientsCard from "./components/ClientsCard";
 import SummaryCharge from "./components/SummaryCharge";
 
+import useGlobal from "../../hooks/useGlobal";
 import "./style.css";
 
 function Home() {
+  const { loyalClients, defaultingClients } = useGlobal();
+
   return (
     <Stack width="100%" maxWidth="1440px" direction="row">
       <SideNavigation />
@@ -80,7 +83,8 @@ function Home() {
               clientTableTitle="Clientes em dia"
               bgIndexColor="var(--seagreen-100)"
               indexColor="var(--seagreen-700)"
-              indexNumber="10"
+              indexNumber={loyalClients.length.toString().padStart(2, "0")}
+              clientTableContent={loyalClients.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -89,7 +93,8 @@ function Home() {
               clientTableTitle="Clientes inadimplentes"
               bgIndexColor="var(--ruby-100)"
               indexColor="var(--ruby-700)"
-              indexNumber="08"
+              indexNumber={defaultingClients.length.toString().padStart(2, "0")}
+              clientTableContent={defaultingClients.slice(0, 4)}
             />
           </Grid>
         </Grid>

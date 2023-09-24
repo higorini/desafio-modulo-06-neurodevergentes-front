@@ -3,6 +3,8 @@ import { listCustumers } from "../services";
 
 function useGlobalProvider() {
   const [clients, setClients] = useState([]);
+  const [defaultingClients, setDefaultingClients] = useState([]);
+  const [loyalClients, setLoyalClients] = useState([]);
   const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
 
   useEffect(() => {
@@ -10,6 +12,16 @@ function useGlobalProvider() {
       try {
         const response = await listCustumers();
         setClients(response);
+        setLoyalClients(
+          response.filter((client) => {
+            return client.status === "Em dia";
+          })
+        );
+        setDefaultingClients(
+          response.filter((client) => {
+            return client.status === "Inadimplente";
+          })
+        );
       } catch (erro) {
         return erro;
       }
@@ -22,6 +34,8 @@ function useGlobalProvider() {
     setClients,
     addClientSuccessAlert,
     setAddClientSuccessAlert,
+    loyalClients,
+    defaultingClients,
   };
 }
 export default useGlobalProvider;

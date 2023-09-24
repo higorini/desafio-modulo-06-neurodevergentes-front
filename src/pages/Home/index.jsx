@@ -84,7 +84,7 @@ function Home() {
               bgIndexColor="var(--seagreen-100)"
               indexColor="var(--seagreen-700)"
               indexNumber={loyalClients.length.toString().padStart(2, "0")}
-              clientTableContent={loyalClients}
+              clientTableContent={loyalClients.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -94,7 +94,7 @@ function Home() {
               bgIndexColor="var(--ruby-100)"
               indexColor="var(--ruby-700)"
               indexNumber={defaultingClients.length.toString().padStart(2, "0")}
-              clientTableContent={defaultingClients}
+              clientTableContent={defaultingClients.slice(0, 4)}
             />
           </Grid>
         </Grid>

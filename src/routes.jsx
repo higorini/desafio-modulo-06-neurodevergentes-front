@@ -3,7 +3,8 @@ import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Customer from "./pages/Customer";
-import Charge from "./pages/Charge";
+import Charge from "./pages/Charge"
+import Details from "./pages/Details"
 
 function ProtectedRoutes(redirectTo) {
   const token = localStorage.getItem("token");
@@ -21,6 +22,7 @@ function AllRoutes() {
         <Route path="/home" element={<Home />} />
         <Route path="/customer" element={<Customer />} />
         <Route path="/charge" element={<Charge />} />
+        <Route path="/details" element={<Details />} />
       </Route>
 
       <Route path="/sign-up" element={<SignUp />} />

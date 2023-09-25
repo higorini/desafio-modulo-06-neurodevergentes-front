@@ -44,8 +44,8 @@ function DetailsClient() {
           padding: "8px 16px",
         }}
       >
-        <Stack direction="row" marginBottom="3rem" gap="10rem">
-          <Stack direction="column">
+        <Stack direction="row" marginBottom="3rem">
+          <Stack direction="column" width="17rem">
             <InputLabel
               sx={{
                 fontSize: "var(--title-s)",
@@ -67,7 +67,7 @@ function DetailsClient() {
             </Typography>
           </Stack>
 
-          <Stack direction="column">
+          <Stack direction="column" width="14rem">
             <InputLabel
               sx={{
                 fontSize: "var(--title-s)",
@@ -112,8 +112,8 @@ function DetailsClient() {
           </Stack>
         </Stack>
 
-        <Stack direction="row" justifyContent="space-between">
-          <Stack direction="column">
+        <Stack direction="row">
+          <Stack direction="column" width="20rem">
             <InputLabel
               sx={{
                 fontSize: "var(--title-s)",
@@ -135,7 +135,7 @@ function DetailsClient() {
             </Typography>
           </Stack>
 
-          <Stack direction="column">
+          <Stack direction="column" width="16rem">
             <InputLabel
               sx={{
                 fontSize: "var(--title-s)",
@@ -157,7 +157,7 @@ function DetailsClient() {
             </Typography>
           </Stack>
 
-          <Stack direction="column">
+          <Stack direction="column" width="16rem">
             <InputLabel
               sx={{
                 fontSize: "var(--title-s)",
@@ -179,7 +179,7 @@ function DetailsClient() {
             </Typography>
           </Stack>
 
-          <Stack direction="column">
+          <Stack direction="column" width="16rem">
             <InputLabel
               sx={{
                 fontSize: "var(--title-s)",
@@ -201,7 +201,7 @@ function DetailsClient() {
             </Typography>
           </Stack>
 
-          <Stack direction="column">
+          <Stack direction="column" width="16rem">
             <InputLabel
               sx={{
                 fontSize: "var(--title-s)",

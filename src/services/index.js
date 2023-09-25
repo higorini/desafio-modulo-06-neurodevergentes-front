@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: " https://calm-gold-lion-veil.cyclic.cloud/",
+  baseURL: "https://contabily.onrender.com/",
   timeout: 5000,
   headers: { "Content-Type": "application/json" },
 });
@@ -81,10 +81,9 @@ export async function listCustumers(body) {
   }
 }
 
-export default (
-  newUser,
-  login,
-  validateEmail,
-  edityUserData,
-  getUserData,
-  listCustumers);
+export default (newUser,
+login,
+validateEmail,
+edityUserData,
+getUserData,
+listCustumers);

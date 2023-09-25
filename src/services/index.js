@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const api = axios.create({
   baseURL: "https://contabily.onrender.com/",
-  timeout: 5000,
+  timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });
 
@@ -81,9 +81,20 @@ export async function listCustumers(body) {
   }
 }
 
+export async function addCharge(body, idCustomer) {
+  console.log(idCustomer)
+  try {
+    const data = await api.post(`charges/${idCustomer}`, body, getToken());
+    return data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+
 export default (newUser,
-login,
-validateEmail,
-edityUserData,
-getUserData,
-listCustumers);
+  login,
+  validateEmail,
+  edityUserData,
+  getUserData,
+  listCustumers);

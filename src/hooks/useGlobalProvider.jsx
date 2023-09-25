@@ -6,6 +6,7 @@ function useGlobalProvider() {
   const [defaultingClients, setDefaultingClients] = useState([]);
   const [loyalClients, setLoyalClients] = useState([]);
   const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
+  const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false)
 
   useEffect(() => {
     async function loadClients() {
@@ -36,6 +37,8 @@ function useGlobalProvider() {
     setAddClientSuccessAlert,
     loyalClients,
     defaultingClients,
+    addChargeSuccessAlert,
+    setAddChargeSuccessAlert
   };
 }
 export default useGlobalProvider;

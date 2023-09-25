@@ -14,6 +14,8 @@ import useGlobal from "../../../../hooks/useGlobal";
 
 function CustomerTable() {
   const [openCharge, setOpenCharge] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [selectedClientName, setSelectedClientName] = useState("");
   const { clients } = useGlobal();
 
   return (
@@ -29,7 +31,10 @@ function CustomerTable() {
         minHeight: "600px",
       }}
     >
-      {openCharge && <AddCharge setOpenCharge={setOpenCharge} />}
+      {openCharge && <AddCharge
+        setOpenCharge={setOpenCharge}
+        selectedClientId={selectedClientId}
+        selectedClientName={selectedClientName} />}
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -189,7 +194,11 @@ function CustomerTable() {
                   src={ClientCharge}
                   alt="Cobrança"
                   className="customar__table-charge"
-                  onClick={setOpenCharge}
+                  onClick={() => {
+                    setOpenCharge(true);
+                    setSelectedClientId(client.id);
+                    setSelectedClientName(client.name)
+                  }}
                 />
               </TableCell>
             </TableRow>

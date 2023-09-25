@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import ClientsTable from "../ClientsTable";
+import EmptyContent from "../EmptyContent";
 
 function ClientsCard({
   clientTitleIcon,
@@ -57,7 +58,11 @@ function ClientsCard({
           </Typography>
         </Box>
       </Stack>
-      <ClientsTable clientsContent={clientTableContent} />
+      {clientTableContent.length === 0 ? (
+        <EmptyContent />
+      ) : (
+        <ClientsTable clientsContent={clientTableContent} />
+      )}
       <Box>
         <Typography
           textAlign="center"

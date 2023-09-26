@@ -11,37 +11,6 @@ import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import ChargeType from "../../../Charge/components/ChargeType";
 
-function createData(client, id, value, date, description, status) {
-  return { client, id, value, date, description, status };
-}
-
-const rows = [
-  createData(
-    "Sara da Silva",
-    "248563147",
-    "500,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Carlos Prado",
-    "148563148",
-    "400,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Lara Brito",
-    "648563148",
-    "300,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-];
-
 function DetailsCharge({ setOpenCharge, detailsCharge }) {
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");

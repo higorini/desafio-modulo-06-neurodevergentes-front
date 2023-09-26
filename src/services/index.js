@@ -33,6 +33,7 @@ export async function login(body) {
     return erro.response;
   }
 }
+
 export async function validateEmail(email, name) {
   try {
     const data = await api.post("validateEmail", {
@@ -82,7 +83,6 @@ export async function listCustumers(body) {
 }
 
 export async function addCharge(body, idCustomer) {
-  console.log(idCustomer);
   try {
     const data = await api.post(`charges/${idCustomer}`, body, getToken());
     return data;
@@ -100,10 +100,30 @@ export async function listCharges() {
   }
 }
 
-export default (newUser,
-login,
-validateEmail,
-edityUserData,
-getUserData,
-listCustumers,
-listCharges);
+export async function loadDetailsCustomer(id) {
+  try {
+    const data = await api.get(`costumers/${id}`, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export async function edityCustomer(id, body) {
+  try {
+    const data = await api.put(`costumer/${id}/edit`, body, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export default (
+  newUser,
+  login,
+  validateEmail,
+  edityUserData,
+  getUserData,
+  listCustumers,
+  listCharges,
+  loadDetailsCustomer);

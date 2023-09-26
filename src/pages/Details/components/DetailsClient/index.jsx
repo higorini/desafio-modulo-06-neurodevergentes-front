@@ -1,7 +1,8 @@
 import { Box, Stack, Typography, InputLabel } from "@mui/material";
 import EditDetails from "../../../../assets/icons/detailsIcons/editDetails.svg";
 
-function DetailsClient() {
+function DetailsClient({ detailsClient, setOpenEditModal }) {
+  const { address, cpf, email, phone } = detailsClient
   return (
     <Box
       borderRadius="32px"
@@ -32,7 +33,9 @@ function DetailsClient() {
           Dados do Cliente
         </Typography>
         <Box padding="0 18px" borderRadius="8px">
-          <button className="details__edit-button">
+          <button
+            className="details__edit-button"
+            onClick={() => setOpenEditModal(true)} >
             <img src={EditDetails} /> Editar Cliente
           </button>
         </Box>
@@ -63,7 +66,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              sarasilva@gmail.com
+              {email}
             </Typography>
           </Stack>
 
@@ -85,7 +88,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              71 9 9462 8654
+              {phone}
             </Typography>
           </Stack>
 
@@ -107,7 +110,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              054 365 255 87
+              {cpf}
             </Typography>
           </Stack>
         </Stack>
@@ -131,7 +134,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              Rua das Cornélias; nº 512
+              {address ? address.public_place : ' '}
             </Typography>
           </Stack>
 
@@ -153,7 +156,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              Oliveiras
+              {address ? address.neighborhood : ' '}
             </Typography>
           </Stack>
 
@@ -175,7 +178,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              Ap: 502
+              {address ? address.complement : ' '}
             </Typography>
           </Stack>
 
@@ -197,7 +200,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              031 654 524 04
+              {address ? address.cep : ' '}
             </Typography>
           </Stack>
 
@@ -219,7 +222,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              Salvador
+              {address ? address.city : ' '}
             </Typography>
           </Stack>
 
@@ -241,7 +244,7 @@ function DetailsClient() {
                 fontWeight: "400",
               }}
             >
-              BA
+              {address ? address.state : ' '}
             </Typography>
           </Stack>
         </Stack>

@@ -1,6 +1,6 @@
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Stack } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ClientIcon from "../../assets/icons/clients.svg";
@@ -11,31 +11,29 @@ import useGlobal from "../../hooks/useGlobal";
 import { loadDetailsCustomer } from "../../services";
 import DetailsCharge from "./components/DetailsCharge";
 import DetailsClient from "./components/DetailsClient";
-import EditCustomerModal from "./components/EditCustomerModal"
+import EditCustomerModal from "./components/EditCustomerModal";
 import "./style.css";
 
 function Details() {
-  const { id } = useParams()
+  const { id } = useParams();
   const [openCharge, setOpenCharge] = useState(false);
   const [dataClient, setDataClient] = useState({
     personalData: "",
-    charges: ""
-  })
-  const [openEditModal, setOpenEditModal] = useState(false)
-  const {
-    addChargeSuccessAlert,
-    setAddChargeSuccessAlert } = useGlobal();
+    charges: "",
+  });
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal();
 
   useEffect(() => {
     async function loadDataCustomer() {
-      const response = await loadDetailsCustomer(id)
+      const response = await loadDetailsCustomer(id);
       setDataClient((prevValue) => ({
         ...prevValue,
-        personalData: response.personalData
+        personalData: response.personalData,
       }));
       setDataClient((prevValue) => ({
         ...prevValue,
-        charges: response.charges
+        charges: response.charges,
       }));
     }
     if (addChargeSuccessAlert) {
@@ -47,8 +45,8 @@ function Details() {
         clearTimeout(timer);
       };
     }
-    loadDataCustomer()
-  }, [])
+    loadDataCustomer();
+  }, []);
 
   return (
     <>
@@ -62,14 +60,20 @@ function Details() {
           }}
           marginLeft="108px"
         >
-          {openEditModal && <EditCustomerModal
-            setOpenEditModal={setOpenEditModal}
-            personalData={dataClient.personalData} />}
+          {openEditModal && (
+            <EditCustomerModal
+              setOpenEditModal={setOpenEditModal}
+              personalData={dataClient.personalData}
+            />
+          )}
 
-          {openCharge && <AddCharge
-            setOpenCharge={setOpenCharge}
-            selectedClientId={id}
-            selectedClientName={dataClient.personalData.name} />}
+          {openCharge && (
+            <AddCharge
+              setOpenCharge={setOpenCharge}
+              selectedClientId={id}
+              selectedClientName={dataClient.personalData.name}
+            />
+          )}
 
           <Header headerTitle="Clientes" />
 
@@ -82,10 +86,16 @@ function Details() {
 
           <div className="details__main">
             <div>
-              <DetailsClient detailsClient={dataClient.personalData} setOpenEditModal={setOpenEditModal} />
+              <DetailsClient
+                detailsClient={dataClient.personalData}
+                setOpenEditModal={setOpenEditModal}
+              />
             </div>
             <div>
-              <DetailsCharge detailsCharge={dataClient.charges} setOpenCharge={setOpenCharge} />
+              <DetailsCharge
+                detailsCharge={dataClient.charges}
+                setOpenCharge={setOpenCharge}
+              />
             </div>
           </div>
           <Stack position="relative">

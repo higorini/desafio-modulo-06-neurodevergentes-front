@@ -1,5 +1,5 @@
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { Stack } from "@mui/material";
+import { Link, Stack, Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -48,6 +48,29 @@ function Details() {
     loadDataCustomer();
   }, []);
 
+  const customerDetailsBreadcrubs = [
+    <Link
+      key="1"
+      color="#0e8750"
+      fontWeight="400"
+      href="/customer"
+      sx={{
+        fontFamily: "var(--font-body)",
+        fontSize: "var(--subtitle)",
+      }}
+    >
+      Clientes
+    </Link>,
+    <Typography
+      key="2"
+      fontFamily="var(--font-body)"
+      fontSize="var(--subtitle)"
+      color="var(--gray-600)"
+    >
+      Detalhes do cliente
+    </Typography>,
+  ];
+
   return (
     <>
       <Stack width="100%" direction="row">
@@ -75,7 +98,7 @@ function Details() {
             />
           )}
 
-          <Header headerTitle="Clientes" />
+          <Header headerTitle="" breadcrumbs={customerDetailsBreadcrubs} />
 
           <div className="details__header">
             <div className="details__title">

@@ -13,20 +13,24 @@ import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
+  const { addClientSuccessAlert,
+    setAddClientSuccessAlert,
+    addChargeSuccessAlert,
+    setAddChargeSuccessAlert } = useGlobal();
   const [openAdd, setOpenAdd] = useState(false);
-  const { addClientSuccessAlert, setAddClientSuccessAlert } = useGlobal();
 
   useEffect(() => {
-    if (addClientSuccessAlert) {
+    if (addClientSuccessAlert || addChargeSuccessAlert) {
       const timer = setTimeout(() => {
         setAddClientSuccessAlert(false);
+        setAddChargeSuccessAlert(false);
       }, 5000);
 
       return () => {
         clearTimeout(timer);
       };
     }
-  }, [addClientSuccessAlert]);
+  }, [addClientSuccessAlert, addChargeSuccessAlert]);
 
   return (
     <>
@@ -96,6 +100,33 @@ function Customer() {
                 }}
               >
                 Cadastro concluído com sucesso
+              </Alert>
+            )}
+            {addChargeSuccessAlert && (
+              <Alert
+                iconMapping={{
+                  success: (
+                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
+                  ),
+                }}
+                onClose={() => setAddChargeSuccessAlert(false)}
+                sx={{
+                  position: "fixed",
+                  bottom: "4.125rem",
+                  right: "7rem",
+
+                  width: "20.625rem",
+                  height: "3.375rem",
+                  paddingTop: "9px",
+
+                  fontFamily: "var(--font-subtitle)",
+                  color: "var(--blue-700)",
+
+                  borderRadius: "10px",
+                  backgroundColor: "var(--blue-300)",
+                }}
+              >
+                Cobrança cadastrada com sucesso
               </Alert>
             )}
           </Stack>

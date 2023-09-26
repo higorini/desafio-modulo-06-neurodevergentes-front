@@ -5,43 +5,24 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
-import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
+import { format } from "date-fns";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
+import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
+import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import ChargeType from "../../../Charge/components/ChargeType";
 
-function createData(client, id, value, date, description, status) {
-  return { client, id, value, date, description, status };
-}
+function DetailsCharge({ setOpenCharge, detailsCharge }) {
+  const moneyMask = (value) => {
+    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
 
-const rows = [
-  createData(
-    "Sara da Silva",
-    "248563147",
-    "500,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Carlos Prado",
-    "148563148",
-    "400,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Lara Brito",
-    "648563148",
-    "300,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-];
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(value) / 100
+    );
 
-function DetailsCharge({ setOpenCharge }) {
+    return "R$ " + result;
+  };
+
   return (
     <TableContainer
       component={Box}
@@ -73,7 +54,8 @@ function DetailsCharge({ setOpenCharge }) {
         <Box padding="0 18px" borderRadius="8px">
           <button
             className="details__charge-button"
-            onClick={() => setOpenCharge(true)} >
+            onClick={() => setOpenCharge(true)}
+          >
             + Nova Cobrança
           </button>
         </Box>
@@ -160,13 +142,77 @@ function DetailsCharge({ setOpenCharge }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {detailsCharge === "" ? (
+            <Box>Loading...</Box>
+          ) : (
+            detailsCharge.map((charge) => (
+              <TableRow
+                key={charge.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {charge["customer_name"]}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {charge.id}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {moneyMask(charge.value.toString())}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  <ChargeType type={charge.status} />
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {charge.description}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <img src={ChargeEdit} alt="Cobrança" />
+                  <img src={ChargeDelete} alt="Cobrança" />
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+          {/* {detailsCharge.map((charge) => (
             <TableRow
-              key={row.client}
+              key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.client}
+                {charge["customer_name"]}
               </TableCell>
               <TableCell
                 align="left"
@@ -174,7 +220,7 @@ function DetailsCharge({ setOpenCharge }) {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.id}
+                {charge.id}
               </TableCell>
               <TableCell
                 align="left"
@@ -182,7 +228,7 @@ function DetailsCharge({ setOpenCharge }) {
                   color: "var(--gray-600)",
                 }}
               >
-                R$ {row.value}
+                {moneyMask(charge.value.toString())}
               </TableCell>
               <TableCell
                 align="left"
@@ -190,7 +236,7 @@ function DetailsCharge({ setOpenCharge }) {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.date}
+                {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
               </TableCell>
               <TableCell
                 align="left"
@@ -206,7 +252,7 @@ function DetailsCharge({ setOpenCharge }) {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.description}
+                {charge.description}
               </TableCell>
               <TableCell
                 align="left"
@@ -219,7 +265,7 @@ function DetailsCharge({ setOpenCharge }) {
                 <img src={ChargeDelete} alt="Cobrança" />
               </TableCell>
             </TableRow>
-          ))}
+          ))} */}
         </TableBody>
       </Table>
     </TableContainer>

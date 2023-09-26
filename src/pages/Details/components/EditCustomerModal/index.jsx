@@ -133,9 +133,8 @@ function AddCustomer({ setOpenEditModal, personalData }) {
       state: valueInput.state || null,
     };
 
-    console.log(user)
-    const response = await edityCustomer(user);
-    console.log(response)
+    const response = await edityCustomer(personalData.id, user);
+
     if (response.status === 400) {
       for (const field in response.data.fields) {
         setErrorMsg((prevValue) => ({

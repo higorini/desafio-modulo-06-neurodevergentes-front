@@ -9,7 +9,7 @@ function EmptyContent() {
       alignItems="center"
       sx={{
         overflow: "hidden",
-        minHeight: "270px",
+        minHeight: "268px",
       }}
     >
       <Box

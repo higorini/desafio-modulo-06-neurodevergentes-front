@@ -82,7 +82,7 @@ export async function listCustumers(body) {
 }
 
 export async function addCharge(body, idCustomer) {
-  console.log(idCustomer)
+  console.log(idCustomer);
   try {
     const data = await api.post(`charges/${idCustomer}`, body, getToken());
     return data;
@@ -91,10 +91,19 @@ export async function addCharge(body, idCustomer) {
   }
 }
 
+export async function listCharges() {
+  try {
+    const data = await api.get("/charges", getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
 
 export default (newUser,
-  login,
-  validateEmail,
-  edityUserData,
-  getUserData,
-  listCustumers);
+login,
+validateEmail,
+edityUserData,
+getUserData,
+listCustumers,
+listCharges);

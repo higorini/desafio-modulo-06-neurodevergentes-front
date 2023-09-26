@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 function ChargeType({ type }) {
   let content;
 
-  if (type == 1) {
+  if (type == "paga") {
     content = (
       <Box
         borderRadius="8px"
@@ -23,7 +23,7 @@ function ChargeType({ type }) {
         </Typography>
       </Box>
     );
-  } else if (type == 2) {
+  } else if (type == "pendente") {
     content = (
       <Box
         borderRadius="8px"
@@ -43,7 +43,7 @@ function ChargeType({ type }) {
         </Typography>
       </Box>
     );
-  } else if (type == 3) {
+  } else if (type == "vencida") {
     content = (
       <Box
         borderRadius="8px"

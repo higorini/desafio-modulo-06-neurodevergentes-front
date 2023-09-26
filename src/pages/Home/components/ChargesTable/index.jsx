@@ -6,23 +6,24 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-function createData(name, charge_id, value) {
-  return { name, charge_id, value };
-}
+export default function ChargesTable({ chargeContent }) {
+  const moneyMask = (value) => {
+    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
 
-const rows = [
-  createData("Sara Silva", 223456787, "R$ 1000,00"),
-  createData("Carlos Prado", 223456781, "R$ 400,00"),
-  createData("Lara Brito", 223456781, "R$ 900,00"),
-  createData("Soraia Neves", 223456787, "R$ 700,00"),
-];
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(value) / 100
+    );
 
-export default function ChargesTable() {
+    return "R$ " + result;
+  };
+
   return (
     <TableContainer
       component={Box}
       sx={{
         overflow: "hidden",
+        minHeight: "268px",
       }}
     >
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
@@ -63,9 +64,9 @@ export default function ChargesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {chargeContent.map((charge) => (
             <TableRow
-              key={row.name}
+              key={charge.id}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
@@ -77,7 +78,7 @@ export default function ChargesTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.name}
+                {charge["costumer_name"]}
               </TableCell>
               <TableCell
                 align="left"
@@ -85,7 +86,7 @@ export default function ChargesTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row["charge_id"]}
+                {charge.id}
               </TableCell>
               <TableCell
                 align="left"
@@ -93,7 +94,7 @@ export default function ChargesTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.value}
+                {moneyMask(charge.value.toString())}
               </TableCell>
             </TableRow>
           ))}

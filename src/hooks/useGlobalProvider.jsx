@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
-import { listCustumers } from "../services";
+import { listCharges, listCustumers } from "../services";
 
 function useGlobalProvider() {
   const [clients, setClients] = useState([]);
   const [defaultingClients, setDefaultingClients] = useState([]);
   const [loyalClients, setLoyalClients] = useState([]);
+
+  const [charges, setCharges] = useState([]);
+  const [paidCharge, setPaidCharge] = useState([]);
+  const [pendingCharge, setPendingCharge] = useState([]);
+  const [overdueCharge, setOverdueCharge] = useState([]);
+
   const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
-  const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false)
+  const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false);
 
   useEffect(() => {
     async function loadClients() {
@@ -28,7 +34,34 @@ function useGlobalProvider() {
       }
     }
     loadClients();
-  }, [addClientSuccessAlert]);
+  }, [addClientSuccessAlert, addChargeSuccessAlert]);
+
+  useEffect(() => {
+    async function loadCharges() {
+      try {
+        const response = await listCharges();
+        setCharges(response);
+        setPaidCharge(
+          response.filter((charge) => {
+            return charge.status === "paga";
+          })
+        );
+        setPendingCharge(
+          response.filter((charge) => {
+            return charge.status === "pendente";
+          })
+        );
+        setOverdueCharge(
+          response.filter((charge) => {
+            return charge.status === "vencida";
+          })
+        );
+      } catch (erro) {
+        return erro;
+      }
+    }
+    loadCharges();
+  }, [addChargeSuccessAlert]);
 
   return {
     clients,
@@ -37,8 +70,13 @@ function useGlobalProvider() {
     setAddClientSuccessAlert,
     loyalClients,
     defaultingClients,
+    charges,
+    setCharges,
+    paidCharge,
+    pendingCharge,
     addChargeSuccessAlert,
-    setAddChargeSuccessAlert
+    overdueCharge,
+    setAddChargeSuccessAlert,
   };
 }
 export default useGlobalProvider;

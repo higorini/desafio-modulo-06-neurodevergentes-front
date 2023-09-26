@@ -11,11 +11,11 @@ import { useState } from "react";
 import ClientIcon from "../../../../assets/icons/clients.svg";
 import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import useGlobal from "../../../../hooks/useGlobal";
-import { registerCostumers } from "../../../../services";
+import { edityCustomer } from "../../../../services";
 
-function AddCustomer({ setOpenAdd }) {
+function AddCustomer({ setOpenEditModal, personalData }) {
+  const { address, cpf, email, phone, name } = personalData
   const { setAddClientSuccessAlert } = useGlobal();
-
   const [errorMsg, setErrorMsg] = useState({
     name: "",
     email: "",
@@ -24,16 +24,17 @@ function AddCustomer({ setOpenAdd }) {
   });
 
   const [valueInput, setValueInput] = useState({
-    name: "",
-    email: "",
-    cpf: "",
-    phone: "",
-    cep: "",
-    public_place: "",
-    complement: "",
-    neighborhood: "",
-    city: "",
-    state: "",
+    name: name,
+    email: email,
+    cpf: cpf,
+    phone: phone,
+    cep: personalData.cep || "",
+    public_place: personalData.public_place || "",
+    complement: personalData.complement || "",
+    neighborhood: personalData.neighborhood || "",
+    city: personalData.city || "",
+    state: personalData.state || "",
+
   });
 
   async function handleSendForm() {
@@ -132,7 +133,8 @@ function AddCustomer({ setOpenAdd }) {
       state: valueInput.state || null,
     };
 
-    const response = await registerCostumers(user);
+    const response = await edityCustomer(personalData.id, user);
+
     if (response.status === 400) {
       for (const field in response.data.fields) {
         setErrorMsg((prevValue) => ({
@@ -143,8 +145,7 @@ function AddCustomer({ setOpenAdd }) {
       return;
     }
 
-    setOpenAdd(false);
-    setAddClientSuccessAlert(true);
+    setOpenEditModal(false);
   }
 
   function handleInput(e) {
@@ -155,16 +156,19 @@ function AddCustomer({ setOpenAdd }) {
       [nameInputEvent]: valueInputEvent,
     }));
   }
+
   return (
     <Stack
       alignItems="center"
       justifyContent="center"
       sx={{
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "calc(100% + 16rem)",
         backgroundColor: "rgba(145, 154, 150, 0.3)",
         zIndex: 1,
         position: "fixed",
+        top: "-120px",
+        left: 0,
       }}
     >
       <Stack
@@ -188,10 +192,10 @@ function AddCustomer({ setOpenAdd }) {
           }}
         >
           <img src={ClientIcon} />
-          Cadastro do Cliente
+          Editar Cliente
         </Typography>
         <Box
-          onClick={() => setOpenAdd(false)}
+          onClick={() => setOpenEditModal(false)}
           sx={{
             cursor: "pointer",
             position: "absolute",
@@ -528,7 +532,7 @@ function AddCustomer({ setOpenAdd }) {
             >
               <Button
                 variant="contained"
-                onClick={() => setOpenAdd(false)}
+                onClick={() => setOpenEditModal(false)}
                 sx={{
                   textTransform: "capitalize",
                   width: "231.5px",

@@ -1,7 +1,14 @@
 import { Box, Stack, Typography } from "@mui/material";
 import ChargesTable from "../ChargesTable";
+import EmptyContent from "../EmptyContent";
 
-function ChargesCard({ chargeTitle, bgIndexColor, indexColor, indexNumber }) {
+function ChargesCard({
+  chargeTitle,
+  bgIndexColor,
+  indexColor,
+  indexNumber,
+  chargeTableContent,
+}) {
   return (
     <Box
       borderRadius="32px"
@@ -45,7 +52,11 @@ function ChargesCard({ chargeTitle, bgIndexColor, indexColor, indexNumber }) {
           </Typography>
         </Box>
       </Stack>
-      <ChargesTable />
+      {chargeTableContent.length === 0 ? (
+        <EmptyContent />
+      ) : (
+        <ChargesTable chargeContent={chargeTableContent} />
+      )}
       <Box>
         <Typography
           textAlign="center"

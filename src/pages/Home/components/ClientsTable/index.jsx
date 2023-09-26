@@ -6,23 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-function createData(name, client_id, cpf) {
-  return { name, client_id, cpf };
-}
-
-const rows = [
-  createData("Cameron Williamson", 223456787, "041.477.456-56"),
-  createData("Savannah Nguyen", 223456781, "041.477.456-56"),
-  createData("Darlene Robertson", 223456781, "041.477.456-56"),
-  createData("Marvin McKinney", 223456787, "041.477.456-56"),
-];
-
-export default function ClientsTable() {
+export default function ClientsTable({ clientsContent }) {
   return (
     <TableContainer
       component={Box}
       sx={{
         overflow: "hidden",
+        minHeight: "270px",
       }}
     >
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
@@ -63,9 +53,9 @@ export default function ClientsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {clientsContent.map((client) => (
             <TableRow
-              key={row.name}
+              key={client.id}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
@@ -77,7 +67,7 @@ export default function ClientsTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.name}
+                {client.name}
               </TableCell>
               <TableCell
                 align="left"
@@ -85,7 +75,7 @@ export default function ClientsTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row["client_id"]}
+                {client.id}
               </TableCell>
               <TableCell
                 align="left"
@@ -93,7 +83,7 @@ export default function ClientsTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.cpf}
+                {client.cpf}
               </TableCell>
             </TableRow>
           ))}

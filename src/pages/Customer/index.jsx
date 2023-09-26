@@ -1,37 +1,42 @@
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Stack } from "@mui/material";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
+import useGlobal from "../../hooks/useGlobal";
 import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
+  const { addClientSuccessAlert,
+    setAddClientSuccessAlert,
+    addChargeSuccessAlert,
+    setAddChargeSuccessAlert } = useGlobal();
   const [openAdd, setOpenAdd] = useState(false);
-  const [showAlert, setShowAlert] = useState(false)
 
   useEffect(() => {
-    if (showAlert) {
+    if (addClientSuccessAlert || addChargeSuccessAlert) {
       const timer = setTimeout(() => {
-        setShowAlert(false)
-      }, 5000)
+        setAddClientSuccessAlert(false);
+        setAddChargeSuccessAlert(false);
+      }, 5000);
 
       return () => {
-        clearTimeout(timer)
+        clearTimeout(timer);
       };
     }
-  }, [showAlert]);
+  }, [addClientSuccessAlert, addChargeSuccessAlert]);
 
   return (
     <>
       <Stack width="100%" direction="row">
         <SideNavigation />
-        {openAdd && <AddCustomer setOpenAdd={setOpenAdd} setShowAlert={setShowAlert} />}
+        {openAdd && <AddCustomer setOpenAdd={setOpenAdd} />}
         <Stack
           width="100%"
           sx={{
@@ -70,12 +75,14 @@ function Customer() {
             <CustomerTable />
           </div>
           <Stack position="relative">
-            {showAlert && (
+            {addClientSuccessAlert && (
               <Alert
                 iconMapping={{
-                  success: <CheckCircleOutlineIcon color="info" fontSize="inherit" />,
+                  success: (
+                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
+                  ),
                 }}
-                onClose={() => setShowAlert(false)}
+                onClose={() => setAddClientSuccessAlert(false)}
                 sx={{
                   position: "fixed",
                   bottom: "4.125rem",
@@ -95,9 +102,36 @@ function Customer() {
                 Cadastro concluído com sucesso
               </Alert>
             )}
+            {addChargeSuccessAlert && (
+              <Alert
+                iconMapping={{
+                  success: (
+                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
+                  ),
+                }}
+                onClose={() => setAddChargeSuccessAlert(false)}
+                sx={{
+                  position: "fixed",
+                  bottom: "4.125rem",
+                  right: "7rem",
+
+                  width: "20.625rem",
+                  height: "3.375rem",
+                  paddingTop: "9px",
+
+                  fontFamily: "var(--font-subtitle)",
+                  color: "var(--blue-700)",
+
+                  borderRadius: "10px",
+                  backgroundColor: "var(--blue-300)",
+                }}
+              >
+                Cobrança cadastrada com sucesso
+              </Alert>
+            )}
           </Stack>
         </Stack>
-      </Stack >
+      </Stack>
     </>
   );
 }

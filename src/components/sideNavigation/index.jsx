@@ -1,7 +1,5 @@
 import { Stack, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import chargesIcon from "../../assets/icons/charge.svg";
-import IconMenu from "../IconMenu";
 import "./style.css";
 
 function LateralMenu() {
@@ -26,7 +24,7 @@ function LateralMenu() {
         <Stack
           alignItems="center"
           sx={{
-            width: "100%",
+            width: "108px",
             padding: "20px 0 4px 0",
             color: "inherit",
           }}
@@ -72,7 +70,7 @@ function LateralMenu() {
         <Stack
           alignItems="center"
           sx={{
-            width: "100%",
+            width: "108px",
             padding: "20px 0 4px 0",
             color: "inherit",
           }}
@@ -123,7 +121,52 @@ function LateralMenu() {
           </Typography>
         </Stack>
       </NavLink>
-      <IconMenu icon={chargesIcon} name="Cobranças" />
+      <NavLink
+        to="/charge"
+        className={({ isActive }) => (isActive ? "link-active" : "link")}
+      >
+        <Stack
+          alignItems="center"
+          sx={{
+            width: "108px",
+            padding: "20px 0 4px 0",
+            color: "inherit",
+          }}
+        >
+          <svg
+            className="navicon"
+            width="49"
+            height="48"
+            viewBox="0 0 49 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 38.5H33C35.2092 38.5 37 36.7092 37 34.5V18L28.5 9.5H16C13.7909 9.5 12 11.2909 12 13.5V34.5C12 36.7092 13.7909 38.5 16 38.5Z"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M36.5 18.5H28V10"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <Typography
+            content="p"
+            sx={{
+              fontSize: "var(--subtitle)",
+              fontFamily: "var(--font-subtitle)",
+              fontWeight: "700",
+              color: "inherit",
+            }}
+          >
+            Cobranças
+          </Typography>
+        </Stack>
+      </NavLink>
     </Stack>
   );
 }

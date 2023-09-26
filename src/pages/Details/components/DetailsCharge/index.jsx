@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,11 +9,9 @@ import { format } from "date-fns";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
 import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
-import useGlobal from "../../../../hooks/useGlobal";
-import ChargeType from "../ChargeType";
+import ChargeType from "../../../Charge/components/ChargeType";
 
-function ChargeTable() {
-  const { charges } = useGlobal();
+function DetailsCharge({ setOpenCharge, detailsCharge }) {
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
 
@@ -35,9 +33,33 @@ function ChargeTable() {
         borderRadius: "40px",
         maxWidth: "90%",
         marginLeft: "2rem",
-        minHeight: "640px",
       }}
     >
+      <Stack direction="row" padding="19px 16px" justifyContent="space-between">
+        <Typography
+          textAlign="center"
+          component="p"
+          color="var(--gray-700)"
+          fontWeight="700"
+          fontFamily="var(--font-title)"
+          fontSize="var(--title-s)"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          Cobranças do Cliente
+        </Typography>
+        <Box padding="0 18px" borderRadius="8px">
+          <button
+            className="details__charge-button"
+            onClick={() => setOpenCharge(true)}
+          >
+            + Nova Cobrança
+          </button>
+        </Box>
+      </Stack>
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -120,13 +142,77 @@ function ChargeTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {charges.map((charge) => (
+          {detailsCharge === "" ? (
+            <Box>Loading...</Box>
+          ) : (
+            detailsCharge.map((charge) => (
+              <TableRow
+                key={charge.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {charge["customer_name"]}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {charge.id}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {moneyMask(charge.value.toString())}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  <ChargeType type={charge.status} />
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {charge.description}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <img src={ChargeEdit} alt="Cobrança" />
+                  <img src={ChargeDelete} alt="Cobrança" />
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+          {/* {detailsCharge.map((charge) => (
             <TableRow
               key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {charge["costumer_name"]}
+                {charge["customer_name"]}
               </TableCell>
               <TableCell
                 align="left"
@@ -158,7 +244,7 @@ function ChargeTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                <ChargeType type={charge.status} />
+                <ChargeType type={row.status} />
               </TableCell>
               <TableCell
                 align="left"
@@ -179,11 +265,11 @@ function ChargeTable() {
                 <img src={ChargeDelete} alt="Cobrança" />
               </TableCell>
             </TableRow>
-          ))}
+          ))} */}
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
 
-export default ChargeTable;
+export default DetailsCharge;

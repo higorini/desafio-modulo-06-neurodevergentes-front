@@ -4,19 +4,89 @@ import {
   InputLabel,
   Stack,
   TextField,
-  Typography,
-  OutlinedInput,
+  Typography
 } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import InputAdornment from "@mui/material/InputAdornment";
+import { format } from 'date-fns';
+import { useState } from "react";
+import ChargeIcon from "../../assets/icons/charge.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
-import ClientIcon from "../../assets/icons/clients.svg";
+import useGlobal from "../../hooks/useGlobal";
+import { addCharge } from "../../services";
 
-function AddCharge({ setOpenCharge }) {
+function AddCharge({ setOpenCharge, selectedClientId, selectedClientName }) {
+  const { setAddChargeSuccessAlert } = useGlobal();
+  const [valueInput, setValueInput] = useState({
+    costumer_name: selectedClientName,
+    description: "",
+    value: "",
+    status: "paga",
+    charge_date: ""
+  })
+
+  const [errorMsg, setErrorMsg] = useState({
+    description: "",
+    value: "",
+    status: "",
+    charge_date: "",
+  });
+
+  function handleInput(e) {
+    const valueInputEvent = e.target.value;
+    const nameInputEvent = e.target.name;
+    setValueInput((prevValue) => ({
+      ...prevValue,
+      [nameInputEvent]: valueInputEvent,
+    }));
+  }
+
+  function handleRadioChange(e) {
+    const valueInputEvent = e.target.value;
+    setValueInput((prevValue) => ({
+      ...prevValue,
+      status: valueInputEvent,
+    }));
+  }
+
+  const valorInputCheck = () => {
+    let check = false
+    for (let value in valueInput) {
+      if (valueInput.hasOwnProperty(value) && !valueInput[value]) {
+        setErrorMsg((prevValue) => ({
+          ...prevValue,
+          [value]: "Preencha todos os campos.",
+        }));
+        check = true
+      }
+    }
+    return check
+  }
+
+  async function handleSendForm() {
+    console.log(valueInput)
+
+    if (valorInputCheck()) {
+      return
+    }
+
+    const formattedDate = format(new Date(valueInput.charge_date), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+    const user = {
+      costumer_name: valueInput.costumer_name,
+      description: valueInput.description,
+      value: valueInput.value,
+      status: valueInput.status,
+      charge_date: formattedDate
+    };
+
+    const response = await addCharge(user, selectedClientId);
+
+    setOpenCharge(false)
+    setAddChargeSuccessAlert(true)
+  }
+
   return (
     <Stack
       alignItems="center"
@@ -51,8 +121,8 @@ function AddCharge({ setOpenCharge }) {
             marginBottom: "8px",
           }}
         >
-          <img src={ClientIcon} />
-          Cadastro do Cliente
+          <img src={ChargeIcon} />
+          Cadastro de Cobrança
         </Typography>
         <Box
           onClick={() => setOpenCharge(false)}
@@ -80,8 +150,13 @@ function AddCharge({ setOpenCharge }) {
               </InputLabel>
               <TextField
                 id="clientName"
+                name="costumer_name"
                 variant="outlined"
                 placeholder="Digite o nome"
+                error={!!errorMsg.costumer_name}
+                helperText={errorMsg.costumer_name}
+                value={valueInput.costumer_name}
+                onChange={handleInput}
                 sx={{
                   width: "487px",
                   "input:first-of-type": {
@@ -105,8 +180,14 @@ function AddCharge({ setOpenCharge }) {
                 Descrição*
               </InputLabel>
               <TextField
+                name="description"
                 variant="outlined"
                 placeholder="Digite a descrição"
+                error={!!errorMsg.description}
+                helperText={errorMsg.description}
+                value={valueInput.description}
+                onChange={handleInput}
+                multiline
                 sx={{
                   width: "485px",
                   "input:first-of-type": {
@@ -133,8 +214,14 @@ function AddCharge({ setOpenCharge }) {
                 </InputLabel>
                 <TextField
                   id="expireDate"
+                  name="charge_date"
                   variant="outlined"
                   placeholder="Data de Vencimento"
+                  error={!!errorMsg.charge_date}
+                  helperText={errorMsg.charge_date}
+                  value={valueInput.charge_date}
+                  type="date"
+                  onChange={handleInput}
                   sx={{
                     width: "235px",
                     "input:first-of-type": {
@@ -147,7 +234,7 @@ function AddCharge({ setOpenCharge }) {
               </Stack>
               <Stack direction="column">
                 <InputLabel
-                  htmlFor="clientTelefone"
+                  htmlFor="value"
                   sx={{
                     fontSize: "var(--body-s)",
                     fontFamily: "var(--font-body)",
@@ -157,12 +244,14 @@ function AddCharge({ setOpenCharge }) {
                 >
                   Valor*
                 </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-amount"
-                  startAdornment={
-                    <InputAdornment position="start">R$</InputAdornment>
-                  }
+                <TextField
+                  id="value"
+                  name="value"
                   placeholder="Digite o valor"
+                  error={!!errorMsg.value}
+                  helperText={errorMsg.value}
+                  value={valueInput.value}
+                  onChange={handleInput}
                   sx={{
                     width: "224px",
                     "input:first-of-type": {
@@ -194,6 +283,7 @@ function AddCharge({ setOpenCharge }) {
                 Status*
               </InputLabel>
               <RadioGroup
+                defaultValue="paga"
                 sx={{
                   gap: "0.5rem",
                   marginLeft: "0.5rem",
@@ -201,9 +291,10 @@ function AddCharge({ setOpenCharge }) {
                 }}
               >
                 <FormControlLabel
-                  value="paid"
+                  value="paga"
                   control={<Radio />}
                   label="Cobrança Paga"
+                  onChange={handleRadioChange}
                   sx={{
                     fontSize: "var(--body-s)",
                     fontFamily: "var(--font-body)",
@@ -214,9 +305,10 @@ function AddCharge({ setOpenCharge }) {
                   }}
                 />
                 <FormControlLabel
-                  value="pending"
+                  value="pendente"
                   control={<Radio />}
                   label="Cobrança Pendente"
+                  onChange={handleRadioChange}
                   sx={{
                     fontSize: "var(--body-s)",
                     fontFamily: "var(--font-body)",
@@ -258,6 +350,7 @@ function AddCharge({ setOpenCharge }) {
               </Button>
               <Button
                 variant="contained"
+                onClick={handleSendForm}
                 sx={{
                   textTransform: "capitalize",
                   width: "231.5px",

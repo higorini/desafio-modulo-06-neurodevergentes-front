@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,47 +5,24 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import ClientOrder from "../../../../assets/icons/clientIcons/clientOrder.svg";
+import { useState } from "react";
 import ClientCharge from "../../../../assets/icons/clientIcons/clientCharge.svg";
+import ClientOrder from "../../../../assets/icons/clientIcons/clientOrder.svg";
 import AddCharge from "../../../../components/ChargeModal";
-
-function createData(client, cpf, email, number, status) {
-  return { client, cpf, email, number, status };
-}
-
-const rows = [
-  createData(
-    "Sara da Silva",
-    "054 365 255 87",
-    "sarasilva@cubos.io",
-    "71 9 9462 8654",
-    false
-  ),
-  createData(
-    "Camerom Williamson",
-    "054 365 255 87",
-    "cameronw@cubos.io",
-    "71 9 9962 8658",
-    false
-  ),
-  createData(
-    "Savannah Nguyen",
-    "054 365 255 87",
-    "snguyen@cubos.io",
-    "71 9 9762 8658",
-    false
-  ),
-  createData(
-    "Darlene Robertson",
-    "054 365 255 87",
-    "darlener@cubos.io",
-    "71 9 9562 8653",
-    false
-  )
-];
+import { useNavigate } from "react-router-dom";
+import useGlobal from "../../../../hooks/useGlobal";
 
 function CustomerTable() {
+  const navigateTo = useNavigate()
   const [openCharge, setOpenCharge] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [selectedClientName, setSelectedClientName] = useState("");
+  const { clients } = useGlobal();
+
+  function handleClickCustomer(e) {
+    navigateTo(`../customer/${e}`);
+  }
+
 
   return (
     <TableContainer
@@ -58,9 +34,13 @@ function CustomerTable() {
         borderRadius: "40px",
         maxWidth: "90%",
         marginLeft: "2rem",
+        minHeight: "600px",
       }}
     >
-      {openCharge && <AddCharge setOpenCharge={setOpenCharge} />}
+      {openCharge && <AddCharge
+        setOpenCharge={setOpenCharge}
+        selectedClientId={selectedClientId}
+        selectedClientName={selectedClientName} />}
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -134,13 +114,14 @@ function CustomerTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {clients.map((client) => (
             <TableRow
-              key={row.client}
+              onClick={() => handleClickCustomer(client.id)}
+              key={client.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.client}
+                {client.name}
               </TableCell>
               <TableCell
                 align="left"
@@ -148,7 +129,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.cpf}
+                {client.cpf}
               </TableCell>
               <TableCell
                 align="left"
@@ -156,7 +137,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.email}
+                {client.email}
               </TableCell>
               <TableCell
                 align="left"
@@ -164,7 +145,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.number}
+                {client.phone}
               </TableCell>
               <TableCell
                 align="left"
@@ -172,7 +153,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.status ? (
+                {client.status === "Em dia" ? (
                   <Box
                     borderRadius="8px"
                     sx={{
@@ -217,10 +198,16 @@ function CustomerTable() {
                 }}
               >
                 <img
+                  id="btn"
                   src={ClientCharge}
                   alt="Cobrança"
                   className="customar__table-charge"
-                  onClick={setOpenCharge}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setOpenCharge(true);
+                    setSelectedClientId(client.id);
+                    setSelectedClientName(client.name)
+                  }}
                 />
               </TableCell>
             </TableRow>

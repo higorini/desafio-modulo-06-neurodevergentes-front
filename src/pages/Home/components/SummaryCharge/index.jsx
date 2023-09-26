@@ -1,6 +1,16 @@
 import { Box, Stack, Typography } from "@mui/material";
 
 function SummaryCharge({ imageSrc, summaryText, summaryValue, bgColor }) {
+  const moneyMask = (value) => {
+    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
+
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(value) / 100
+    );
+
+    return "R$ " + result;
+  };
   return (
     <Stack
       alignItems="center"
@@ -34,7 +44,7 @@ function SummaryCharge({ imageSrc, summaryText, summaryValue, bgColor }) {
             fontWeight: "700",
           }}
         >
-          {summaryValue}
+          {moneyMask(summaryValue.toString())}
         </Typography>
       </Box>
     </Stack>

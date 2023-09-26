@@ -41,7 +41,7 @@ const rows = [
   ),
 ];
 
-function DetailsCharge() {
+function DetailsCharge({ setOpenCharge }) {
   return (
     <TableContainer
       component={Box}
@@ -71,7 +71,11 @@ function DetailsCharge() {
           Cobranças do Cliente
         </Typography>
         <Box padding="0 18px" borderRadius="8px">
-          <button className="details__charge-button">+ Nova Cobrança</button>
+          <button
+            className="details__charge-button"
+            onClick={() => setOpenCharge(true)} >
+            + Nova Cobrança
+          </button>
         </Box>
       </Stack>
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">

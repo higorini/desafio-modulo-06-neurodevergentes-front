@@ -9,14 +9,20 @@ import { useState } from "react";
 import ClientCharge from "../../../../assets/icons/clientIcons/clientCharge.svg";
 import ClientOrder from "../../../../assets/icons/clientIcons/clientOrder.svg";
 import AddCharge from "../../../../components/ChargeModal";
-
+import { useNavigate } from "react-router-dom";
 import useGlobal from "../../../../hooks/useGlobal";
 
 function CustomerTable() {
+  const navigateTo = useNavigate()
   const [openCharge, setOpenCharge] = useState(false);
   const [selectedClientId, setSelectedClientId] = useState("");
   const [selectedClientName, setSelectedClientName] = useState("");
   const { clients } = useGlobal();
+
+  function handleClickCustomer(e) {
+    navigateTo(`../customer/${e}`);
+  }
+
 
   return (
     <TableContainer
@@ -110,6 +116,7 @@ function CustomerTable() {
         <TableBody>
           {clients.map((client) => (
             <TableRow
+              onClick={() => handleClickCustomer(client.id)}
               key={client.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
@@ -191,10 +198,12 @@ function CustomerTable() {
                 }}
               >
                 <img
+                  id="btn"
                   src={ClientCharge}
                   alt="Cobrança"
                   className="customar__table-charge"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation()
                     setOpenCharge(true);
                     setSelectedClientId(client.id);
                     setSelectedClientName(client.name)

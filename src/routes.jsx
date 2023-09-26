@@ -29,7 +29,8 @@ function AllRoutes() {
         <Route path="/home" element={<Home />} />
         <Route path="/customer" element={<Customer />} />
         <Route path="/charge" element={<Charge />} />
-        <Route path="/details" element={<Details />} />
+        <Route path="/customer/:id" element={<Details />} />
+
       </Route>
 
       <Route path="/sign-up" element={<SignUp />} />

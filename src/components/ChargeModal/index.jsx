@@ -65,6 +65,8 @@ function AddCharge({ setOpenCharge, selectedClientId, selectedClientName }) {
   }
 
   async function handleSendForm() {
+    console.log(valueInput)
+
     if (valorInputCheck()) {
       return
     }

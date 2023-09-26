@@ -6,6 +6,11 @@ function useGlobalProvider() {
   const [defaultingClients, setDefaultingClients] = useState([]);
   const [loyalClients, setLoyalClients] = useState([]);
 
+  const [charges, setCharges] = useState([]);
+  const [paidCharge, setPaidCharge] = useState([]);
+  const [pendingCharge, setPendingCharge] = useState([]);
+  const [overdueCharge, setOverdueCharge] = useState([]);
+
   const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
   const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false);
 
@@ -35,7 +40,22 @@ function useGlobalProvider() {
     async function loadCharges() {
       try {
         const response = await listCharges();
-        console.log(response);
+        setCharges(response);
+        setPaidCharge(
+          response.filter((charge) => {
+            return charge.status === "paga";
+          })
+        );
+        setPendingCharge(
+          response.filter((charge) => {
+            return charge.status === "pendente";
+          })
+        );
+        setOverdueCharge(
+          response.filter((charge) => {
+            return charge.status === "vencida";
+          })
+        );
       } catch (erro) {
         return erro;
       }
@@ -50,7 +70,12 @@ function useGlobalProvider() {
     setAddClientSuccessAlert,
     loyalClients,
     defaultingClients,
+    charges,
+    setCharges,
+    paidCharge,
+    pendingCharge,
     addChargeSuccessAlert,
+    overdueCharge,
     setAddChargeSuccessAlert,
   };
 }

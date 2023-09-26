@@ -14,7 +14,15 @@ import useGlobal from "../../hooks/useGlobal";
 import "./style.css";
 
 function Home() {
-  const { loyalClients, defaultingClients } = useGlobal();
+  const {
+    loyalClients,
+    defaultingClients,
+    overdueCharge,
+    paidCharge,
+    pendingCharge,
+  } = useGlobal();
+
+  console.log(paidCharge);
 
   return (
     <Stack width="100vw" direction="row">
@@ -59,7 +67,8 @@ function Home() {
               chargeTitle="Cobranças Pagas"
               bgIndexColor="var(--seagreen-100)"
               indexColor="var(--seagreen-700)"
-              indexNumber="10"
+              indexNumber={paidCharge.length.toString().padStart(2, "0")}
+              chargeTableContent={paidCharge.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -67,7 +76,8 @@ function Home() {
               chargeTitle="Cobranças Vencidas"
               bgIndexColor="var(--ruby-100)"
               indexColor="var(--ruby-700)"
-              indexNumber="08"
+              indexNumber={overdueCharge.length.toString().padStart(2, "0")}
+              chargeTableContent={overdueCharge.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -75,7 +85,8 @@ function Home() {
               chargeTitle="Cobranças Previstas"
               bgIndexColor="var(--gold-100)"
               indexColor="var(--gold-700)"
-              indexNumber="05"
+              indexNumber={pendingCharge.length.toString().padStart(2, "0")}
+              chargeTableContent={pendingCharge.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={6}>

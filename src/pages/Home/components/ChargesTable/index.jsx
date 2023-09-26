@@ -7,6 +7,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 export default function ChargesTable({ chargeContent }) {
+  const moneyMask = (value) => {
+    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
+
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(value) / 100
+    );
+
+    console.log(result);
+
+    return "R$ " + result;
+  };
+
   return (
     <TableContainer
       component={Box}
@@ -83,7 +96,7 @@ export default function ChargesTable({ chargeContent }) {
                   color: "var(--gray-600)",
                 }}
               >
-                {charge.value}
+                {moneyMask(charge.value.toString())}
               </TableCell>
             </TableRow>
           ))}

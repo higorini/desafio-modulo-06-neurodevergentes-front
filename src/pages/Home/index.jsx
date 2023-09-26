@@ -22,8 +22,6 @@ function Home() {
     pendingCharge,
   } = useGlobal();
 
-  console.log(paidCharge);
-
   return (
     <Stack width="100vw" direction="row">
       <SideNavigation />

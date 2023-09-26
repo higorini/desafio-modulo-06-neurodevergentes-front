@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { listCustumers } from "../services";
+import { listCharges, listCustumers } from "../services";
 
 function useGlobalProvider() {
   const [clients, setClients] = useState([]);
   const [defaultingClients, setDefaultingClients] = useState([]);
   const [loyalClients, setLoyalClients] = useState([]);
+
   const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
-  const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false)
+  const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false);
 
   useEffect(() => {
     async function loadClients() {
@@ -30,6 +31,18 @@ function useGlobalProvider() {
     loadClients();
   }, [addClientSuccessAlert]);
 
+  useEffect(() => {
+    async function loadCharges() {
+      try {
+        const response = await listCharges();
+        console.log(response);
+      } catch (erro) {
+        return erro;
+      }
+    }
+    loadCharges();
+  }, [addChargeSuccessAlert]);
+
   return {
     clients,
     setClients,
@@ -38,7 +51,7 @@ function useGlobalProvider() {
     loyalClients,
     defaultingClients,
     addChargeSuccessAlert,
-    setAddChargeSuccessAlert
+    setAddChargeSuccessAlert,
   };
 }
 export default useGlobalProvider;

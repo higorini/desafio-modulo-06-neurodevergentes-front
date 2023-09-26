@@ -5,91 +5,26 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
-import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
+import { format } from "date-fns";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
+import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
+import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
+import useGlobal from "../../../../hooks/useGlobal";
 import ChargeType from "../ChargeType";
 
-function createData(client, id, value, date, description, status) {
-  return { client, id, value, date, description, status };
-}
-
-const rows = [
-  createData(
-    "Sara da Silva",
-    "248563147",
-    "500,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Carlos Prado",
-    "148563148",
-    "400,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Lara Brito",
-    "648563148",
-    "300,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Soraia Neves",
-    "5348563145",
-    "900,00",
-    "26/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    3
-  ),
-  createData(
-    "Sara da Silva",
-    "458563145",
-    "2000,00",
-    "27/11/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    2
-  ),
-  createData(
-    "Carlos Prado",
-    "368563147",
-    "700,00",
-    "27/11/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    2
-  ),
-  createData(
-    "Lara Brito",
-    "488563147",
-    "500,00",
-    "27/11/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    2
-  ),
-  createData(
-    "Darlene Robertson",
-    "578563147",
-    "300,00",
-    "22/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    1
-  ),
-  createData(
-    "Cameron Williamson",
-    "598563147",
-    "1000,00",
-    "22/01/2021",
-    "lorem ipsum  lorem ipsum lorem ... ",
-    1
-  ),
-];
-
 function ChargeTable() {
+  const { charges } = useGlobal();
+  const moneyMask = (value) => {
+    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
+
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(value) / 100
+    );
+
+    return "R$ " + result;
+  };
+
   return (
     <TableContainer
       component={Box}
@@ -100,6 +35,7 @@ function ChargeTable() {
         borderRadius: "40px",
         maxWidth: "90%",
         marginLeft: "2rem",
+        minHeight: "640px",
       }}
     >
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
@@ -184,13 +120,13 @@ function ChargeTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {charges.map((charge) => (
             <TableRow
-              key={row.client}
+              key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.client}
+                {charge["costumer_name"]}
               </TableCell>
               <TableCell
                 align="left"
@@ -198,7 +134,7 @@ function ChargeTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.id}
+                {charge.id}
               </TableCell>
               <TableCell
                 align="left"
@@ -206,7 +142,7 @@ function ChargeTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                R$ {row.value}
+                {moneyMask(charge.value.toString())}
               </TableCell>
               <TableCell
                 align="left"
@@ -214,7 +150,7 @@ function ChargeTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.date}
+                {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
               </TableCell>
               <TableCell
                 align="left"
@@ -222,7 +158,7 @@ function ChargeTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                <ChargeType type={row.status} />
+                <ChargeType type={charge.status} />
               </TableCell>
               <TableCell
                 align="left"
@@ -230,7 +166,7 @@ function ChargeTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {row.description}
+                {charge.description}
               </TableCell>
               <TableCell
                 align="left"

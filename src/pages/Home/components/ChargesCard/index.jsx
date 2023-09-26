@@ -9,7 +9,6 @@ function ChargesCard({
   indexNumber,
   chargeTableContent,
 }) {
-  console.log(chargeTableContent);
   return (
     <Box
       borderRadius="32px"

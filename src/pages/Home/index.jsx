@@ -22,6 +22,14 @@ function Home() {
     pendingCharge,
   } = useGlobal();
 
+  const sumOfCharges = (chargeArray) => {
+    const sum = chargeArray.reduce((acc, object) => {
+      return acc + object.value;
+    }, 0);
+
+    return sum;
+  };
+
   return (
     <Stack width="100vw" direction="row">
       <SideNavigation />
@@ -40,7 +48,9 @@ function Home() {
             <SummaryCharge
               imageSrc={PaidBill}
               summaryText="Cobranças Pagas"
-              summaryValue="R$30.000"
+              summaryValue={
+                paidCharge.length === 0 ? 0 : sumOfCharges(paidCharge)
+              }
               bgColor="var(--seagreen-100)"
             />
           </Grid>
@@ -48,7 +58,9 @@ function Home() {
             <SummaryCharge
               imageSrc={OverdueBill}
               summaryText="Cobranças Vencidas"
-              summaryValue="R$7.000"
+              summaryValue={
+                overdueCharge.length === 0 ? 0 : sumOfCharges(overdueCharge)
+              }
               bgColor="var(--ruby-100)"
             />
           </Grid>
@@ -56,7 +68,9 @@ function Home() {
             <SummaryCharge
               imageSrc={PendingBill}
               summaryText="Cobranças Previstas"
-              summaryValue="R$10.000"
+              summaryValue={
+                pendingCharge.length === 0 ? 0 : sumOfCharges(pendingCharge)
+              }
               bgColor="var(--gold-100)"
             />
           </Grid>

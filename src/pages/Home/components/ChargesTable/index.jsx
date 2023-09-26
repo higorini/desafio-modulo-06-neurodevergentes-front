@@ -15,8 +15,6 @@ export default function ChargesTable({ chargeContent }) {
       parseFloat(value) / 100
     );
 
-    console.log(result);
-
     return "R$ " + result;
   };
 

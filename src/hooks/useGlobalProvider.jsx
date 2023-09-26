@@ -34,7 +34,7 @@ function useGlobalProvider() {
       }
     }
     loadClients();
-  }, [addClientSuccessAlert]);
+  }, [addClientSuccessAlert, addChargeSuccessAlert]);
 
   useEffect(() => {
     async function loadCharges() {

@@ -17,7 +17,7 @@ function Home() {
   const { loyalClients, defaultingClients } = useGlobal();
 
   return (
-    <Stack width="100%" maxWidth="1440px" direction="row">
+    <Stack width="100vw" direction="row">
       <SideNavigation />
       <Stack
         width="100%"
@@ -26,6 +26,7 @@ function Home() {
           backgroundColor: "var(--gray-100)",
         }}
         marginLeft="108px"
+        flex="1"
       >
         <Header headerTitle="Resumo das cobranças" pageTitle="" />
         <Grid container spacing={4}>

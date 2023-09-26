@@ -1,28 +1,29 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useState } from "react";
-import ClientCharge from "../../../../assets/icons/clientIcons/clientCharge.svg";
-import ClientOrder from "../../../../assets/icons/clientIcons/clientOrder.svg";
-import AddCharge from "../../../../components/ChargeModal";
-import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
+import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
+import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
+import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import useGlobal from "../../../../hooks/useGlobal";
+import ChargeType from "../ChargeType";
 
-function CustomerTable() {
-  const navigateTo = useNavigate()
-  const [openCharge, setOpenCharge] = useState(false);
-  const [selectedClientId, setSelectedClientId] = useState("");
-  const [selectedClientName, setSelectedClientName] = useState("");
-  const { clients } = useGlobal();
+function ChargeTable() {
+  const { charges } = useGlobal();
+  const moneyMask = (value) => {
+    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
 
-  function handleClickCustomer(e) {
-    navigateTo(`../customer/${e}`);
-  }
+    const options = { minimumFractionDigits: 2 };
+    const result = new Intl.NumberFormat("pt-BR", options).format(
+      parseFloat(value) / 100
+    );
 
+    return "R$ " + result;
+  };
 
   return (
     <TableContainer
@@ -34,26 +35,21 @@ function CustomerTable() {
         borderRadius: "40px",
         maxWidth: "90%",
         marginLeft: "2rem",
-        minHeight: "600px",
+        minHeight: "640px",
       }}
     >
-      {openCharge && <AddCharge
-        setOpenCharge={setOpenCharge}
-        selectedClientId={selectedClientId}
-        selectedClientName={selectedClientName} />}
       <Table sx={{ minWidth: "100%" }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell
               sx={{
-                display: "flex",
                 color: "var(--gray-700)",
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
               }}
             >
-              <img src={ClientOrder} alt="Cobrança" />
+              <img src={ChargeOrder} alt="Cobrança" />
               Cliente
             </TableCell>
             <TableCell
@@ -65,7 +61,8 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              CPF
+              <img src={ChargeOrder} alt="Cobrança" />
+              ID Cob.
             </TableCell>
             <TableCell
               align="left"
@@ -76,7 +73,7 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              E-mail
+              Valor
             </TableCell>
             <TableCell
               align="left"
@@ -87,7 +84,7 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              Telefone
+              Data de venc.
             </TableCell>
             <TableCell
               align="left"
@@ -109,19 +106,27 @@ function CustomerTable() {
                 fontSize: "var(--subtitle)",
               }}
             >
-              Criar Cobrança
+              Descrição
             </TableCell>
+            <TableCell
+              align="left"
+              sx={{
+                color: "var(--gray-700)",
+                fontFamily: "var(--font-body)",
+                fontWeight: "700",
+                fontSize: "var(--subtitle)",
+              }}
+            ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {clients.map((client) => (
+          {charges.map((charge) => (
             <TableRow
-              onClick={() => handleClickCustomer(client.id)}
-              key={client.id}
+              key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {client.name}
+                {charge["costumer_name"]}
               </TableCell>
               <TableCell
                 align="left"
@@ -129,7 +134,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {client.cpf}
+                {charge.id}
               </TableCell>
               <TableCell
                 align="left"
@@ -137,7 +142,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {client.email}
+                {moneyMask(charge.value.toString())}
               </TableCell>
               <TableCell
                 align="left"
@@ -145,7 +150,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {client.phone}
+                {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
               </TableCell>
               <TableCell
                 align="left"
@@ -153,43 +158,7 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                {client.status === "Em dia" ? (
-                  <Box
-                    borderRadius="8px"
-                    sx={{
-                      backgroundColor: "var(--seagreen-100)",
-                    }}
-                  >
-                    <Typography
-                      textAlign="center"
-                      component="p"
-                      color="var(--seagreen-700)"
-                      fontWeight="600"
-                      fontFamily="var(--font-body)"
-                      fontSize="var(--title-xs)"
-                    >
-                      Em dia
-                    </Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    borderRadius="8px"
-                    sx={{
-                      backgroundColor: "var(--ruby-100)",
-                    }}
-                  >
-                    <Typography
-                      textAlign="center"
-                      component="p"
-                      color="var(--ruby-700)"
-                      fontWeight="600"
-                      fontFamily="var(--font-body)"
-                      fontSize="var(--title-xs)"
-                    >
-                      Inadimplente
-                    </Typography>
-                  </Box>
-                )}
+                <ChargeType type={charge.status} />
               </TableCell>
               <TableCell
                 align="left"
@@ -197,18 +166,17 @@ function CustomerTable() {
                   color: "var(--gray-600)",
                 }}
               >
-                <img
-                  id="btn"
-                  src={ClientCharge}
-                  alt="Cobrança"
-                  className="customar__table-charge"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setOpenCharge(true);
-                    setSelectedClientId(client.id);
-                    setSelectedClientName(client.name)
-                  }}
-                />
+                {charge.description}
+              </TableCell>
+              <TableCell
+                align="left"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                }}
+              >
+                <img src={ChargeEdit} alt="Cobrança" />
+                <img src={ChargeDelete} alt="Cobrança" />
               </TableCell>
             </TableRow>
           ))}
@@ -218,4 +186,4 @@ function CustomerTable() {
   );
 }
 
-export default CustomerTable;
+export default ChargeTable;

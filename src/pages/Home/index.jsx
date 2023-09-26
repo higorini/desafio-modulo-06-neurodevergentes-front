@@ -10,17 +10,28 @@ import ChargesCard from "./components/ChargesCard";
 import ClientsCard from "./components/ClientsCard";
 import SummaryCharge from "./components/SummaryCharge";
 
-import { useState } from "react";
-
-import EditUserModal from "../../components/EditUserModal";
+import useGlobal from "../../hooks/useGlobal";
 import "./style.css";
 
 function Home() {
-  const [openModal, setOpenModal] = useState(false);
+  const {
+    loyalClients,
+    defaultingClients,
+    overdueCharge,
+    paidCharge,
+    pendingCharge,
+  } = useGlobal();
+
+  const sumOfCharges = (chargeArray) => {
+    const sum = chargeArray.reduce((acc, object) => {
+      return acc + object.value;
+    }, 0);
+
+    return sum;
+  };
 
   return (
-    <Stack width="100%" maxWidth="1440px" direction="row">
-      {openModal && <EditUserModal setOpenModal={setOpenModal} />}
+    <Stack width="100vw" direction="row">
       <SideNavigation />
       <Stack
         width="100%"
@@ -29,19 +40,17 @@ function Home() {
           backgroundColor: "var(--gray-100)",
         }}
         marginLeft="108px"
+        flex="1"
       >
-        <Header
-          userName="Lorena"
-          headerTitle="Resumo das contas"
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
+        <Header headerTitle="Resumo das cobranças" pageTitle="" />
         <Grid container spacing={4}>
           <Grid item xs={4}>
             <SummaryCharge
               imageSrc={PaidBill}
               summaryText="Cobranças Pagas"
-              summaryValue="R$30.000"
+              summaryValue={
+                paidCharge.length === 0 ? 0 : sumOfCharges(paidCharge)
+              }
               bgColor="var(--seagreen-100)"
             />
           </Grid>
@@ -49,7 +58,9 @@ function Home() {
             <SummaryCharge
               imageSrc={OverdueBill}
               summaryText="Cobranças Vencidas"
-              summaryValue="R$7.000"
+              summaryValue={
+                overdueCharge.length === 0 ? 0 : sumOfCharges(overdueCharge)
+              }
               bgColor="var(--ruby-100)"
             />
           </Grid>
@@ -57,7 +68,9 @@ function Home() {
             <SummaryCharge
               imageSrc={PendingBill}
               summaryText="Cobranças Previstas"
-              summaryValue="R$10.000"
+              summaryValue={
+                pendingCharge.length === 0 ? 0 : sumOfCharges(pendingCharge)
+              }
               bgColor="var(--gold-100)"
             />
           </Grid>
@@ -66,7 +79,8 @@ function Home() {
               chargeTitle="Cobranças Pagas"
               bgIndexColor="var(--seagreen-100)"
               indexColor="var(--seagreen-700)"
-              indexNumber="10"
+              indexNumber={paidCharge.length.toString().padStart(2, "0")}
+              chargeTableContent={paidCharge.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -74,7 +88,8 @@ function Home() {
               chargeTitle="Cobranças Vencidas"
               bgIndexColor="var(--ruby-100)"
               indexColor="var(--ruby-700)"
-              indexNumber="08"
+              indexNumber={overdueCharge.length.toString().padStart(2, "0")}
+              chargeTableContent={overdueCharge.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -82,7 +97,8 @@ function Home() {
               chargeTitle="Cobranças Previstas"
               bgIndexColor="var(--gold-100)"
               indexColor="var(--gold-700)"
-              indexNumber="05"
+              indexNumber={pendingCharge.length.toString().padStart(2, "0")}
+              chargeTableContent={pendingCharge.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -91,7 +107,8 @@ function Home() {
               clientTableTitle="Clientes em dia"
               bgIndexColor="var(--seagreen-100)"
               indexColor="var(--seagreen-700)"
-              indexNumber="10"
+              indexNumber={loyalClients.length.toString().padStart(2, "0")}
+              clientTableContent={loyalClients.slice(0, 4)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -100,7 +117,8 @@ function Home() {
               clientTableTitle="Clientes inadimplentes"
               bgIndexColor="var(--ruby-100)"
               indexColor="var(--ruby-700)"
-              indexNumber="08"
+              indexNumber={defaultingClients.length.toString().padStart(2, "0")}
+              clientTableContent={defaultingClients.slice(0, 4)}
             />
           </Grid>
         </Grid>

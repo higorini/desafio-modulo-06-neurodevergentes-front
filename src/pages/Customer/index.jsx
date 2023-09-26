@@ -1,5 +1,5 @@
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { Stack } from "@mui/material";
+import { Link, Stack } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
@@ -13,10 +13,12 @@ import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
-  const { addClientSuccessAlert,
+  const {
+    addClientSuccessAlert,
     setAddClientSuccessAlert,
     addChargeSuccessAlert,
-    setAddChargeSuccessAlert } = useGlobal();
+    setAddChargeSuccessAlert,
+  } = useGlobal();
   const [openAdd, setOpenAdd] = useState(false);
 
   useEffect(() => {
@@ -32,6 +34,21 @@ function Customer() {
     }
   }, [addClientSuccessAlert, addChargeSuccessAlert]);
 
+  const customerBreadcrubs = [
+    <Link
+      key="1"
+      color="#0e8750"
+      fontWeight="400"
+      href="/customer"
+      sx={{
+        fontFamily: "var(--font-body)",
+        fontSize: "var(--subtitle)",
+      }}
+    >
+      Clientes
+    </Link>,
+  ];
+
   return (
     <>
       <Stack width="100%" direction="row">
@@ -45,7 +62,7 @@ function Customer() {
           }}
           marginLeft="108px"
         >
-          <Header headerTitle="Clientes" />
+          <Header headerTitle="" breadcrumbs={customerBreadcrubs} />
 
           <div className="customer__header">
             <div className="customer__title">

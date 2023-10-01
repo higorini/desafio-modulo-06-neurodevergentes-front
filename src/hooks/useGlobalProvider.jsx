@@ -12,6 +12,7 @@ function useGlobalProvider() {
   const [overdueCharge, setOverdueCharge] = useState([]);
 
   const [selectedCharge, setSelectedCharge] = useState([]);
+  const [selectedClient, setSelectedClient] = useState([]);
 
   const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
   const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false);
@@ -82,6 +83,8 @@ function useGlobalProvider() {
     setAddChargeSuccessAlert,
     selectedCharge,
     setSelectedCharge,
+    selectedClient,
+    setSelectedClient,
   };
 }
 export default useGlobalProvider;

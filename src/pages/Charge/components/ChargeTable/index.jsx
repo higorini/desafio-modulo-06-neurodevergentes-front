@@ -13,7 +13,7 @@ import useGlobal from "../../../../hooks/useGlobal";
 import ChargeType from "../ChargeType";
 
 function ChargeTable() {
-  const { charges } = useGlobal();
+  const { charges, selectedCharge } = useGlobal();
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
 
@@ -120,7 +120,7 @@ function ChargeTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {charges.map((charge) => (
+          {selectedCharge.map((charge) => (
             <TableRow
               key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

@@ -1,8 +1,10 @@
 import { Stack, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import useGlobal from "../../hooks/useGlobal";
 import "./style.css";
 
 function LateralMenu() {
+  const { charges, setSelectedCharge } = useGlobal();
   return (
     <Stack
       direction="column"
@@ -124,6 +126,7 @@ function LateralMenu() {
       <NavLink
         to="/charge"
         className={({ isActive }) => (isActive ? "link-active" : "link")}
+        onClick={() => setSelectedCharge(charges)}
       >
         <Stack
           alignItems="center"

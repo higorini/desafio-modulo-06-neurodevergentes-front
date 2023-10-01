@@ -11,6 +11,8 @@ function useGlobalProvider() {
   const [pendingCharge, setPendingCharge] = useState([]);
   const [overdueCharge, setOverdueCharge] = useState([]);
 
+  const [selectedCharge, setSelectedCharge] = useState([]);
+
   const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
   const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false);
 
@@ -41,6 +43,7 @@ function useGlobalProvider() {
       try {
         const response = await listCharges();
         setCharges(response);
+        console.log(response);
         setPaidCharge(
           response.filter((charge) => {
             return charge.status === "paga";
@@ -77,6 +80,8 @@ function useGlobalProvider() {
     addChargeSuccessAlert,
     overdueCharge,
     setAddChargeSuccessAlert,
+    selectedCharge,
+    setSelectedCharge,
   };
 }
 export default useGlobalProvider;

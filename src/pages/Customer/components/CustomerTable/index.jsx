@@ -17,10 +17,51 @@ function CustomerTable() {
   const [openCharge, setOpenCharge] = useState(false);
   const [selectedClientId, setSelectedClientId] = useState("");
   const [selectedClientName, setSelectedClientName] = useState("");
-  const { clients, selectedClient } = useGlobal();
+  const { clients, selectedClient, setSelectedClient } = useGlobal();
+  const [orderChanger, setOrderChanger] = useState(false);
 
   function handleClickCustomer(e) {
     navigateTo(`../customer/${e}`);
+  }
+
+  function orderClientsByAlphabeticalOrder(order) {
+    if (order) {
+      const newOrderAsc = [];
+      const selectNames = selectedClient.map(({ name }) => {
+        return name;
+      });
+
+      const nameOrdered = selectNames.sort((a, b) => {
+        return a.localeCompare(b);
+      });
+
+      for (let i = 0; i < selectedClient.length; i++) {
+        const newClient = selectedClient.filter((client) => {
+          return client.name === nameOrdered[i];
+        });
+        newOrderAsc.push(newClient[0]);
+      }
+      setSelectedClient(newOrderAsc);
+    } else {
+      const newOrderDesc = [];
+      const selectNames = selectedClient.map(({ name }) => {
+        return name;
+      });
+
+      const nameOrdered = selectNames.sort((a, b) => {
+        return b.localeCompare(a);
+      });
+
+      for (let i = 0; i < selectedClient.length; i++) {
+        const newClient = selectedClient.filter((client) => {
+          return client.name === nameOrdered[i];
+        });
+        newOrderDesc.push(newClient[0]);
+      }
+      setSelectedClient(newOrderDesc);
+    }
+    console.log(selectedClient);
+    setOrderChanger(!orderChanger);
   }
 
   return (
@@ -53,7 +94,9 @@ function CustomerTable() {
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
+                cursor: "pointer",
               }}
+              onClick={() => orderClientsByAlphabeticalOrder(orderChanger)}
             >
               <img src={ClientOrder} alt="Cobrança" />
               Cliente

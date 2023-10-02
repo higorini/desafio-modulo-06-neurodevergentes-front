@@ -11,7 +11,7 @@ import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import ChargeType from "../../../Charge/components/ChargeType";
 
-function DetailsCharge({ setOpenCharge, detailsCharge }) {
+function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal }) {
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
 
@@ -191,7 +191,10 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
                   }}
                 >
                   <img src={ChargeEdit} alt="Cobrança" />
-                  <img src={ChargeDelete} alt="Cobrança" />
+                  <img
+                    onClick={() => setOpenDeleteChargeModal(true)}
+                    src={ChargeDelete}
+                    alt="Cobrança" />
                 </TableCell>
               </TableRow>
             ))

@@ -12,6 +12,8 @@ import { loadDetailsCustomer } from "../../services";
 import DetailsCharge from "./components/DetailsCharge";
 import DetailsClient from "./components/DetailsClient";
 import EditCustomerModal from "./components/EditCustomerModal";
+import DeleteChargeModal from "../../components/DeleteChargeModal";
+
 import "./style.css";
 
 function Details() {
@@ -22,6 +24,7 @@ function Details() {
     charges: "",
   });
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
   const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal();
 
   useEffect(() => {
@@ -43,7 +46,7 @@ function Details() {
       };
     }
     loadDataCustomer();
-  }, [openEditModal, setOpenCharge]);
+  }, [openEditModal, openDeleteChargeModal]);
 
   const customerDetailsBreadcrubs = [
     <Link
@@ -80,6 +83,12 @@ function Details() {
           }}
           marginLeft="108px"
         >
+          {openDeleteChargeModal && (
+            <DeleteChargeModal
+              setOpenDeleteChargeModal={setOpenDeleteChargeModal}
+            />
+          )}
+
           {openEditModal && (
             <EditCustomerModal
               setOpenEditModal={setOpenEditModal}
@@ -115,6 +124,7 @@ function Details() {
               <DetailsCharge
                 detailsCharge={dataClient.charges}
                 setOpenCharge={setOpenCharge}
+                setOpenDeleteChargeModal={setOpenDeleteChargeModal}
               />
             </div>
           </div>

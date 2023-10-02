@@ -30,9 +30,6 @@ function Details() {
       setDataClient((prevValue) => ({
         ...prevValue,
         personalData: response.personalData,
-      }));
-      setDataClient((prevValue) => ({
-        ...prevValue,
         charges: response.charges,
       }));
     }
@@ -46,7 +43,7 @@ function Details() {
       };
     }
     loadDataCustomer();
-  }, []);
+  }, [openEditModal, setOpenCharge]);
 
   const customerDetailsBreadcrubs = [
     <Link

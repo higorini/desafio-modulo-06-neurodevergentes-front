@@ -17,14 +17,13 @@ import useGlobal from "../../hooks/useGlobal";
 import { editCharge } from "../../services";
 
 function EditCharge({ setOpenEditChargeModal, chargeData, setEditChargeSuccessAlert }) {
-  const { customer_name, description, value, status, charge_date, id } = chargeData
+  const { costumer_name, description, value, status, charge_date, id } = chargeData
   const dateString = charge_date;
   const dateObject = new Date(dateString);
   const formattedDate = format(dateObject, "yyyy-MM-dd");
 
-  const { setAddChargeSuccessAlert } = useGlobal();
   const [valueInput, setValueInput] = useState({
-    costumer_name: customer_name,
+    costumer_name: costumer_name,
     description: description,
     value: value,
     status: "paga",

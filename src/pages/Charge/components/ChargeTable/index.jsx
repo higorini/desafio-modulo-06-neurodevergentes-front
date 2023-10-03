@@ -12,7 +12,7 @@ import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import useGlobal from "../../../../hooks/useGlobal";
 import ChargeType from "../ChargeType";
 
-function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus }) {
+function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus, setChargeData, setOpenEditChargeModal }) {
   const { charges, selectedCharge } = useGlobal();
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
@@ -188,7 +188,14 @@ function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus })
                   gap: "24px"
                 }}
               >
-                <img src={ChargeEdit} alt="Cobrança" />
+                <img
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setChargeData(charge)
+                    setOpenEditChargeModal(true)
+                  }}
+                  src={ChargeEdit}
+                  alt="Cobrança" />
                 <img
                   onClick={(e) => {
                     e.stopPropagation()

@@ -28,9 +28,9 @@ E os itens abaixo, que deverão ser preenchidos apenas após a finalização de 
 
 Estes Pull Requests (PRs) deverão ser criados a partir da branch principal do fork correspondente de vocês daquela stack tendo como destino o repositório base da stack do desafio.
 
-Ou seja, o Pull Request de **FRONTEND** deverá ser criado a partir do fork de vocês desse repositório aqui, com destino a este repositório aqui.
+Ou seja, o Pull Request de **BACKEND** deverá ser criado a partir do fork de vocês desse repositório aqui, com destino a este repositório aqui.
 
-E portanto o Pull Request de **BACKEND** deverá ser criado a partir do fork de vocês do repositório base de BACKEND desse desafio, com destino ao [repositório base de BACKEND desse desafio](https://github.com/cubos-academy/back-integral-m05-t11).
+E portanto o Pull Request de **FRONTEND** deverá ser criado a partir do fork de vocês do repositório base de FRONTEND desse desafio, com destino ao [repositório base de FRONTEND desse desafio](https://github.com/cubos-academy/front-integral-m05-t11).
 
 <b>[Figma Desafio M05 - Sprint 1](https://www.figma.com/file/Gpl5YlCj17jJ99dT3LqV6U/M05-SPRINT-01?node-id=410%3A47347)</b>
 
@@ -51,7 +51,7 @@ E portanto o Pull Request de **BACKEND** deverá ser criado a partir do fork de 
   - O cadastro deverá funcionar em formulário web que funcione em um navegador padrão
   - Para acessar este formulário de cadastro não deverá ser exigida autenticação
   - Os dados do cadastro deverão ser persistidos de maneira que possam ser consultados em qualquer momento no futuro até que sejam excluídos.
-  - O usuário poderá visualizar sua senha enquanto a escreve (Ex: Material UI Input Adornment https://mui.com/material-ui/react-text-field/
+  - O usuário poderá visualizar sua senha enquanto a escreve (Ex: Material UI Input Adornment https://v4.mui.com/pt/api/input-adornment/)
   - A senha do usuário deverá ser persistida utilizando algum algoritmo de criptografia confiável
 
 ---
@@ -361,3 +361,98 @@ E portanto o Pull Request de **BACKEND** deverá ser criado a partir do fork de 
 
 </details>
 
+</details>
+
+---
+
+<b>[Figma Desafio M05 - Sprint 3](https://www.figma.com/file/EsX2ltIJ6gSGFzXXCU1pQH/M05-SPRINT-03?node-id=410%3A47347)</b>
+
+<br>
+
+<details>
+<summary>3ª Sprint</summary>
+<br>
+
+<details>
+<summary><b>[Cobranças] Edição de cobranças</b></summary>
+<br>
+
+### `Na posição de usuário do sistema, desejo atualizar os dados de uma cobrança cadastrada.`
+
+- <b>Critérios de aceite</b>:
+  - Ao clicar no botão <b>"editar"</b> na tabela da listagem de cobranças ou na listagem de cobranças da página de detalhe do cliente, abrirá um modal para edição da cobrança.
+  - A atualização deverá funcionar em formulário web que funcione em um navegador padrão
+  - Ao abrir o formulário, os dados da cobrança deverão ser carregados nos respectivos campos
+  - Para acessar este formulário de cadastro será exigido autenticação.
+  - Os dados da atualização deverão ser persistidos de maneira que possam ser consultados em qualquer momento no futuro até que sejam excluídos.
+  - Na <b>atualização da cobrança</b>, poderá atualizar os respectivos dados (campos com <b>\*</b> são obrigatórios):
+    - Descrição (<b>\*</b>)
+    - Status (<b>\*</b>)
+    - Valor (<b>\*</b>)
+    - Vencimento (<b>\*</b>)
+  - Deverão ser informadas mensagens de erro em casos de:
+    - Campos obrigatórios passados em branco
+  - Após realizado a atualização com sucesso o usuário deverá receber uma mensagem de confirmação
+  </details>
+
+<details>
+<summary><b>[Cobranças] Exclusão de cobranças</b></summary>
+
+#### `Na posição de usuário do sistema, desejo excluir uma cobrança cadastrada.`
+
+- <b>Critérios de aceite</b>:
+  - Na tabela da página de <b>"listagem de cobranças"</b> ou na tabela da página de <b>"detalhes do cliente"</b> existe um botão <b>"excluir"</b> que ao clicar, irá abrir um modal para confirmação da exclusão.
+  - Só poderá excluir a cobrança, se:
+    - A cobrança estiver com status <b>pendente</b>
+    - A data de vencimento for <b>igual</b> ou <b>posterior a data atual</b>
+  - Cobranças com status <b>"pagas"</b>, não poderão ser apagadas
+  - Após realizada a exclusão com sucesso o usuário deverá receber uma <b>mensagem de confirmação</b> e a <b>cobrança excluída deverá ser removida da listagem</b>.
+
+</details>
+
+<details>
+<summary><b>[Cobranças] Detalhe da cobrança</b></summary>
+
+#### `Na posição de usuário do sistema, desejo atualizar os dados de uma cobrança cadastrada.`
+
+- <b>Critérios de aceite:</b>
+  - Ao clicar na <b>linha</b> referente a cobrança da tabela da listagem de cobranças ou na listagem de cobranças da <b>página de detalhe do cliente</b>, abrirá um modal com os detalhes das cobranças.
+  - Deve aparecer <b>todos os campos</b> da cobrança cadastrada
+  - O modal deve ter um <b>botão de fechar</b> o detalhe da cobrança
+
+</details>
+
+<details>
+<summary><b>[Cobranças/Clientes] Busca e ordenação</b></summary>
+<br>
+
+#### `Na posição de usuário do sistema, desejo buscar cobranças e clientes a partir de suas respectivas listagens.`
+
+- <b>Critérios de aceite</b>:
+  - Na listagem de cobranças deverá possibilitar a <b>ordenação dos registros</b> pelo <b>nome do cliente</b> ou <b>ID da Cobrança</b>
+  - Na <b>listagem de cobranças</b> deverá existir um <b>campo de busca</b> onde permitirá buscar cobranças pelos seguintes campos:
+    - Nome do cliente
+    - Id da cobrança
+  - Nas <b>listagens de clientes</b> deverá possibilitar a <b>ordenação</b> dos registros pelo <b>nome</b>
+  - Nas <b>listagens de clientes</b> deverá existir um <b>campo de busca</b> onde permitirá buscar clientes pelos seguintes campos:
+    - Nome do cliente
+    - CPF do cliente
+    - E-mail do cliente
+  - Em caso de não retornar <b>nenhum resultado</b> uma mensagem adequada deverá ser exibida.
+
+</details>
+
+<details>
+<summary><b>[Cobranças/Clientes] Botão "ver todos" - Home</b></summary>
+<br>
+
+#### `Na posição de usuário do sistema, desejo visualizar um relatório personalizado de cobranças e clientes.`
+
+- <b>Critérios de aceite</b>:
+  - A página deverá funcionar em um navegador web padrão.
+  - Apenas usuários <b>autenticados</b> deverão conseguir acessar esta página
+  - Em cada elemento dos cards <b>"Total Vencidas"</b>, <b>"Total Pagas"</b> e <b>"Total Prevista"</b>, deverá ter o somatório das contas de acordo com a sua categoria
+  - Em cada elemento dos cards da home, deverá exibir a <b>contagem de cobranças e clientes</b> de acordo com seus respectivos status
+  - Ao clicar no nome <b>"Ver Todos"</b> no card de <b>"clientes inadimplentes”</b> ou “clientes em dia", deverá ser redirecionado para a página clientes com a listagem dos clientes filtrados, por cada categoria.
+  - Ao clicar no nome <b>"Ver Todos"</b> no card de <b>"cobranças vencidas"</b> ou <b>cobranças previstas"</b> ou <b>"cobranças pagas"</b>, deverá ser redirecionado para a página cobranças com a listagem de todas as cobranças já filtrada por cada categoria.
+  </details>

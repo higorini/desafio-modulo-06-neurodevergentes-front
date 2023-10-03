@@ -14,6 +14,7 @@ import DetailsClient from "./components/DetailsClient";
 import EditCustomerModal from "./components/EditCustomerModal";
 import DeleteChargeModal from "../../components/DeleteChargeModal";
 import iconCicleX from "../../assets/icons/circleX.svg"
+import EditChargeModal from "../../components/ChargeModalEdit";
 import "./style.css";
 
 function Details() {
@@ -25,11 +26,14 @@ function Details() {
   });
   const [openEditModal, setOpenEditModal] = useState(false);
 
+  const [chargeData, setChargeData] = useState("")
+  const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
   const [chargeId, setChargeId] = useState("");
   const [chargeStatus, setChargeStatus] = useState("");
   const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false)
-  const [unsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
+  const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
   const [delSuccessAlert, setDelChargeSuccessAlert] = useState();
+  const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState();
 
   const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal();
 
@@ -106,6 +110,14 @@ function Details() {
             />
           )}
 
+          {openEditChargeModal && (
+            <EditChargeModal
+              setEditChargeSuccessAlert={setEditChargeSuccessAlert}
+              setOpenEditChargeModal={setOpenEditChargeModal}
+              chargeData={chargeData}
+            />
+          )}
+
           {openCharge && (
             <AddCharge
               setOpenCharge={setOpenCharge}
@@ -132,11 +144,13 @@ function Details() {
             </div>
             <div>
               <DetailsCharge
+                setChargeData={setChargeData}
                 setChargeStatus={setChargeStatus}
                 setChargeId={setChargeId}
                 detailsCharge={dataClient.charges}
-                setOpenCharge={setOpenCharge}
                 setOpenDeleteChargeModal={setOpenDeleteChargeModal}
+                setOpenCharge={setOpenCharge}
+                setOpenEditChargeModal={setOpenEditChargeModal}
               />
             </div>
           </div>
@@ -168,7 +182,34 @@ function Details() {
                 Cobrança cadastrada com sucesso
               </Alert>
             )}
-            {unsuccessfullyAlert && (
+            {delSuccessAlert && (
+              <Alert
+                iconMapping={{
+                  success: (
+                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
+                  ),
+                }}
+                onClose={() => setDelChargeSuccessAlert(false)}
+                sx={{
+                  position: "fixed",
+                  bottom: "4.125rem",
+                  right: "7rem",
+
+                  width: "20.625rem",
+                  height: "3.375rem",
+                  paddingTop: "9px",
+
+                  fontFamily: "var(--font-subtitle)",
+                  color: "var(--blue-700)",
+
+                  borderRadius: "10px",
+                  backgroundColor: "var(--blue-300)",
+                }}
+              >
+                Cobrança excluída com sucesso!
+              </Alert>
+            )}
+            {delUnsuccessfullyAlert && (
               <Alert
                 icon={<img src={iconCicleX} alt="icon fechar" />}
                 onClose={() => setDelUnsuccessfullyAlert(false)}
@@ -189,6 +230,33 @@ function Details() {
                 }}
               >
                 Esta cobrança não pode ser excluída!
+              </Alert>
+            )}
+            {editChargeSuccessAlert && (
+              <Alert
+                iconMapping={{
+                  success: (
+                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
+                  ),
+                }}
+                onClose={() => setEditChargeSuccessAlert(false)}
+                sx={{
+                  position: "fixed",
+                  bottom: "4.125rem",
+                  right: "7rem",
+
+                  width: "20.625rem",
+                  height: "3.375rem",
+                  paddingTop: "9px",
+
+                  fontFamily: "var(--font-subtitle)",
+                  color: "var(--blue-700)",
+
+                  borderRadius: "10px",
+                  backgroundColor: "var(--blue-300)",
+                }}
+              >
+                Cobrança editada com sucesso!
               </Alert>
             )}
           </Stack>

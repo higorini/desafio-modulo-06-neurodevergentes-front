@@ -15,7 +15,7 @@ function Charge() {
   const [chargeStatus, setChargeStatus] = useState("");
   const [delSuccessAlert, setDelChargeSuccessAlert] = useState();
   const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false)
-  const [unsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
+  const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
   const chargeBreadcrubs = [
     <Link
       key="1"
@@ -32,7 +32,7 @@ function Charge() {
   ];
 
   useEffect(() => {
-    if (delSuccessAlert || unsuccessfullyAlert) {
+    if (delSuccessAlert || delUnsuccessfullyAlert) {
       const timer = setTimeout(() => {
         setDelChargeSuccessAlert(false);
         setDelUnsuccessfullyAlert(false);
@@ -42,7 +42,7 @@ function Charge() {
         clearTimeout(timer);
       };
     }
-  }, [delSuccessAlert, unsuccessfullyAlert]);
+  }, [delSuccessAlert, delUnsuccessfullyAlert]);
 
   return (
     <>
@@ -121,7 +121,7 @@ function Charge() {
                 Cobrança excluída com sucesso!
               </Alert>
             )}
-            {unsuccessfullyAlert && (
+            {delUnsuccessfullyAlert && (
               <Alert
                 icon={<img src={iconCicleX} alt="icon fechar" />}
                 onClose={() => setDelUnsuccessfullyAlert(false)}

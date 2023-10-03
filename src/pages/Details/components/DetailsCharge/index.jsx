@@ -11,7 +11,15 @@ import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import ChargeType from "../../../Charge/components/ChargeType";
 
-function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal, setChargeStatus, setChargeId }) {
+function DetailsCharge({
+  setOpenCharge,
+  detailsCharge,
+  setOpenDeleteChargeModal,
+  setChargeStatus, setChargeId,
+  setChargeData,
+  setOpenEditChargeModal
+}) {
+
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
     const options = { minimumFractionDigits: 2 };
@@ -189,7 +197,14 @@ function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal,
                     justifyContent: "space-around",
                   }}
                 >
-                  <img src={ChargeEdit} alt="Cobrança" />
+                  <img
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setChargeData(charge)
+                      setOpenEditChargeModal(true)
+                    }}
+                    src={ChargeEdit}
+                    alt="Cobrança" />
                   <img
                     onClick={(e) => {
                       e.stopPropagation()
@@ -203,66 +218,6 @@ function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal,
               </TableRow>
             ))
           )}
-          {/* {detailsCharge.map((charge) => (
-            <TableRow
-              key={charge.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {charge["customer_name"]}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                {charge.id}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                {moneyMask(charge.value.toString())}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                <ChargeType type={row.status} />
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                {charge.description}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                }}
-              >
-                <img src={ChargeEdit} alt="Cobrança" />
-                <img src={ChargeDelete} alt="Cobrança" />
-              </TableCell>
-            </TableRow>
-          ))} */}
         </TableBody>
       </Table>
     </TableContainer >

@@ -127,6 +127,15 @@ export async function deleteCharge(chargeId) {
   }
 }
 
+export async function editCharge(chargeId, body) {
+  try {
+    const data = await api.put(`charge/${chargeId}/edit`, body, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
 export default (
   newUser,
   login,
@@ -136,4 +145,5 @@ export default (
   listCustumers,
   listCharges,
   loadDetailsCustomer,
-  deleteCharge);
+  deleteCharge,
+  editCharge);

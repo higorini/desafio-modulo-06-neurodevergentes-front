@@ -11,10 +11,9 @@ import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import ChargeType from "../../../Charge/components/ChargeType";
 
-function DetailsCharge({ setOpenCharge, detailsCharge }) {
+function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal, setChargeStatus, setChargeId }) {
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
-
     const options = { minimumFractionDigits: 2 };
     const result = new Intl.NumberFormat("pt-BR", options).format(
       parseFloat(value) / 100
@@ -64,17 +63,6 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
         <TableHead>
           <TableRow>
             <TableCell
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              <img src={ChargeOrder} alt="Cobrança" />
-              Cliente
-            </TableCell>
-            <TableCell
               align="left"
               sx={{
                 color: "var(--gray-700)",
@@ -95,7 +83,7 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
                 fontSize: "var(--subtitle)",
               }}
             >
-              Valor
+              Data de venc.
             </TableCell>
             <TableCell
               align="left"
@@ -106,7 +94,7 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
                 fontSize: "var(--subtitle)",
               }}
             >
-              Data de venc.
+              Valor
             </TableCell>
             <TableCell
               align="left"
@@ -150,9 +138,6 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
                 key={charge.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
-                  {charge["customer_name"]}
-                </TableCell>
                 <TableCell
                   align="left"
                   sx={{
@@ -160,14 +145,6 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
                   }}
                 >
                   {charge.id}
-                </TableCell>
-                <TableCell
-                  align="left"
-                  sx={{
-                    color: "var(--gray-600)",
-                  }}
-                >
-                  {moneyMask(charge.value.toString())}
                 </TableCell>
                 <TableCell
                   align="left"
@@ -183,11 +160,23 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
                     color: "var(--gray-600)",
                   }}
                 >
+                  {moneyMask(charge.value.toString())}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
                   <ChargeType type={charge.status} />
                 </TableCell>
                 <TableCell
                   align="left"
                   sx={{
+                    maxWidth: "21.75rem",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
                     color: "var(--gray-600)",
                   }}
                 >
@@ -201,7 +190,15 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
                   }}
                 >
                   <img src={ChargeEdit} alt="Cobrança" />
-                  <img src={ChargeDelete} alt="Cobrança" />
+                  <img
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setChargeStatus(charge.status)
+                      setChargeId(charge.id)
+                      setOpenDeleteChargeModal(true)
+                    }}
+                    src={ChargeDelete}
+                    alt="Cobrança" />
                 </TableCell>
               </TableRow>
             ))
@@ -268,7 +265,7 @@ function DetailsCharge({ setOpenCharge, detailsCharge }) {
           ))} */}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer >
   );
 }
 

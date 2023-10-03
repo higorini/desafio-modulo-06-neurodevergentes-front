@@ -12,6 +12,8 @@ import { loadDetailsCustomer } from "../../services";
 import DetailsCharge from "./components/DetailsCharge";
 import DetailsClient from "./components/DetailsClient";
 import EditCustomerModal from "./components/EditCustomerModal";
+import DeleteChargeModal from "../../components/DeleteChargeModal";
+import iconCicleX from "../../assets/icons/circleX.svg"
 import "./style.css";
 
 function Details() {
@@ -22,6 +24,13 @@ function Details() {
     charges: "",
   });
   const [openEditModal, setOpenEditModal] = useState(false);
+
+  const [chargeId, setChargeId] = useState("");
+  const [chargeStatus, setChargeStatus] = useState("");
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false)
+  const [unsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
+  const [delSuccessAlert, setDelChargeSuccessAlert] = useState();
+
   const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal();
 
   useEffect(() => {
@@ -30,9 +39,6 @@ function Details() {
       setDataClient((prevValue) => ({
         ...prevValue,
         personalData: response.personalData,
-      }));
-      setDataClient((prevValue) => ({
-        ...prevValue,
         charges: response.charges,
       }));
     }
@@ -46,7 +52,7 @@ function Details() {
       };
     }
     loadDataCustomer();
-  }, []);
+  }, [openEditModal, openDeleteChargeModal]);
 
   const customerDetailsBreadcrubs = [
     <Link
@@ -83,6 +89,16 @@ function Details() {
           }}
           marginLeft="108px"
         >
+          {openDeleteChargeModal && (
+            <DeleteChargeModal
+              setOpenDeleteChargeModal={setOpenDeleteChargeModal}
+              setDelUnsuccessfullyAlert={setDelUnsuccessfullyAlert}
+              setDelChargeSuccessAlert={setDelChargeSuccessAlert}
+              chargeStatus={chargeStatus}
+              chargeId={chargeId}
+            />
+          )}
+
           {openEditModal && (
             <EditCustomerModal
               setOpenEditModal={setOpenEditModal}
@@ -116,8 +132,11 @@ function Details() {
             </div>
             <div>
               <DetailsCharge
+                setChargeStatus={setChargeStatus}
+                setChargeId={setChargeId}
                 detailsCharge={dataClient.charges}
                 setOpenCharge={setOpenCharge}
+                setOpenDeleteChargeModal={setOpenDeleteChargeModal}
               />
             </div>
           </div>
@@ -147,6 +166,29 @@ function Details() {
                 }}
               >
                 Cobrança cadastrada com sucesso
+              </Alert>
+            )}
+            {unsuccessfullyAlert && (
+              <Alert
+                icon={<img src={iconCicleX} alt="icon fechar" />}
+                onClose={() => setDelUnsuccessfullyAlert(false)}
+                sx={{
+                  position: "fixed",
+                  bottom: "4.125rem",
+                  right: "7rem",
+
+                  width: "22.0625rem",
+                  height: "3.375rem",
+                  paddingTop: "9px",
+
+                  fontFamily: "var(--font-subtitle)",
+                  color: "var(--red-700)",
+
+                  borderRadius: "10px",
+                  backgroundColor: "var(--red-100)",
+                }}
+              >
+                Esta cobrança não pode ser excluída!
               </Alert>
             )}
           </Stack>

@@ -12,11 +12,10 @@ import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import useGlobal from "../../../../hooks/useGlobal";
 import ChargeType from "../ChargeType";
 
-function ChargeTable() {
+function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus }) {
   const { charges, selectedCharge } = useGlobal();
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
-
     const options = { minimumFractionDigits: 2 };
     const result = new Intl.NumberFormat("pt-BR", options).format(
       parseFloat(value) / 100
@@ -125,7 +124,13 @@ function ChargeTable() {
               key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row"
+                sx={{
+                  maxWidth: "8.375rem",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}>
                 {charge["costumer_name"]}
               </TableCell>
               <TableCell
@@ -139,6 +144,10 @@ function ChargeTable() {
               <TableCell
                 align="left"
                 sx={{
+                  maxWidth: "6.375 ",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
                   color: "var(--gray-600)",
                 }}
               >
@@ -163,6 +172,10 @@ function ChargeTable() {
               <TableCell
                 align="left"
                 sx={{
+                  maxWidth: "16rem",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
                   color: "var(--gray-600)",
                 }}
               >
@@ -172,17 +185,25 @@ function ChargeTable() {
                 align="left"
                 sx={{
                   display: "flex",
-                  justifyContent: "space-around",
+                  gap: "24px"
                 }}
               >
                 <img src={ChargeEdit} alt="Cobrança" />
-                <img src={ChargeDelete} alt="Cobrança" />
+                <img
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setOpenDeleteChargeModal(true)
+                    setChargeStatus(charge.status)
+                    setChargeId(charge.id)
+                  }}
+                  src={ChargeDelete}
+                  alt="Cobrança" />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer >
   );
 }
 

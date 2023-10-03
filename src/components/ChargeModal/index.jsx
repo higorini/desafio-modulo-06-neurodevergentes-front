@@ -65,25 +65,24 @@ function AddCharge({ setOpenCharge, selectedClientId, selectedClientName }) {
   }
 
   async function handleSendForm() {
-    console.log(valueInput)
-
     if (valorInputCheck()) {
       return
     }
 
     const formattedDate = format(new Date(valueInput.charge_date), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    const mountConvert = Math.round(parseFloat(valueInput.value.replace(',', '.')) * 100);
 
     const user = {
       costumer_name: valueInput.costumer_name,
       description: valueInput.description,
-      value: valueInput.value,
+      value: mountConvert,
       status: valueInput.status,
       charge_date: formattedDate
     };
 
-    const response = await addCharge(user, selectedClientId);
+    await addCharge(user, selectedClientId);
 
-    setOpenCharge(false)
+    setOpenCharge("")
     setAddChargeSuccessAlert(true)
   }
 

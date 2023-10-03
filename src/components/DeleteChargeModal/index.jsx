@@ -5,13 +5,19 @@ import {
   Typography
 } from "@mui/material";
 import attentionIcon from "../../assets/icons/attentionTriangle2.svg";
-import useGlobal from "../../hooks/useGlobal";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
+import { deleteCharge } from "../../services";
 
-function DeleteChargeModal({ setOpenDeleteChargeModal }) {
-
+function DeleteChargeModal({ setOpenDeleteChargeModal, setDelChargeSuccessAlert, setDelUnsuccessfullyAlert, chargeId, chargeStatus }) {
   async function handleConfirmDelete() {
+    if (chargeStatus === "paga" || chargeStatus === "pendente") {
+      await deleteCharge(chargeId)
+      setOpenDeleteChargeModal(false)
+      setDelChargeSuccessAlert(true)
+      return
+    }
     setOpenDeleteChargeModal(false)
+    setDelUnsuccessfullyAlert(true)
   }
 
   return (

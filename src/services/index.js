@@ -118,6 +118,15 @@ export async function edityCustomer(id, body) {
   }
 }
 
+export async function deleteCharge(chargeId) {
+  try {
+    const data = await api.delete(`charge/${chargeId}`, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
 export default (
   newUser,
   login,
@@ -126,4 +135,5 @@ export default (
   getUserData,
   listCustumers,
   listCharges,
-  loadDetailsCustomer);
+  loadDetailsCustomer,
+  deleteCharge);

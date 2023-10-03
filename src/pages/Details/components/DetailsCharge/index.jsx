@@ -11,10 +11,9 @@ import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import ChargeType from "../../../Charge/components/ChargeType";
 
-function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal }) {
+function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal, setChargeStatus, setChargeId }) {
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
-
     const options = { minimumFractionDigits: 2 };
     const result = new Intl.NumberFormat("pt-BR", options).format(
       parseFloat(value) / 100
@@ -192,7 +191,12 @@ function DetailsCharge({ setOpenCharge, detailsCharge, setOpenDeleteChargeModal 
                 >
                   <img src={ChargeEdit} alt="Cobrança" />
                   <img
-                    onClick={() => setOpenDeleteChargeModal(true)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setChargeStatus(charge.status)
+                      setChargeId(charge.id)
+                      setOpenDeleteChargeModal(true)
+                    }}
                     src={ChargeDelete}
                     alt="Cobrança" />
                 </TableCell>

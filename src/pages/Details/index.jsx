@@ -31,11 +31,11 @@ function Details() {
   const [chargeId, setChargeId] = useState("");
   const [chargeStatus, setChargeStatus] = useState("");
   const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false)
-  const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
-  const [delSuccessAlert, setDelChargeSuccessAlert] = useState();
-  const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState();
+  const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState(false);
+  const [delChargeSuccessAlert, setDelChargeSuccessAlert] = useState(false);
+  const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState(false);
 
-  const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal();
+  const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal(false);
 
   useEffect(() => {
     async function loadDataCustomer() {
@@ -46,9 +46,12 @@ function Details() {
         charges: response.charges,
       }));
     }
-    if (addChargeSuccessAlert) {
+    if (addChargeSuccessAlert || editChargeSuccessAlert || delChargeSuccessAlert || delUnsuccessfullyAlert) {
       const timer = setTimeout(() => {
         setAddChargeSuccessAlert(false);
+        setDelChargeSuccessAlert(false);
+        setDelUnsuccessfullyAlert(false)
+        setEditChargeSuccessAlert(false);
       }, 5000);
 
       return () => {
@@ -56,7 +59,11 @@ function Details() {
       };
     }
     loadDataCustomer();
-  }, [openEditModal, openDeleteChargeModal]);
+  }, [addChargeSuccessAlert,
+    editChargeSuccessAlert,
+    delChargeSuccessAlert,
+    delUnsuccessfullyAlert,
+    openEditModal]);
 
   const customerDetailsBreadcrubs = [
     <Link
@@ -182,7 +189,7 @@ function Details() {
                 Cobrança cadastrada com sucesso
               </Alert>
             )}
-            {delSuccessAlert && (
+            {delChargeSuccessAlert && (
               <Alert
                 iconMapping={{
                   success: (

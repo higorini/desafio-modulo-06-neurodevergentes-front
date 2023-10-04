@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { useState } from "react";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
 import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
@@ -19,6 +19,7 @@ function ChargeTable({
   setChargeStatus,
   setChargeData,
   setOpenEditChargeModal,
+  setOpenChargeDetails,
 }) {
   const { charges, selectedCharge, setSelectedCharge } = useGlobal();
   const [orderChanger, setOrderChanger] = useState(false);
@@ -188,6 +189,7 @@ function ChargeTable({
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
                 }}
+                onClick={() => setOpenChargeDetails(true)}
               >
                 {charge["costumer_name"]}
               </TableCell>

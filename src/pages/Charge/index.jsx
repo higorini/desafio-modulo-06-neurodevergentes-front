@@ -10,6 +10,7 @@ import DeleteChargeModal from "../../components/DeleteChargeModal";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import ChargeTable from "./components/ChargeTable";
+import ChargeDetails from "./components/ChargeDetails";
 import "./style.css";
 
 function Charge() {
@@ -20,6 +21,7 @@ function Charge() {
   const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
   const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
+  const [openChargeDetails, setOpenChargeDetails] = useState(false);
   const [chargeData, setChargeData] = useState("");
   const chargeBreadcrubs = [
     <Link
@@ -61,6 +63,9 @@ function Charge() {
           }}
           marginLeft="108px"
         >
+          {openChargeDetails && (
+            <ChargeDetails setOpenChargeDetails={setOpenChargeDetails} />
+          )}
           {openDeleteChargeModal && (
             <DeleteChargeModal
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
@@ -108,6 +113,7 @@ function Charge() {
               setChargeId={setChargeId}
               setChargeData={setChargeData}
               setOpenEditChargeModal={setOpenEditChargeModal}
+              setOpenChargeDetails={setOpenChargeDetails}
             />
           </div>
           <Stack position="relative">

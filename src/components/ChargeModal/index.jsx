@@ -13,11 +13,13 @@ import { format } from 'date-fns';
 import { useState } from "react";
 import ChargeIcon from "../../assets/icons/charge.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
-import useGlobal from "../../hooks/useGlobal";
 import { addCharge } from "../../services";
 
-function AddCharge({ setOpenCharge, selectedClientId, selectedClientName, setShowAlert }) {
-  const { setAddChargeSuccessAlert } = useGlobal();
+function AddCharge({
+  setOpenCharge,
+  selectedClientId,
+  selectedClientName,
+  setShowAlert }) {
   const [valueInput, setValueInput] = useState({
     costumer_name: selectedClientName,
     description: "",

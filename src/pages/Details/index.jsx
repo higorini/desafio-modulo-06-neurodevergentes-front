@@ -35,8 +35,7 @@ function Details() {
   const [chargeStatus, setChargeStatus] = useState("");
   const [chargeId, setChargeId] = useState("");
 
-  const [showAlert, setShowAlert] = useState(false)
-  const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal(false);
+  const { showAlert, setShowAlert } = useGlobal(false);
 
   useEffect(() => {
     async function loadDataCustomer() {

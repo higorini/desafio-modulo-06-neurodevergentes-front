@@ -8,7 +8,11 @@ import attentionIcon from "../../assets/icons/attentionTriangle2.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 import { deleteCharge } from "../../services";
 
-function DeleteChargeModal({ setOpenDeleteChargeModal, chargeId, chargeStatus, setShowAlert }) {
+function DeleteChargeModal({
+  setOpenDeleteChargeModal,
+  chargeId,
+  chargeStatus,
+  setShowAlert }) {
 
   async function handleConfirmDelete() {
     if (chargeStatus === "paga" || chargeStatus === "pendente") {

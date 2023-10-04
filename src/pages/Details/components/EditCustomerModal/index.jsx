@@ -10,12 +10,13 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { useState } from "react";
 import ClientIcon from "../../../../assets/icons/clients.svg";
 import CloseIcon from "../../../../assets/icons/closeIcon.svg";
-import useGlobal from "../../../../hooks/useGlobal";
 import { edityCustomer } from "../../../../services";
 
-function AddCustomer({ setOpenEditModal, personalData, setShowAlert }) {
+function AddCustomer({
+  setOpenEditModal,
+  personalData,
+  setShowAlert }) {
   const { address, cpf, email, phone, name } = personalData
-  const { setAddClientSuccessAlert } = useGlobal();
   const [errorMsg, setErrorMsg] = useState({
     name: "",
     email: "",

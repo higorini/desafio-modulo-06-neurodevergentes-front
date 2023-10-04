@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { format } from "date-fns";
+import { useState } from "react";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
 import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
@@ -14,11 +15,14 @@ import ChargeType from "../../../Charge/components/ChargeType";
 function DetailsCharge({
   setOpenCharge,
   detailsCharge,
+  setDataClient,
   setOpenDeleteChargeModal,
-  setChargeStatus, setChargeId,
+  setChargeStatus,
+  setChargeId,
   setChargeData,
-  setOpenEditChargeModal
+  setOpenEditChargeModal,
 }) {
+  const [orderChanger, setOrderChanger] = useState(false);
 
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
@@ -30,6 +34,34 @@ function DetailsCharge({
     return "R$ " + result;
   };
 
+  function orderChargesByIdNumericalOrder(order) {
+    const idOrdered = detailsCharge.sort((a, b) => {
+      const identifierA = a.id;
+      const identifierB = b.id;
+      if (identifierA > identifierB) {
+        return -1;
+      }
+      if (identifierA < identifierB) {
+        return 1;
+      }
+      return 0;
+    });
+    if (order) {
+      setOrderChanger(!orderChanger);
+      return setDataClient((prevState) => ({
+        ...prevState,
+        charges: idOrdered,
+      }));
+    } else {
+      const reverseArray = idOrdered.reverse();
+      setOrderChanger(!orderChanger);
+      return setDataClient((prevState) => ({
+        ...prevState,
+        charges: reverseArray,
+      }));
+    }
+  }
+
   return (
     <TableContainer
       component={Box}
@@ -40,6 +72,7 @@ function DetailsCharge({
         borderRadius: "40px",
         maxWidth: "90%",
         marginLeft: "2rem",
+        minHeight: "396px",
       }}
     >
       <Stack direction="row" padding="19px 16px" justifyContent="space-between">
@@ -77,7 +110,9 @@ function DetailsCharge({
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
+                cursor: "pointer",
               }}
+              onClick={() => orderChargesByIdNumericalOrder(orderChanger)}
             >
               <img src={ChargeOrder} alt="Cobrança" />
               ID Cob.
@@ -199,28 +234,30 @@ function DetailsCharge({
                 >
                   <img
                     onClick={(e) => {
-                      e.stopPropagation()
-                      setChargeData(charge)
-                      setOpenEditChargeModal(true)
+                      e.stopPropagation();
+                      setChargeData(charge);
+                      setOpenEditChargeModal(true);
                     }}
                     src={ChargeEdit}
-                    alt="Cobrança" />
+                    alt="Cobrança"
+                  />
                   <img
                     onClick={(e) => {
-                      e.stopPropagation()
-                      setChargeStatus(charge.status)
-                      setChargeId(charge.id)
-                      setOpenDeleteChargeModal(true)
+                      e.stopPropagation();
+                      setChargeStatus(charge.status);
+                      setChargeId(charge.id);
+                      setOpenDeleteChargeModal(true);
                     }}
                     src={ChargeDelete}
-                    alt="Cobrança" />
+                    alt="Cobrança"
+                  />
                 </TableCell>
               </TableRow>
             ))
           )}
         </TableBody>
       </Table>
-    </TableContainer >
+    </TableContainer>
   );
 }
 

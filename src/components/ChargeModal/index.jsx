@@ -13,11 +13,13 @@ import { format } from 'date-fns';
 import { useState } from "react";
 import ChargeIcon from "../../assets/icons/charge.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
-import useGlobal from "../../hooks/useGlobal";
 import { addCharge } from "../../services";
-
-function AddCharge({ setOpenCharge, selectedClientId, selectedClientName }) {
-  const { setAddChargeSuccessAlert } = useGlobal();
+import useGlobal from "../../hooks/useGlobal";
+function AddCharge({
+  setOpenCharge,
+  selectedClientId,
+  selectedClientName }) {
+  const { setShowAlert } = useGlobal();
   const [valueInput, setValueInput] = useState({
     costumer_name: selectedClientName,
     description: "",
@@ -70,20 +72,22 @@ function AddCharge({ setOpenCharge, selectedClientId, selectedClientName }) {
     }
 
     const formattedDate = format(new Date(valueInput.charge_date), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    const mountConvert = Math.round(parseFloat(valueInput.value.replace(',', '.')) * 100);
 
     const user = {
       costumer_name: valueInput.costumer_name,
       description: valueInput.description,
-      value: mountConvert,
+      value: valueInput.value,
       status: valueInput.status,
       charge_date: formattedDate
     };
 
     await addCharge(user, selectedClientId);
 
-    setOpenCharge("")
-    setAddChargeSuccessAlert(true)
+    setOpenCharge(false)
+    setShowAlert({
+      message: "Cobrança cadastrada com sucesso",
+      theme: "sucess",
+    })
   }
 
   return (

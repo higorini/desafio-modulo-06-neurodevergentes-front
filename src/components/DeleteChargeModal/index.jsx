@@ -7,17 +7,28 @@ import {
 import attentionIcon from "../../assets/icons/attentionTriangle2.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 import { deleteCharge } from "../../services";
-
-function DeleteChargeModal({ setOpenDeleteChargeModal, setDelChargeSuccessAlert, setDelUnsuccessfullyAlert, chargeId, chargeStatus }) {
+import useGlobal from "../../hooks/useGlobal";
+function DeleteChargeModal({
+  setOpenDeleteChargeModal,
+  chargeId,
+  chargeStatus }) {
+  const { setShowAlert } = useGlobal();
   async function handleConfirmDelete() {
     if (chargeStatus === "paga" || chargeStatus === "pendente") {
       await deleteCharge(chargeId)
       setOpenDeleteChargeModal(false)
-      setDelChargeSuccessAlert(true)
+      setShowAlert({
+        message: "Cobrança excluída com sucesso!",
+        theme: "sucess"
+      })
       return
     }
     setOpenDeleteChargeModal(false)
-    setDelUnsuccessfullyAlert(true)
+    setShowAlert({
+      message: "Esta cobrança não pode ser excluída!",
+      theme: "failure",
+      width: "Small"
+    })
   }
 
   return (

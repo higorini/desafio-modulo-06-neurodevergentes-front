@@ -14,13 +14,15 @@ import { useState } from "react";
 import ChargeIcon from "../../assets/icons/charge.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 import useGlobal from "../../hooks/useGlobal";
-import { editCharge } from "../../services";
 
-function EditCharge({ setOpenEditChargeModal, chargeData, setEditChargeSuccessAlert }) {
+function EditCharge({
+  setOpenEditChargeModal,
+  chargeData }) {
   const { costumer_name, description, value, status, charge_date, id } = chargeData
   const dateString = charge_date;
   const dateObject = new Date(dateString);
   const formattedDate = format(dateObject, "yyyy-MM-dd");
+  const { setShowAlert } = useGlobal();
 
   const [valueInput, setValueInput] = useState({
     costumer_name: costumer_name,
@@ -85,7 +87,10 @@ function EditCharge({ setOpenEditChargeModal, chargeData, setEditChargeSuccessAl
     await editCharge(id, user);
 
     setOpenEditChargeModal(false)
-    setEditChargeSuccessAlert(true)
+    setShowAlert({
+      message: "Cobrança editada com sucesso",
+      theme: "sucess"
+    })
   }
 
   return (

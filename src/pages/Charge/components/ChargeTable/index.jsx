@@ -6,14 +6,23 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { format } from "date-fns";
+import { useState } from "react";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
 import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
 import useGlobal from "../../../../hooks/useGlobal";
 import ChargeType from "../ChargeType";
 
-function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus, setChargeData, setOpenEditChargeModal }) {
-  const { charges, selectedCharge } = useGlobal();
+function ChargeTable({
+  setOpenDeleteChargeModal,
+  setChargeId,
+  setChargeStatus,
+  setChargeData,
+  setOpenEditChargeModal,
+}) {
+  const { charges, selectedCharge, setSelectedCharge } = useGlobal();
+  const [orderChanger, setOrderChanger] = useState(false);
+
   const moneyMask = (value) => {
     value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
     const options = { minimumFractionDigits: 2 };
@@ -23,6 +32,48 @@ function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus, s
 
     return "R$ " + result;
   };
+
+  function orderChargesByAlphabeticalOrder(order) {
+    const nameOrdered = selectedCharge.sort((a, b) => {
+      const nameA = a["costumer_name"];
+      const nameB = b["costumer_name"];
+      if (nameA > nameB) {
+        return 1;
+      }
+      if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    });
+    if (order) {
+      setOrderChanger(!orderChanger);
+      return setSelectedCharge(nameOrdered);
+    } else {
+      setOrderChanger(!orderChanger);
+      return setSelectedCharge(nameOrdered.reverse());
+    }
+  }
+
+  function orderChargesByIdNumericalOrder(order) {
+    const idOrdered = selectedCharge.sort((a, b) => {
+      const identifierA = a.id;
+      const identifierB = b.id;
+      if (identifierA > identifierB) {
+        return 1;
+      }
+      if (identifierA < identifierB) {
+        return -1;
+      }
+      return 0;
+    });
+    if (order) {
+      setOrderChanger(!orderChanger);
+      return setSelectedCharge(idOrdered);
+    } else {
+      setOrderChanger(!orderChanger);
+      return setSelectedCharge(idOrdered.reverse());
+    }
+  }
 
   return (
     <TableContainer
@@ -46,7 +97,9 @@ function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus, s
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
+                cursor: "pointer",
               }}
+              onClick={() => orderChargesByAlphabeticalOrder(orderChanger)}
             >
               <img src={ChargeOrder} alt="Cobrança" />
               Cliente
@@ -58,7 +111,9 @@ function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus, s
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
+                cursor: "pointer",
               }}
+              onClick={() => orderChargesByIdNumericalOrder(orderChanger)}
             >
               <img src={ChargeOrder} alt="Cobrança" />
               ID Cob.
@@ -124,13 +179,16 @@ function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus, s
               key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row"
+              <TableCell
+                component="th"
+                scope="row"
                 sx={{
                   maxWidth: "8.375rem",
                   overflow: "hidden",
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
-                }}>
+                }}
+              >
                 {charge["costumer_name"]}
               </TableCell>
               <TableCell
@@ -185,32 +243,34 @@ function ChargeTable({ setOpenDeleteChargeModal, setChargeId, setChargeStatus, s
                 align="left"
                 sx={{
                   display: "flex",
-                  gap: "24px"
+                  gap: "24px",
                 }}
               >
                 <img
                   onClick={(e) => {
-                    e.stopPropagation()
-                    setChargeData(charge)
-                    setOpenEditChargeModal(true)
+                    e.stopPropagation();
+                    setChargeData(charge);
+                    setOpenEditChargeModal(true);
                   }}
                   src={ChargeEdit}
-                  alt="Cobrança" />
+                  alt="Cobrança"
+                />
                 <img
                   onClick={(e) => {
-                    e.stopPropagation()
-                    setOpenDeleteChargeModal(true)
-                    setChargeStatus(charge.status)
-                    setChargeId(charge.id)
+                    e.stopPropagation();
+                    setOpenDeleteChargeModal(true);
+                    setChargeStatus(charge.status);
+                    setChargeId(charge.id);
                   }}
                   src={ChargeDelete}
-                  alt="Cobrança" />
+                  alt="Cobrança"
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer >
+    </TableContainer>
   );
 }
 

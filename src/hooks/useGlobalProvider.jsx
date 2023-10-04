@@ -44,7 +44,6 @@ function useGlobalProvider() {
       try {
         const response = await listCharges();
         setCharges(response);
-        console.log(response);
         setPaidCharge(
           response.filter((charge) => {
             return charge.status === "paga";

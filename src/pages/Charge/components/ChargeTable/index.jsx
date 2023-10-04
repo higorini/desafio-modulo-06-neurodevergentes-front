@@ -33,7 +33,7 @@ function ChargeTable({
     return "R$ " + result;
   };
 
-  function orderClientsByAlphabeticalOrder(order) {
+  function orderChargesByAlphabeticalOrder(order) {
     const nameOrdered = selectedCharge.sort((a, b) => {
       const nameA = a["costumer_name"];
       const nameB = b["costumer_name"];
@@ -51,6 +51,27 @@ function ChargeTable({
     } else {
       setOrderChanger(!orderChanger);
       return setSelectedCharge(nameOrdered.reverse());
+    }
+  }
+
+  function orderChargesByIdNumericalOrder(order) {
+    const idOrdered = selectedCharge.sort((a, b) => {
+      const identifierA = a.id;
+      const identifierB = b.id;
+      if (identifierA > identifierB) {
+        return 1;
+      }
+      if (identifierA < identifierB) {
+        return -1;
+      }
+      return 0;
+    });
+    if (order) {
+      setOrderChanger(!orderChanger);
+      return setSelectedCharge(idOrdered);
+    } else {
+      setOrderChanger(!orderChanger);
+      return setSelectedCharge(idOrdered.reverse());
     }
   }
 
@@ -78,7 +99,7 @@ function ChargeTable({
                 fontSize: "var(--subtitle)",
                 cursor: "pointer",
               }}
-              onClick={() => orderClientsByAlphabeticalOrder(orderChanger)}
+              onClick={() => orderChargesByAlphabeticalOrder(orderChanger)}
             >
               <img src={ChargeOrder} alt="Cobrança" />
               Cliente
@@ -90,7 +111,9 @@ function ChargeTable({
                 fontFamily: "var(--font-body)",
                 fontWeight: "700",
                 fontSize: "var(--subtitle)",
+                cursor: "pointer",
               }}
+              onClick={() => orderChargesByIdNumericalOrder(orderChanger)}
             >
               <img src={ChargeOrder} alt="Cobrança" />
               ID Cob.

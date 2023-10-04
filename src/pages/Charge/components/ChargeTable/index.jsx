@@ -1,279 +1,128 @@
-import { Box } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { format, set } from "date-fns";
-import { useState } from "react";
-import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
-import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
-import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
-import useGlobal from "../../../../hooks/useGlobal";
-import ChargeType from "../ChargeType";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { Alert, Link, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
+import ChargeFilter from "../../assets/icons/chargeIcons/chargeFilter.svg";
+import ChargeIcon from "../../assets/icons/chargeIcons/chargeIcon.svg";
+import ChargeSearch from "../../assets/icons/chargeIcons/chargeSearch.svg";
+import iconCicleX from "../../assets/icons/circleX.svg";
+import EditChargeModal from "../../components/ChargeModalEdit";
+import DeleteChargeModal from "../../components/DeleteChargeModal";
+import Header from "../../components/Header";
+import SideNavigation from "../../components/sideNavigation";
+import ChargeTable from "./components/ChargeTable";
+import useGlobal from "../../hooks/useGlobal";
+import AlertPopup from "../../components/AlertPopup";
+import ChargeDetails from "./components/ChargeDetails";
+import "./style.css";
 
-function ChargeTable({
-  setOpenDeleteChargeModal,
-  setChargeId,
-  setChargeStatus,
-  setChargeData,
-  setOpenEditChargeModal,
-  setOpenChargeDetails,
-}) {
-  const { charges, selectedCharge, setSelectedCharge } = useGlobal();
-  const [orderChanger, setOrderChanger] = useState(false);
+function Charge() {
+  const [chargeId, setChargeId] = useState("");
+  const [chargeStatus, setChargeStatus] = useState("");
+  const [chargeData, setChargeData] = useState("");
 
-  const moneyMask = (value) => {
-    value = value.replace(".", "").replace(",", "").replace(/\D/g, "");
-    const options = { minimumFractionDigits: 2 };
-    const result = new Intl.NumberFormat("pt-BR", options).format(
-      parseFloat(value) / 100
-    );
+  const { showAlert, setShowAlert } = useGlobal();
 
-    return "R$ " + result;
-  };
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
+  const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
+  const [openChargeDetails, setOpenChargeDetails] = useState(false)
 
-  function orderChargesByAlphabeticalOrder(order) {
-    const nameOrdered = selectedCharge.sort((a, b) => {
-      const nameA = a["costumer_name"];
-      const nameB = b["costumer_name"];
-      if (nameA > nameB) {
-        return 1;
-      }
-      if (nameA < nameB) {
-        return -1;
-      }
-      return 0;
-    });
-    if (order) {
-      setOrderChanger(!orderChanger);
-      return setSelectedCharge(nameOrdered);
-    } else {
-      setOrderChanger(!orderChanger);
-      return setSelectedCharge(nameOrdered.reverse());
-    }
-  }
-
-  function orderChargesByIdNumericalOrder(order) {
-    const idOrdered = selectedCharge.sort((a, b) => {
-      const identifierA = a.id;
-      const identifierB = b.id;
-      if (identifierA > identifierB) {
-        return 1;
-      }
-      if (identifierA < identifierB) {
-        return -1;
-      }
-      return 0;
-    });
-    if (order) {
-      setOrderChanger(!orderChanger);
-      return setSelectedCharge(idOrdered);
-    } else {
-      setOrderChanger(!orderChanger);
-      return setSelectedCharge(idOrdered.reverse());
-    }
-  }
-
-  return (
-    <TableContainer
-      component={Box}
-      backgroundColor="var(--white)"
+  const chargeBreadcrubs = [
+    <Link
+      key="1"
+      color="#0e8750"
+      fontWeight="400"
+      href="/charge"
       sx={{
-        overflow: "hidden",
-        padding: "8px 16px",
-        borderRadius: "40px",
-        maxWidth: "90%",
-        marginLeft: "2rem",
-        minHeight: "640px",
+        fontFamily: "var(--font-body)",
+        fontSize: "var(--subtitle)",
       }}
     >
-      <Table sx={{ minWidth: "100%" }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-                cursor: "pointer",
-              }}
-              onClick={() => orderChargesByAlphabeticalOrder(orderChanger)}
-            >
-              <img src={ChargeOrder} alt="Cobrança" />
-              Cliente
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-                cursor: "pointer",
-              }}
-              onClick={() => orderChargesByIdNumericalOrder(orderChanger)}
-            >
-              <img src={ChargeOrder} alt="Cobrança" />
-              ID Cob.
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Valor
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Data de venc.
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Status
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Descrição
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            ></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {selectedCharge.map((charge) => (
-            <TableRow
-              key={charge.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell
-                component="th"
-                scope="row"
-                sx={{
-                  maxWidth: "8.375rem",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                }}
-                onClick={() => setOpenChargeDetails(true)}
-              >
-                {charge["costumer_name"]}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                {charge.id}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  maxWidth: "6.375 ",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  color: "var(--gray-600)",
-                }}
-              >
-                {moneyMask(charge.value.toString())}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  color: "var(--gray-600)",
-                }}
-              >
-                <ChargeType type={charge.status} />
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  maxWidth: "16rem",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  color: "var(--gray-600)",
-                }}
-              >
-                {charge.description}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  display: "flex",
-                  gap: "24px",
-                }}
-              >
-                <img
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setChargeData(charge);
-                    setOpenEditChargeModal(true);
-                  }}
-                  src={ChargeEdit}
-                  alt="Cobrança"
+      Cobranças
+    </Link>,
+  ];
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [showAlert]);
+
+  return (
+    <>
+      <Stack width="100%" direction="row">
+        <SideNavigation />
+        <Stack
+          width="100%"
+          sx={{
+            padding: "40px 32px 40px",
+            backgroundColor: "var(--gray-100)",
+          }}
+          marginLeft="108px"
+        >
+          {openChargeDetails && (
+            <ChargeDetails setOpenChargeDetails={setOpenChargeDetails} />
+          )}
+
+          {openDeleteChargeModal && (
+            <DeleteChargeModal
+              setOpenDeleteChargeModal={setOpenDeleteChargeModal}
+              chargeStatus={chargeStatus}
+              chargeId={chargeId}
+            />
+          )}
+
+          {openEditChargeModal && (
+            <EditChargeModal
+              setOpenEditChargeModal={setOpenEditChargeModal}
+              chargeData={chargeData}
+            />
+          )}
+
+          <Header headerTitle="" breadcrumbs={chargeBreadcrubs} />
+
+          <div className="charge__header">
+            <div className="charge__title">
+              <img src={ChargeIcon} alt="Icone Cliente" />
+              <h1>Cobranças</h1>
+            </div>
+
+            <div className="charge__filters">
+              <img src={ChargeFilter} />
+
+              <div className="charge__search">
+                <input
+                  type="text"
+                  className="charge__search-box"
+                  placeholder="Pesquisa"
                 />
-                <img
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenDeleteChargeModal(true);
-                    setChargeStatus(charge.status);
-                    setChargeId(charge.id);
-                  }}
-                  src={ChargeDelete}
-                  alt="Cobrança"
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                <img src={ChargeSearch} id="searchBtn" alt="Pesquisa" />
+              </div>
+            </div>
+          </div>
+
+          <div className="charge__main">
+            <ChargeTable
+              setChargeStatus={setChargeStatus}
+              setChargeId={setChargeId}
+              setChargeData={setChargeData}
+              setOpenEditChargeModal={setOpenEditChargeModal}
+              setOpenDeleteChargeModal={setOpenDeleteChargeModal}
+              setOpenChargeDetails={setOpenChargeDetails}
+            />
+          </div>
+          <Stack position="relative">
+            {showAlert && <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />}
+          </Stack>
+        </Stack>
+      </Stack>
+    </>
   );
 }
 
-export default ChargeTable;
+export default Charge;

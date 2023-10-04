@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { useState } from "react";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
 import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
@@ -19,8 +19,9 @@ function ChargeTable({
   setChargeStatus,
   setChargeData,
   setOpenEditChargeModal,
+  setOpenChargeDetails,
 }) {
-  const { charges, selectedCharge, setSelectedCharge } = useGlobal();
+  const { selectedCharge, setSelectedCharge } = useGlobal();
   const [orderChanger, setOrderChanger] = useState(false);
 
   const moneyMask = (value) => {
@@ -32,6 +33,11 @@ function ChargeTable({
 
     return "R$ " + result;
   };
+
+  function handleClickCustomer(charge) {
+    setChargeData(charge)
+    setOpenChargeDetails(true)
+  }
 
   function orderChargesByAlphabeticalOrder(order) {
     const nameOrdered = selectedCharge.sort((a, b) => {
@@ -178,6 +184,7 @@ function ChargeTable({
             <TableRow
               key={charge.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              onClick={() => handleClickCustomer(charge)}
             >
               <TableCell
                 component="th"

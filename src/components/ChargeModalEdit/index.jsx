@@ -16,7 +16,7 @@ import CloseIcon from "../../assets/icons/closeIcon.svg";
 import useGlobal from "../../hooks/useGlobal";
 import { editCharge } from "../../services";
 
-function EditCharge({ setOpenEditChargeModal, chargeData, setEditChargeSuccessAlert }) {
+function EditCharge({ setOpenEditChargeModal, chargeData, setShowAlert }) {
   const { costumer_name, description, value, status, charge_date, id } = chargeData
   const dateString = charge_date;
   const dateObject = new Date(dateString);
@@ -85,7 +85,10 @@ function EditCharge({ setOpenEditChargeModal, chargeData, setEditChargeSuccessAl
     await editCharge(id, user);
 
     setOpenEditChargeModal(false)
-    setEditChargeSuccessAlert(true)
+    setShowAlert({
+      message: "Cobrança editada com sucesso",
+      theme: "sucess"
+    })
   }
 
   return (

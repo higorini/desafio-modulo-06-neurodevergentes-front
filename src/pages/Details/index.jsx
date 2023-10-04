@@ -15,26 +15,27 @@ import { loadDetailsCustomer } from "../../services";
 import DetailsCharge from "./components/DetailsCharge";
 import DetailsClient from "./components/DetailsClient";
 import EditCustomerModal from "./components/EditCustomerModal";
+import AlertPopup from "../../components/AlertPopup";
 import "./style.css";
 
 function Details() {
   const { id } = useParams();
+
   const [openCharge, setOpenCharge] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
+
   const [dataClient, setDataClient] = useState({
     personalData: "",
     charges: "",
   });
-  const [openEditModal, setOpenEditModal] = useState(false);
 
   const [chargeData, setChargeData] = useState("");
-  const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
-  const [chargeId, setChargeId] = useState("");
   const [chargeStatus, setChargeStatus] = useState("");
-  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
-  const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState(false);
-  const [delChargeSuccessAlert, setDelChargeSuccessAlert] = useState(false);
-  const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState(false);
+  const [chargeId, setChargeId] = useState("");
 
+  const [showAlert, setShowAlert] = useState(false)
   const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal(false);
 
   useEffect(() => {
@@ -46,29 +47,18 @@ function Details() {
         charges: response.charges,
       }));
     }
-    if (
-      addChargeSuccessAlert ||
-      editChargeSuccessAlert ||
-      delChargeSuccessAlert ||
-      delUnsuccessfullyAlert
-    ) {
+    if (showAlert) {
       const timer = setTimeout(() => {
-        setAddChargeSuccessAlert(false);
-        setDelChargeSuccessAlert(false);
-        setDelUnsuccessfullyAlert(false);
-        setEditChargeSuccessAlert(false);
+        setShowAlert(false);
       }, 5000);
-
       return () => {
         clearTimeout(timer);
       };
     }
     loadDataCustomer();
   }, [
-    addChargeSuccessAlert,
-    editChargeSuccessAlert,
-    delChargeSuccessAlert,
-    delUnsuccessfullyAlert,
+    openCharge,
+    showAlert,
     openEditModal,
   ]);
 
@@ -110,10 +100,9 @@ function Details() {
           {openDeleteChargeModal && (
             <DeleteChargeModal
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
-              setDelUnsuccessfullyAlert={setDelUnsuccessfullyAlert}
-              setDelChargeSuccessAlert={setDelChargeSuccessAlert}
               chargeStatus={chargeStatus}
               chargeId={chargeId}
+              setShowAlert={setShowAlert}
             />
           )}
 
@@ -121,12 +110,13 @@ function Details() {
             <EditCustomerModal
               setOpenEditModal={setOpenEditModal}
               personalData={dataClient.personalData}
+              setShowAlert={setShowAlert}
             />
           )}
 
           {openEditChargeModal && (
             <EditChargeModal
-              setEditChargeSuccessAlert={setEditChargeSuccessAlert}
+              setShowAlert={setShowAlert}
               setOpenEditChargeModal={setOpenEditChargeModal}
               chargeData={chargeData}
             />
@@ -137,6 +127,7 @@ function Details() {
               setOpenCharge={setOpenCharge}
               selectedClientId={id}
               selectedClientName={dataClient.personalData.name}
+              setShowAlert={setShowAlert}
             />
           )}
 
@@ -170,110 +161,7 @@ function Details() {
             </div>
           </div>
           <Stack position="relative">
-            {addChargeSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setAddChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança cadastrada com sucesso
-              </Alert>
-            )}
-            {delChargeSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setDelChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança excluída com sucesso!
-              </Alert>
-            )}
-            {delUnsuccessfullyAlert && (
-              <Alert
-                icon={<img src={iconCicleX} alt="icon fechar" />}
-                onClose={() => setDelUnsuccessfullyAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "22.0625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--red-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--red-100)",
-                }}
-              >
-                Esta cobrança não pode ser excluída!
-              </Alert>
-            )}
-            {editChargeSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setEditChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança editada com sucesso!
-              </Alert>
-            )}
+            {showAlert && <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />}
           </Stack>
         </Stack>
       </Stack>

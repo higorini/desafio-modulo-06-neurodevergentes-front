@@ -13,7 +13,7 @@ import CloseIcon from "../../../../assets/icons/closeIcon.svg";
 import useGlobal from "../../../../hooks/useGlobal";
 import { edityCustomer } from "../../../../services";
 
-function AddCustomer({ setOpenEditModal, personalData }) {
+function AddCustomer({ setOpenEditModal, personalData, setShowAlert }) {
   const { address, cpf, email, phone, name } = personalData
   const { setAddClientSuccessAlert } = useGlobal();
   const [errorMsg, setErrorMsg] = useState({
@@ -155,6 +155,11 @@ function AddCustomer({ setOpenEditModal, personalData }) {
     }
 
     setOpenEditModal(false);
+    setShowAlert({
+      message: "Edições do cadastro concluídas com sucesso",
+      theme: "sucess",
+      width: "Large"
+    })
   }
 
   function handleInput(e) {

@@ -25,43 +25,24 @@ function CustomerTable() {
   }
 
   function orderClientsByAlphabeticalOrder(order) {
+    const nameOrdered = selectedClient.sort((a, b) => {
+      const nameA = a.name;
+      const nameB = b.name;
+      if (nameA > nameB) {
+        return 1;
+      }
+      if (nameA < nameB) {
+        return -1;
+      }
+      return 0;
+    });
     if (order) {
-      const newOrderAsc = [];
-      const selectNames = selectedClient.map(({ name }) => {
-        return name;
-      });
-
-      const nameOrdered = selectNames.sort((a, b) => {
-        return a.localeCompare(b);
-      });
-
-      for (let i = 0; i < selectedClient.length; i++) {
-        const newClient = selectedClient.filter((client) => {
-          return client.name === nameOrdered[i];
-        });
-        newOrderAsc.push(newClient[0]);
-      }
-      setSelectedClient(newOrderAsc);
+      setOrderChanger(!orderChanger);
+      return setSelectedClient(nameOrdered);
     } else {
-      const newOrderDesc = [];
-      const selectNames = selectedClient.map(({ name }) => {
-        return name;
-      });
-
-      const nameOrdered = selectNames.sort((a, b) => {
-        return b.localeCompare(a);
-      });
-
-      for (let i = 0; i < selectedClient.length; i++) {
-        const newClient = selectedClient.filter((client) => {
-          return client.name === nameOrdered[i];
-        });
-        newOrderDesc.push(newClient[0]);
-      }
-      setSelectedClient(newOrderDesc);
+      setOrderChanger(!orderChanger);
+      return setSelectedClient(nameOrdered.reverse());
     }
-    console.log(selectedClient);
-    setOrderChanger(!orderChanger);
   }
 
   return (

@@ -4,22 +4,23 @@ import { useEffect, useState } from "react";
 import ChargeFilter from "../../assets/icons/chargeIcons/chargeFilter.svg";
 import ChargeIcon from "../../assets/icons/chargeIcons/chargeIcon.svg";
 import ChargeSearch from "../../assets/icons/chargeIcons/chargeSearch.svg";
+import iconCicleX from "../../assets/icons/circleX.svg";
+import EditChargeModal from "../../components/ChargeModalEdit";
 import DeleteChargeModal from "../../components/DeleteChargeModal";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import ChargeTable from "./components/ChargeTable";
-import iconCicleX from "../../assets/icons/circleX.svg"
-import EditChargeModal from "../../components/ChargeModalEdit";
 import "./style.css";
+
 function Charge() {
   const [chargeId, setChargeId] = useState("");
   const [chargeStatus, setChargeStatus] = useState("");
   const [delSuccessAlert, setDelChargeSuccessAlert] = useState();
-  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false)
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
   const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
   const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
-  const [chargeData, setChargeData] = useState("")
+  const [chargeData, setChargeData] = useState("");
   const chargeBreadcrubs = [
     <Link
       key="1"
@@ -108,7 +109,6 @@ function Charge() {
               setChargeData={setChargeData}
               setOpenEditChargeModal={setOpenEditChargeModal}
             />
-
           </div>
           <Stack position="relative">
             {delSuccessAlert && (

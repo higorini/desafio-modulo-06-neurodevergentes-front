@@ -3,8 +3,11 @@ import { Link, Stack, Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import iconCicleX from "../../assets/icons/circleX.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import AddCharge from "../../components/ChargeModal";
+import EditChargeModal from "../../components/ChargeModalEdit";
+import DeleteChargeModal from "../../components/DeleteChargeModal";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import useGlobal from "../../hooks/useGlobal";
@@ -12,9 +15,6 @@ import { loadDetailsCustomer } from "../../services";
 import DetailsCharge from "./components/DetailsCharge";
 import DetailsClient from "./components/DetailsClient";
 import EditCustomerModal from "./components/EditCustomerModal";
-import DeleteChargeModal from "../../components/DeleteChargeModal";
-import iconCicleX from "../../assets/icons/circleX.svg"
-import EditChargeModal from "../../components/ChargeModalEdit";
 import "./style.css";
 
 function Details() {
@@ -26,11 +26,11 @@ function Details() {
   });
   const [openEditModal, setOpenEditModal] = useState(false);
 
-  const [chargeData, setChargeData] = useState("")
+  const [chargeData, setChargeData] = useState("");
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
   const [chargeId, setChargeId] = useState("");
   const [chargeStatus, setChargeStatus] = useState("");
-  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false)
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
   const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState(false);
   const [delChargeSuccessAlert, setDelChargeSuccessAlert] = useState(false);
   const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState(false);
@@ -46,11 +46,16 @@ function Details() {
         charges: response.charges,
       }));
     }
-    if (addChargeSuccessAlert || editChargeSuccessAlert || delChargeSuccessAlert || delUnsuccessfullyAlert) {
+    if (
+      addChargeSuccessAlert ||
+      editChargeSuccessAlert ||
+      delChargeSuccessAlert ||
+      delUnsuccessfullyAlert
+    ) {
       const timer = setTimeout(() => {
         setAddChargeSuccessAlert(false);
         setDelChargeSuccessAlert(false);
-        setDelUnsuccessfullyAlert(false)
+        setDelUnsuccessfullyAlert(false);
         setEditChargeSuccessAlert(false);
       }, 5000);
 
@@ -59,11 +64,13 @@ function Details() {
       };
     }
     loadDataCustomer();
-  }, [addChargeSuccessAlert,
+  }, [
+    addChargeSuccessAlert,
     editChargeSuccessAlert,
     delChargeSuccessAlert,
     delUnsuccessfullyAlert,
-    openEditModal]);
+    openEditModal,
+  ]);
 
   const customerDetailsBreadcrubs = [
     <Link
@@ -155,6 +162,7 @@ function Details() {
                 setChargeStatus={setChargeStatus}
                 setChargeId={setChargeId}
                 detailsCharge={dataClient.charges}
+                setDataClient={setDataClient}
                 setOpenDeleteChargeModal={setOpenDeleteChargeModal}
                 setOpenCharge={setOpenCharge}
                 setOpenEditChargeModal={setOpenEditChargeModal}

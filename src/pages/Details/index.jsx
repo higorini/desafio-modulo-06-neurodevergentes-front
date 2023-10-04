@@ -101,7 +101,6 @@ function Details() {
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
               chargeStatus={chargeStatus}
               chargeId={chargeId}
-              setShowAlert={setShowAlert}
             />
           )}
 
@@ -109,13 +108,11 @@ function Details() {
             <EditCustomerModal
               setOpenEditModal={setOpenEditModal}
               personalData={dataClient.personalData}
-              setShowAlert={setShowAlert}
             />
           )}
 
           {openEditChargeModal && (
             <EditChargeModal
-              setShowAlert={setShowAlert}
               setOpenEditChargeModal={setOpenEditChargeModal}
               chargeData={chargeData}
             />
@@ -126,7 +123,6 @@ function Details() {
               setOpenCharge={setOpenCharge}
               selectedClientId={id}
               selectedClientName={dataClient.personalData.name}
-              setShowAlert={setShowAlert}
             />
           )}
 

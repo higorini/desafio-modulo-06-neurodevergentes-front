@@ -7,13 +7,12 @@ import {
 import attentionIcon from "../../assets/icons/attentionTriangle2.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 import { deleteCharge } from "../../services";
-
+import useGlobal from "../../hooks/useGlobal";
 function DeleteChargeModal({
   setOpenDeleteChargeModal,
   chargeId,
-  chargeStatus,
-  setShowAlert }) {
-
+  chargeStatus }) {
+  const { setShowAlert } = useGlobal();
   async function handleConfirmDelete() {
     if (chargeStatus === "paga" || chargeStatus === "pendente") {
       await deleteCharge(chargeId)

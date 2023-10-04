@@ -13,15 +13,16 @@ import { format } from 'date-fns';
 import { useState } from "react";
 import ChargeIcon from "../../assets/icons/charge.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
+import useGlobal from "../../hooks/useGlobal";
 
 function EditCharge({
   setOpenEditChargeModal,
-  chargeData,
-  setShowAlert }) {
+  chargeData }) {
   const { costumer_name, description, value, status, charge_date, id } = chargeData
   const dateString = charge_date;
   const dateObject = new Date(dateString);
   const formattedDate = format(dateObject, "yyyy-MM-dd");
+  const { setShowAlert } = useGlobal();
 
   const [valueInput, setValueInput] = useState({
     costumer_name: costumer_name,

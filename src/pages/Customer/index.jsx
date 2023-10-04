@@ -1,6 +1,4 @@
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Link, Stack } from "@mui/material";
-import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
@@ -10,29 +8,24 @@ import SideNavigation from "../../components/sideNavigation";
 import useGlobal from "../../hooks/useGlobal";
 import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
+import AlertPopup from "../../components/AlertPopup";
 import "./style.css";
 
 function Customer() {
-  const {
-    addClientSuccessAlert,
-    setAddClientSuccessAlert,
-    addChargeSuccessAlert,
-    setAddChargeSuccessAlert,
-  } = useGlobal();
+  const { showAlert, setShowAlert } = useGlobal();
   const [openAdd, setOpenAdd] = useState(false);
 
   useEffect(() => {
-    if (addClientSuccessAlert || addChargeSuccessAlert) {
+    if (showAlert) {
       const timer = setTimeout(() => {
-        setAddClientSuccessAlert(false);
-        setAddChargeSuccessAlert(false);
+        setShowAlert(false);
       }, 5000);
 
       return () => {
         clearTimeout(timer);
       };
     }
-  }, [addClientSuccessAlert, addChargeSuccessAlert]);
+  }, [showAlert]);
 
   const customerBreadcrubs = [
     <Link
@@ -92,60 +85,7 @@ function Customer() {
             <CustomerTable />
           </div>
           <Stack position="relative">
-            {addClientSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setAddClientSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cadastro concluído com sucesso
-              </Alert>
-            )}
-            {addChargeSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setAddChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança cadastrada com sucesso
-              </Alert>
-            )}
+            {showAlert && <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />}
           </Stack>
         </Stack>
       </Stack>

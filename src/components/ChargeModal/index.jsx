@@ -14,12 +14,12 @@ import { useState } from "react";
 import ChargeIcon from "../../assets/icons/charge.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
 import { addCharge } from "../../services";
-
+import useGlobal from "../../hooks/useGlobal";
 function AddCharge({
   setOpenCharge,
   selectedClientId,
-  selectedClientName,
-  setShowAlert }) {
+  selectedClientName }) {
+  const { setShowAlert } = useGlobal();
   const [valueInput, setValueInput] = useState({
     costumer_name: selectedClientName,
     description: "",

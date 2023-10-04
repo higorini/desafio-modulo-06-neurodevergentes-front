@@ -10,19 +10,22 @@ import DeleteChargeModal from "../../components/DeleteChargeModal";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import ChargeTable from "./components/ChargeTable";
+import useGlobal from "../../hooks/useGlobal";
+import AlertPopup from "../../components/AlertPopup";
 import ChargeDetails from "./components/ChargeDetails";
 import "./style.css";
 
 function Charge() {
   const [chargeId, setChargeId] = useState("");
   const [chargeStatus, setChargeStatus] = useState("");
-  const [delSuccessAlert, setDelChargeSuccessAlert] = useState();
-  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
-  const [delUnsuccessfullyAlert, setDelUnsuccessfullyAlert] = useState();
-  const [editChargeSuccessAlert, setEditChargeSuccessAlert] = useState(false);
-  const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
-  const [openChargeDetails, setOpenChargeDetails] = useState(false);
   const [chargeData, setChargeData] = useState("");
+
+  const { showAlert, setShowAlert } = useGlobal();
+
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
+  const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
+  const [openChargeDetails, setOpenChargeDetails] = useState(false)
+
   const chargeBreadcrubs = [
     <Link
       key="1"
@@ -39,17 +42,16 @@ function Charge() {
   ];
 
   useEffect(() => {
-    if (delSuccessAlert || delUnsuccessfullyAlert || editChargeSuccessAlert) {
+    if (showAlert) {
       const timer = setTimeout(() => {
-        setDelChargeSuccessAlert(false);
-        setDelUnsuccessfullyAlert(false);
+        setShowAlert(false);
       }, 5000);
 
       return () => {
         clearTimeout(timer);
       };
     }
-  }, [delSuccessAlert, delUnsuccessfullyAlert, editChargeSuccessAlert]);
+  }, [showAlert]);
 
   return (
     <>
@@ -66,11 +68,10 @@ function Charge() {
           {openChargeDetails && (
             <ChargeDetails setOpenChargeDetails={setOpenChargeDetails} />
           )}
+
           {openDeleteChargeModal && (
             <DeleteChargeModal
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
-              setDelUnsuccessfullyAlert={setDelUnsuccessfullyAlert}
-              setDelChargeSuccessAlert={setDelChargeSuccessAlert}
               chargeStatus={chargeStatus}
               chargeId={chargeId}
             />
@@ -78,7 +79,6 @@ function Charge() {
 
           {openEditChargeModal && (
             <EditChargeModal
-              setEditChargeSuccessAlert={setEditChargeSuccessAlert}
               setOpenEditChargeModal={setOpenEditChargeModal}
               chargeData={chargeData}
             />
@@ -108,94 +108,16 @@ function Charge() {
 
           <div className="charge__main">
             <ChargeTable
-              setOpenDeleteChargeModal={setOpenDeleteChargeModal}
               setChargeStatus={setChargeStatus}
               setChargeId={setChargeId}
               setChargeData={setChargeData}
               setOpenEditChargeModal={setOpenEditChargeModal}
+              setOpenDeleteChargeModal={setOpenDeleteChargeModal}
               setOpenChargeDetails={setOpenChargeDetails}
             />
           </div>
           <Stack position="relative">
-            {delSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setDelChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança excluída com sucesso!
-              </Alert>
-            )}
-
-            {delUnsuccessfullyAlert && (
-              <Alert
-                icon={<img src={iconCicleX} alt="icon fechar" />}
-                onClose={() => setDelUnsuccessfullyAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "22.0625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--red-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--red-100)",
-                }}
-              >
-                Esta cobrança não pode ser excluída!
-              </Alert>
-            )}
-
-            {editChargeSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setEditChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança editada com sucesso!
-              </Alert>
-            )}
+            {showAlert && <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />}
           </Stack>
         </Stack>
       </Stack>

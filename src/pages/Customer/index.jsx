@@ -1,5 +1,6 @@
 import { Link, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
@@ -13,7 +14,7 @@ import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
-  const { setSelectedClient, clients } = useGlobal();
+  const { setSelectedClient, clients, selectedClient } = useGlobal();
   const { showAlert, setShowAlert } = useGlobal();
   const [clientToSearch, setClientToSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
@@ -36,18 +37,18 @@ function Customer() {
   }
 
   const customerBreadcrubs = [
-    <Link
-      key="1"
-      color="#0e8750"
-      fontWeight="400"
-      href="/customer"
-      sx={{
-        fontFamily: "var(--font-body)",
-        fontSize: "var(--subtitle)",
-      }}
-    >
-      Clientes
-    </Link>,
+    <RouterLink key="1" to="/customer" style={{ textDecoration: "none" }}>
+      <Link
+        color="#0e8750"
+        fontWeight="400"
+        sx={{
+          fontFamily: "var(--font-body)",
+          fontSize: "var(--subtitle)",
+        }}
+      >
+        Clientes
+      </Link>
+    </RouterLink>,
   ];
 
   function handleSearchClient(e) {

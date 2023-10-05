@@ -12,7 +12,9 @@ import SideNavigation from "../../components/sideNavigation";
 import ChargeTable from "./components/ChargeTable";
 import useGlobal from "../../hooks/useGlobal";
 import AlertPopup from "../../components/AlertPopup";
+import ChargeDetails from "./components/ChargeDetails";
 import "./style.css";
+
 
 function Charge() {
   const [chargeId, setChargeId] = useState("");
@@ -23,6 +25,7 @@ function Charge() {
 
   const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
+  const [openChargeDetails, setOpenChargeDetails] = useState(false)
 
   const chargeBreadcrubs = [
     <Link
@@ -63,6 +66,13 @@ function Charge() {
           }}
           marginLeft="108px"
         >
+          {openChargeDetails && (
+            <ChargeDetails
+              setOpenChargeDetails={setOpenChargeDetails}
+              chargeData={chargeData}
+            />
+          )}
+
           {openDeleteChargeModal && (
             <DeleteChargeModal
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
@@ -107,6 +117,7 @@ function Charge() {
               setChargeData={setChargeData}
               setOpenEditChargeModal={setOpenEditChargeModal}
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
+              setOpenChargeDetails={setOpenChargeDetails}
             />
           </div>
           <Stack position="relative">

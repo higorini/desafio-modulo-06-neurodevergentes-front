@@ -1,9 +1,6 @@
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Link, Stack, Typography } from "@mui/material";
-import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import iconCicleX from "../../assets/icons/circleX.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import AddCharge from "../../components/ChargeModal";
 import EditChargeModal from "../../components/ChargeModalEdit";
@@ -32,8 +29,6 @@ function Details() {
   });
 
   const [chargeData, setChargeData] = useState("");
-  const [chargeStatus, setChargeStatus] = useState("");
-  const [chargeId, setChargeId] = useState("");
 
   const { showAlert, setShowAlert } = useGlobal(false);
 
@@ -59,6 +54,7 @@ function Details() {
     openCharge,
     showAlert,
     openEditModal,
+    openDeleteChargeModal,
   ]);
 
   const customerDetailsBreadcrubs = [
@@ -93,14 +89,14 @@ function Details() {
           sx={{
             padding: "40px 32px 40px",
             backgroundColor: "var(--gray-100)",
+            overflowX: "hidden"
           }}
           marginLeft="108px"
         >
           {openDeleteChargeModal && (
             <DeleteChargeModal
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
-              chargeStatus={chargeStatus}
-              chargeId={chargeId}
+              chargeData={chargeData}
             />
           )}
 
@@ -145,8 +141,6 @@ function Details() {
             <div>
               <DetailsCharge
                 setChargeData={setChargeData}
-                setChargeStatus={setChargeStatus}
-                setChargeId={setChargeId}
                 detailsCharge={dataClient.charges}
                 setDataClient={setDataClient}
                 setOpenDeleteChargeModal={setOpenDeleteChargeModal}

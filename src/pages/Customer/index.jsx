@@ -13,7 +13,7 @@ import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
-  const { setSelectedClient } = useGlobal();
+  const { setSelectedClient, clients } = useGlobal();
   const { showAlert, setShowAlert } = useGlobal();
   const [clientToSearch, setClientToSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
@@ -31,8 +31,7 @@ function Customer() {
   }, [showAlert]);
 
   async function loadClientOnSearch(client) {
-    const response = await searchClient(client);
-    console.log(response.data);
+    const response = await searchClient({ searchCustumer: client });
     setSelectedClient(response.data);
   }
 
@@ -53,6 +52,8 @@ function Customer() {
 
   function handleSearchClient(e) {
     if (e.target.value === "") {
+      setSelectedClient(clients);
+      setClientToSearch("");
       return;
     }
     setClientToSearch(e.target.value);

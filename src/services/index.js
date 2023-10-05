@@ -146,9 +146,8 @@ export async function detailCharge(chargeId) {
 }
 
 export async function searchClient(body) {
-  const bodyReq = { searchCustumer: body };
   try {
-    const data = await api.post("searchCustomer", bodyReq, getToken());
+    const data = await api.post("searchCustomer", body, getToken());
     return data;
   } catch (erro) {
     return erro.response;

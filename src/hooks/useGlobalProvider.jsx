@@ -14,7 +14,7 @@ function useGlobalProvider() {
   const [selectedCharge, setSelectedCharge] = useState([]);
   const [selectedClient, setSelectedClient] = useState([]);
 
-  const [showAlert, setShowAlert] = useState(false)
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     async function loadClients() {

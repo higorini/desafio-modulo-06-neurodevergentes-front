@@ -145,15 +145,25 @@ export async function detailCharge(chargeId) {
   }
 }
 
-export default (
-  newUser,
-  login,
-  validateEmail,
-  edityUserData,
-  getUserData,
-  listCustumers,
-  listCharges,
-  loadDetailsCustomer,
-  deleteCharge,
-  editCharge,
-  detailCharge);
+export async function searchClient(body) {
+  const bodyReq = { searchCustumer: body };
+  try {
+    const data = await api.post("searchCustomer", bodyReq, getToken());
+    return data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export default (newUser,
+login,
+validateEmail,
+edityUserData,
+getUserData,
+listCustumers,
+listCharges,
+loadDetailsCustomer,
+deleteCharge,
+editCharge,
+detailCharge,
+searchClient);

@@ -3,16 +3,19 @@ import { useEffect, useState } from "react";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
+import AlertPopup from "../../components/AlertPopup";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import useGlobal from "../../hooks/useGlobal";
+import { searchClient } from "../../services";
 import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
-import AlertPopup from "../../components/AlertPopup";
 import "./style.css";
 
 function Customer() {
+  const { setSelectedClient } = useGlobal();
   const { showAlert, setShowAlert } = useGlobal();
+  const [clientToSearch, setClientToSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
 
   useEffect(() => {
@@ -26,6 +29,12 @@ function Customer() {
       };
     }
   }, [showAlert]);
+
+  async function loadClientOnSearch(client) {
+    const response = await searchClient(client);
+    console.log(response.data);
+    setSelectedClient(response.data);
+  }
 
   const customerBreadcrubs = [
     <Link
@@ -41,6 +50,20 @@ function Customer() {
       Clientes
     </Link>,
   ];
+
+  function handleSearchClient(e) {
+    if (e.target.value === "") {
+      return;
+    }
+    setClientToSearch(e.target.value);
+  }
+
+  async function onSearchClient(e) {
+    if (e.keyCode !== 13 || clientToSearch.length === 0) {
+      return;
+    }
+    await loadClientOnSearch(clientToSearch);
+  }
 
   return (
     <>
@@ -75,6 +98,10 @@ function Customer() {
                   type="text"
                   className="customer__search-box"
                   placeholder="Pesquisa"
+                  value={clientToSearch}
+                  onChange={(e) => handleSearchClient(e)}
+                  onBlur={onSearchClient}
+                  onKeyDown={(e) => onSearchClient(e)}
                 />
                 <img src={SearchIcon} id="searchBtn" alt="Pesquisa" />
               </div>
@@ -85,7 +112,9 @@ function Customer() {
             <CustomerTable />
           </div>
           <Stack position="relative">
-            {showAlert && <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />}
+            {showAlert && (
+              <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />
+            )}
           </Stack>
         </Stack>
       </Stack>

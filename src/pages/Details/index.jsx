@@ -1,7 +1,8 @@
 import { Link, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import ClientIcon from "../../assets/icons/clients.svg";
+import AlertPopup from "../../components/AlertPopup";
 import AddCharge from "../../components/ChargeModal";
 import EditChargeModal from "../../components/ChargeModalEdit";
 import DeleteChargeModal from "../../components/DeleteChargeModal";
@@ -12,12 +13,12 @@ import { loadDetailsCustomer } from "../../services";
 import DetailsCharge from "./components/DetailsCharge";
 import DetailsClient from "./components/DetailsClient";
 import EditCustomerModal from "./components/EditCustomerModal";
-import AlertPopup from "../../components/AlertPopup";
 import "./style.css";
 
 function Details() {
   const { id } = useParams();
 
+  const { setSelectedClient, clients } = useGlobal();
   const [openCharge, setOpenCharge] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
@@ -50,26 +51,21 @@ function Details() {
       };
     }
     loadDataCustomer();
-  }, [
-    openCharge,
-    showAlert,
-    openEditModal,
-    openDeleteChargeModal,
-  ]);
+  }, [openCharge, showAlert, openEditModal, openDeleteChargeModal]);
 
   const customerDetailsBreadcrubs = [
-    <Link
-      key="1"
-      color="#0e8750"
-      fontWeight="400"
-      href="/customer"
-      sx={{
-        fontFamily: "var(--font-body)",
-        fontSize: "var(--subtitle)",
-      }}
-    >
-      Clientes
-    </Link>,
+    <RouterLink key="1" to="/customer" style={{ textDecoration: "none" }}>
+      <Link
+        color="#0e8750"
+        fontWeight="400"
+        sx={{
+          fontFamily: "var(--font-body)",
+          fontSize: "var(--subtitle)",
+        }}
+      >
+        Clientes
+      </Link>
+    </RouterLink>,
     <Typography
       key="2"
       fontFamily="var(--font-body)"
@@ -89,7 +85,7 @@ function Details() {
           sx={{
             padding: "40px 32px 40px",
             backgroundColor: "var(--gray-100)",
-            overflowX: "hidden"
+            overflowX: "hidden",
           }}
           marginLeft="108px"
         >
@@ -150,7 +146,9 @@ function Details() {
             </div>
           </div>
           <Stack position="relative">
-            {showAlert && <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />}
+            {showAlert && (
+              <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />
+            )}
           </Stack>
         </Stack>
       </Stack>

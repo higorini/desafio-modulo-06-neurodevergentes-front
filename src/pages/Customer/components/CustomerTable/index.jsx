@@ -149,9 +149,14 @@ function CustomerTable() {
               <TableRow
                 onClick={() => handleClickCustomer(client.id)}
                 key={client.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{
+                  padding: "32px",
+                  "&:last-child td, &:last-child th": {
+                    border: 0,
+                  },
+                }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell component="td" scope="row">
                   {client.name}
                 </TableCell>
                 <TableCell
@@ -226,18 +231,24 @@ function CustomerTable() {
                   align="left"
                   sx={{
                     color: "var(--gray-600)",
+                    padding: "9px 16px",
+                    lineHeight: "0px",
                   }}
                 >
-                  <img
+                  <Box
                     id="btn"
-                    src={ClientCharge}
+                    component="img"
                     alt="Cobrança"
-                    className="customar__table-charge"
+                    src={ClientCharge}
                     onClick={(e) => {
                       e.stopPropagation();
                       setOpenCharge(true);
                       setSelectedClientId(client.id);
                       setSelectedClientName(client.name);
+                    }}
+                    sx={{
+                      cursor: "pointer",
+                      // height: "38px",
                     }}
                   />
                 </TableCell>

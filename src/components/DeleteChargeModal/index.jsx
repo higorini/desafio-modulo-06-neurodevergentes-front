@@ -10,12 +10,12 @@ import { deleteCharge } from "../../services";
 import useGlobal from "../../hooks/useGlobal";
 function DeleteChargeModal({
   setOpenDeleteChargeModal,
-  chargeId,
-  chargeStatus }) {
+  chargeData,
+}) {
   const { setShowAlert } = useGlobal();
   async function handleConfirmDelete() {
-    if (chargeStatus === "paga" || chargeStatus === "pendente") {
-      await deleteCharge(chargeId)
+    if (chargeData.status === "paga" || chargeData.status === "pendente") {
+      await deleteCharge(chargeData.id)
       setOpenDeleteChargeModal(false)
       setShowAlert({
         message: "Cobrança excluída com sucesso!",

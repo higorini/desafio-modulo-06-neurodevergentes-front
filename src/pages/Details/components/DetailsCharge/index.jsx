@@ -244,8 +244,7 @@ function DetailsCharge({
                   <img
                     onClick={(e) => {
                       e.stopPropagation();
-                      setChargeStatus(charge.status);
-                      setChargeId(charge.id);
+                      setChargeData(charge)
                       setOpenDeleteChargeModal(true);
                     }}
                     src={ChargeDelete}

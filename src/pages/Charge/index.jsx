@@ -1,5 +1,6 @@
 import { Link, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import ChargeFilter from "../../assets/icons/chargeIcons/chargeFilter.svg";
 import ChargeIcon from "../../assets/icons/chargeIcons/chargeIcon.svg";
 import ChargeSearch from "../../assets/icons/chargeIcons/chargeSearch.svg";
@@ -27,18 +28,24 @@ function Charge() {
   const [chargeToSearch, setChargeToSearch] = useState("");
 
   const chargeBreadcrubs = [
-    <Link
+    <RouterLink
       key="1"
-      color="#0e8750"
-      fontWeight="400"
-      href="/charge"
-      sx={{
-        fontFamily: "var(--font-body)",
-        fontSize: "var(--subtitle)",
+      to="/charge"
+      style={{
+        textDecoration: "none",
       }}
     >
-      Cobranças
-    </Link>,
+      <Link
+        color="#0e8750"
+        fontWeight="400"
+        sx={{
+          fontFamily: "var(--font-body)",
+          fontSize: "var(--subtitle)",
+        }}
+      >
+        Cobranças
+      </Link>
+    </RouterLink>,
   ];
 
   useEffect(() => {
@@ -53,8 +60,8 @@ function Charge() {
     }
   }, [showAlert]);
 
-  async function loadChargeOnSearch(client) {
-    const response = await searchCharge({ searchCharge: client });
+  async function loadChargeOnSearch(charge) {
+    const response = await searchCharge({ searchCharge: charge });
     setSelectedCharge(response.data);
   }
 

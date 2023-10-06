@@ -14,7 +14,7 @@ import useGlobal from "../../../../hooks/useGlobal";
 import { registerCostumers } from "../../../../services";
 
 function AddCustomer({ setOpenAdd }) {
-  const { setAddClientSuccessAlert } = useGlobal();
+  const { setShowAlert } = useGlobal();
 
   const [errorMsg, setErrorMsg] = useState({
     name: "",
@@ -144,7 +144,10 @@ function AddCustomer({ setOpenAdd }) {
     }
 
     setOpenAdd(false);
-    setAddClientSuccessAlert(true);
+    setShowAlert({
+      message: "Cadastro concluído com sucesso",
+      theme: "sucess"
+    });
   }
 
   function handleInput(e) {

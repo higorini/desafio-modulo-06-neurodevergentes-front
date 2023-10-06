@@ -1,36 +1,70 @@
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { Stack } from "@mui/material";
-import Alert from "@mui/material/Alert";
+import { Link, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import ClientFilter from "../../assets/icons/clientIcons/clientFilter.svg";
 import ClientIcon from "../../assets/icons/clients.svg";
 import SearchIcon from "../../assets/icons/search.svg";
+import AlertPopup from "../../components/AlertPopup";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import useGlobal from "../../hooks/useGlobal";
+import { searchClient } from "../../services";
 import AddCustomer from "./components/AddCustomerModal";
 import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
-  const { addClientSuccessAlert,
-    setAddClientSuccessAlert,
-    addChargeSuccessAlert,
-    setAddChargeSuccessAlert } = useGlobal();
+  const { showAlert, setShowAlert, setSelectedClient, clients, selectedClient, clientsHome } = useGlobal();
+  const [clientToSearch, setClientToSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
-
   useEffect(() => {
-    if (addClientSuccessAlert || addChargeSuccessAlert) {
+    if (showAlert) {
       const timer = setTimeout(() => {
-        setAddClientSuccessAlert(false);
-        setAddChargeSuccessAlert(false);
+        setShowAlert(false);
       }, 5000);
-
       return () => {
         clearTimeout(timer);
       };
     }
-  }, [addClientSuccessAlert, addChargeSuccessAlert]);
+    clientsHome ? setSelectedClient(clientsHome) : setSelectedClient(clients)
+
+  }, [showAlert, clients, selectedClient]);
+
+  async function loadClientOnSearch(client) {
+    const response = await searchClient({ searchCustumer: client });
+    setSelectedClient(response.data);
+  }
+
+  const customerBreadcrubs = [
+    <RouterLink key="1" to="/customer" style={{ textDecoration: "none" }}>
+      <Link
+        color="#0e8750"
+        fontWeight="400"
+        sx={{
+          fontFamily: "var(--font-body)",
+          fontSize: "var(--subtitle)",
+        }}
+      >
+        Clientes
+      </Link>
+    </RouterLink>,
+  ];
+
+  function handleSearchClient(e) {
+    if (e.target.value === "") {
+      setSelectedClient(clients);
+      setClientToSearch("");
+      return;
+    }
+    setClientToSearch(e.target.value);
+  }
+
+  async function onSearchClient(e) {
+    if (e.keyCode !== 13 || clientToSearch.length === 0) {
+      return;
+    }
+    await loadClientOnSearch(clientToSearch);
+  }
 
   return (
     <>
@@ -45,7 +79,7 @@ function Customer() {
           }}
           marginLeft="108px"
         >
-          <Header headerTitle="Clientes" />
+          <Header headerTitle="" breadcrumbs={customerBreadcrubs} />
 
           <div className="customer__header">
             <div className="customer__title">
@@ -65,6 +99,10 @@ function Customer() {
                   type="text"
                   className="customer__search-box"
                   placeholder="Pesquisa"
+                  value={clientToSearch}
+                  onChange={(e) => handleSearchClient(e)}
+                  onBlur={onSearchClient}
+                  onKeyDown={(e) => onSearchClient(e)}
                 />
                 <img src={SearchIcon} id="searchBtn" alt="Pesquisa" />
               </div>
@@ -75,59 +113,8 @@ function Customer() {
             <CustomerTable />
           </div>
           <Stack position="relative">
-            {addClientSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setAddClientSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cadastro concluído com sucesso
-              </Alert>
-            )}
-            {addChargeSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setAddChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança cadastrada com sucesso
-              </Alert>
+            {showAlert && (
+              <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />
             )}
           </Stack>
         </Stack>

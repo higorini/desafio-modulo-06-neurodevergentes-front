@@ -1,11 +1,11 @@
-import { Stack, Typography } from "@mui/material";
+import { Breadcrumbs, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ArrowDown from "../../assets/icons/chevron.svg";
 import { getUserData } from "../../services";
 import EditUserModal from "../EditUserModal";
 import HeaderPopUp from "../HeaderPopUp";
 
-function Header({ headerTitle, pageTitle }) {
+function Header({ headerTitle, pageTitle, breadcrumbs }) {
   const [openUserEditModal, setOpenUserEditModal] = useState(false);
 
   const [openPopUp, setOpenPopUp] = useState(false);
@@ -66,20 +66,17 @@ function Header({ headerTitle, pageTitle }) {
           {headerTitle}
         </Typography>
       ) : (
-        <Typography
-          component="span"
-          color="var(--green-500)"
-          fontWeight="400"
+        <Breadcrumbs
+          separator=">"
+          aria-label="breadcrumb"
           sx={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--subtitle)",
             alignSelf: "end",
             position: "relative",
-            bottom: "-18px",
+            bottom: "-20px",
           }}
         >
-          {pageTitle}
-        </Typography>
+          {breadcrumbs}
+        </Breadcrumbs>
       )}
       <Stack direction="row" alignItems="center" gap="16px">
         <Stack

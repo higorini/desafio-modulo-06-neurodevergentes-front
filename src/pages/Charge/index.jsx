@@ -13,6 +13,7 @@ import ChargeTable from "./components/ChargeTable";
 import useGlobal from "../../hooks/useGlobal";
 import AlertPopup from "../../components/AlertPopup";
 import ChargeDetails from "./components/ChargeDetails";
+import { searchCharge } from "../../services";
 import "./style.css";
 
 
@@ -21,11 +22,12 @@ function Charge() {
   const [chargeStatus, setChargeStatus] = useState("");
   const [chargeData, setChargeData] = useState("");
 
-  const { showAlert, setShowAlert } = useGlobal();
+  const { showAlert, setShowAlert, setSelectedCharge, charges } = useGlobal();
 
   const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
   const [openChargeDetails, setOpenChargeDetails] = useState(false)
+  const [chargeToSearch, setChargeToSearch] = useState("");
 
   const chargeBreadcrubs = [
     <Link
@@ -53,6 +55,28 @@ function Charge() {
       };
     }
   }, [showAlert]);
+
+  async function loadClientOnSearch(client) {
+    const response = await searchCharge({ searchCharge: client });
+    setSelectedCharge(response.data);
+  }
+
+  function handleSearchClient(e) {
+    if (e.target.value === "") {
+      setSelectedCharge(charges);
+      setChargeToSearch("");
+      return;
+    }
+    setChargeToSearch(e.target.value);
+  }
+
+  async function onSearchClient(e) {
+    if (e.keyCode !== 13 || chargeToSearch.length === 0) {
+      return;
+    }
+    await loadClientOnSearch(chargeToSearch);
+
+  }
 
   return (
     <>
@@ -104,6 +128,10 @@ function Charge() {
                   type="text"
                   className="charge__search-box"
                   placeholder="Pesquisa"
+                  value={chargeToSearch}
+                  onChange={(e) => handleSearchClient(e)}
+                  onBlur={onSearchClient}
+                  onKeyDown={(e) => onSearchClient(e)}
                 />
                 <img src={ChargeSearch} id="searchBtn" alt="Pesquisa" />
               </div>

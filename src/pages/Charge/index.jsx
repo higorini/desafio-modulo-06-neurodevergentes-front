@@ -18,7 +18,7 @@ import "./style.css";
 function Charge() {
   const [chargeData, setChargeData] = useState("");
 
-  const { showAlert, setShowAlert, setSelectedCharge, charges } = useGlobal();
+  const { showAlert, setShowAlert, charges, setSelectedCharge, chargesHome } = useGlobal();
 
   const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
@@ -56,7 +56,7 @@ function Charge() {
         clearTimeout(timer);
       };
     }
-    setSelectedCharge(charges)
+    chargesHome ? setSelectedCharge(chargesHome) : setSelectedCharge(charges)
   }, [showAlert, charges]);
 
   async function loadChargeOnSearch(charge) {

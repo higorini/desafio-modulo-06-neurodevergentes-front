@@ -11,7 +11,7 @@ function ChargesCard({
   indexNumber,
   chargeTableContent,
 }) {
-  const { setSelectedCharge } = useGlobal();
+  const { setChargesHome } = useGlobal();
   return (
     <Box
       borderRadius="32px"
@@ -76,7 +76,7 @@ function ChargesCard({
             fontSize="18px"
             padding="13px 0"
             borderTop="1px solid var(--gray-300)"
-            onClick={() => setSelectedCharge(chargeTableContent)}
+            onClick={() => setChargesHome(chargeTableContent)}
           >
             Ver Todos
           </Typography>

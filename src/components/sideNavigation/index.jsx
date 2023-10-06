@@ -4,8 +4,18 @@ import useGlobal from "../../hooks/useGlobal";
 import "./style.css";
 
 function LateralMenu() {
-  const { charges, setSelectedCharge, clients, setSelectedClient } =
+  const { charges, setSelectedCharge, clients, setSelectedClient, setClientsHome, setChargesHome } =
     useGlobal();
+
+  function redirectToCustomer() {
+    setClientsHome("")
+    setSelectedClient(clients)
+  }
+  function redirectToCharge() {
+    setChargesHome("")
+    setSelectedCharge(charges)
+  }
+
   return (
     <Stack
       direction="column"
@@ -69,6 +79,7 @@ function LateralMenu() {
       <NavLink
         to="/customer"
         className={({ isActive }) => (isActive ? "link-active" : "link")}
+        onClick={redirectToCustomer}
       >
         <Stack
           alignItems="center"
@@ -127,6 +138,7 @@ function LateralMenu() {
       <NavLink
         to="/charge"
         className={({ isActive }) => (isActive ? "link-active" : "link")}
+        onClick={redirectToCharge}
       >
         <Stack
           alignItems="center"

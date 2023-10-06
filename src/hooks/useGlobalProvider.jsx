@@ -16,6 +16,9 @@ function useGlobalProvider() {
 
   const [showAlert, setShowAlert] = useState(false);
 
+  const [clientsHome, setClientsHome] = useState("")
+  const [chargesHome, setChargesHome] = useState("")
+
   useEffect(() => {
     async function loadClients() {
       try {
@@ -81,6 +84,10 @@ function useGlobalProvider() {
     setSelectedClient,
     showAlert,
     setShowAlert,
+    clientsHome,
+    setClientsHome,
+    chargesHome,
+    setChargesHome
   };
 }
 export default useGlobalProvider;

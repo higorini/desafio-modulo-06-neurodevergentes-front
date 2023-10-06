@@ -14,13 +14,11 @@ import CustomerTable from "./components/CustomerTable";
 import "./style.css";
 
 function Customer() {
-  const { setSelectedClient, clients, selectedClient } = useGlobal();
-  const { showAlert, setShowAlert } = useGlobal();
+  const { showAlert, setShowAlert, setSelectedClient, clients, selectedClient, clientsHome } = useGlobal();
   const [clientToSearch, setClientToSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
 
   useEffect(() => {
-    console.log(clients)
     if (showAlert) {
       const timer = setTimeout(() => {
         setShowAlert(false);
@@ -30,7 +28,8 @@ function Customer() {
         clearTimeout(timer);
       };
     }
-    setSelectedClient(clients)
+    clientsHome ? setSelectedClient(clientsHome) : setSelectedClient(clients)
+
   }, [showAlert, selectedClient]);
 
   async function loadClientOnSearch(client) {

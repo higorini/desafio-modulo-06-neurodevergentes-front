@@ -6,7 +6,6 @@ import { deleteCharge } from "../../services";
 function DeleteChargeModal({ setOpenDeleteChargeModal, chargeData }) {
   const { setShowAlert } = useGlobal();
   async function handleConfirmDelete() {
-    console.log(chargeData);
     if (chargeData.status === "pendente") {
       await deleteCharge(chargeData.id);
       setOpenDeleteChargeModal(false);

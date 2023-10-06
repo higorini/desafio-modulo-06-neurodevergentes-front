@@ -17,20 +17,18 @@ function Customer() {
   const { showAlert, setShowAlert, setSelectedClient, clients, selectedClient, clientsHome } = useGlobal();
   const [clientToSearch, setClientToSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
-
   useEffect(() => {
     if (showAlert) {
       const timer = setTimeout(() => {
         setShowAlert(false);
       }, 5000);
-
       return () => {
         clearTimeout(timer);
       };
     }
     clientsHome ? setSelectedClient(clientsHome) : setSelectedClient(clients)
 
-  }, [showAlert, selectedClient]);
+  }, [showAlert, clients, selectedClient]);
 
   async function loadClientOnSearch(client) {
     const response = await searchClient({ searchCustumer: client });

@@ -160,6 +160,7 @@ function EditCharge({
                 name="costumer_name"
                 variant="outlined"
                 placeholder="Digite o nome"
+                disabled="true"
                 error={!!errorMsg.costumer_name}
                 helperText={errorMsg.costumer_name}
                 value={valueInput.costumer_name}

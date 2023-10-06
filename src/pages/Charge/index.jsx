@@ -1,21 +1,18 @@
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { Alert, Link, Stack } from "@mui/material";
+import { Link, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import ChargeFilter from "../../assets/icons/chargeIcons/chargeFilter.svg";
 import ChargeIcon from "../../assets/icons/chargeIcons/chargeIcon.svg";
 import ChargeSearch from "../../assets/icons/chargeIcons/chargeSearch.svg";
-import iconCicleX from "../../assets/icons/circleX.svg";
+import AlertPopup from "../../components/AlertPopup";
 import EditChargeModal from "../../components/ChargeModalEdit";
 import DeleteChargeModal from "../../components/DeleteChargeModal";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
-import ChargeTable from "./components/ChargeTable";
 import useGlobal from "../../hooks/useGlobal";
-import AlertPopup from "../../components/AlertPopup";
-import ChargeDetails from "./components/ChargeDetails";
 import { searchCharge } from "../../services";
+import ChargeDetails from "./components/ChargeDetails";
+import ChargeTable from "./components/ChargeTable";
 import "./style.css";
-
 
 function Charge() {
   const [chargeId, setChargeId] = useState("");
@@ -26,7 +23,7 @@ function Charge() {
 
   const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
   const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
-  const [openChargeDetails, setOpenChargeDetails] = useState(false)
+  const [openChargeDetails, setOpenChargeDetails] = useState(false);
   const [chargeToSearch, setChargeToSearch] = useState("");
 
   const chargeBreadcrubs = [
@@ -56,12 +53,12 @@ function Charge() {
     }
   }, [showAlert]);
 
-  async function loadClientOnSearch(client) {
+  async function loadChargeOnSearch(client) {
     const response = await searchCharge({ searchCharge: client });
     setSelectedCharge(response.data);
   }
 
-  function handleSearchClient(e) {
+  function handleSearchCharge(e) {
     if (e.target.value === "") {
       setSelectedCharge(charges);
       setChargeToSearch("");
@@ -70,12 +67,11 @@ function Charge() {
     setChargeToSearch(e.target.value);
   }
 
-  async function onSearchClient(e) {
+  async function onSearchCharge(e) {
     if (e.keyCode !== 13 || chargeToSearch.length === 0) {
       return;
     }
-    await loadClientOnSearch(chargeToSearch);
-
+    await loadChargeOnSearch(chargeToSearch);
   }
 
   return (
@@ -129,9 +125,9 @@ function Charge() {
                   className="charge__search-box"
                   placeholder="Pesquisa"
                   value={chargeToSearch}
-                  onChange={(e) => handleSearchClient(e)}
-                  onBlur={onSearchClient}
-                  onKeyDown={(e) => onSearchClient(e)}
+                  onChange={(e) => handleSearchCharge(e)}
+                  onBlur={onSearchCharge}
+                  onKeyDown={(e) => onSearchCharge(e)}
                 />
                 <img src={ChargeSearch} id="searchBtn" alt="Pesquisa" />
               </div>
@@ -149,7 +145,9 @@ function Charge() {
             />
           </div>
           <Stack position="relative">
-            {showAlert && <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />}
+            {showAlert && (
+              <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />
+            )}
           </Stack>
         </Stack>
       </Stack>

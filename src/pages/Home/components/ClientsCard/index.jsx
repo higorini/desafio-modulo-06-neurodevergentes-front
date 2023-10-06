@@ -1,4 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { NavLink } from "react-router-dom";
+import useGlobal from "../../../../hooks/useGlobal";
 import ClientsTable from "../ClientsTable";
 import EmptyContent from "../EmptyContent";
 
@@ -10,6 +12,7 @@ function ClientsCard({
   indexNumber,
   clientTableContent,
 }) {
+  const { setClientsHome } = useGlobal();
   return (
     <Box
       borderRadius="32px"
@@ -61,21 +64,29 @@ function ClientsCard({
       {clientTableContent.length === 0 ? (
         <EmptyContent />
       ) : (
-        <ClientsTable clientsContent={clientTableContent} />
+        <ClientsTable clientsContent={clientTableContent.slice(0, 4)} />
       )}
       <Box>
-        <Typography
-          textAlign="center"
-          component="p"
-          color="var(--pink-500)"
-          fontFamily="var(--font-body)"
-          fontWeight="400"
-          fontSize="18px"
-          padding="13px 0"
-          borderTop="1px solid var(--gray-300)"
+        <NavLink
+          to="/customer"
+          style={{
+            textDecorationColor: "var(--pink-500)",
+          }}
         >
-          Ver Todos
-        </Typography>
+          <Typography
+            textAlign="center"
+            component="p"
+            color="var(--pink-500)"
+            fontFamily="var(--font-body)"
+            fontWeight="400"
+            fontSize="18px"
+            padding="13px 0"
+            borderTop="1px solid var(--gray-300)"
+            onClick={() => setClientsHome(clientTableContent)}
+          >
+            Ver Todos
+          </Typography>
+        </NavLink>
       </Box>
     </Box>
   );

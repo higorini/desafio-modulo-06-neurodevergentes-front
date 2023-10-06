@@ -118,12 +118,61 @@ export async function edityCustomer(id, body) {
   }
 }
 
-export default (
-  newUser,
+export async function deleteCharge(chargeId) {
+  try {
+    const data = await api.delete(`charge/${chargeId}`, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export async function editCharge(chargeId, body) {
+  try {
+    const data = await api.put(`charge/${chargeId}/edit`, body, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export async function detailCharge(chargeId) {
+  try {
+    const data = await api.get(`charges/${chargeId}`, getToken());
+    return data.data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export async function searchClient(body) {
+  try {
+    const data = await api.post("searchCustomer", body, getToken());
+    return data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export async function searchCharge(body) {
+  try {
+    const data = await api.post("searchCharge", body, getToken());
+    return data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
+export default (newUser,
   login,
   validateEmail,
   edityUserData,
   getUserData,
   listCustumers,
   listCharges,
-  loadDetailsCustomer);
+  loadDetailsCustomer,
+  deleteCharge,
+  editCharge,
+  detailCharge,
+  searchClient,
+  searchCharge);

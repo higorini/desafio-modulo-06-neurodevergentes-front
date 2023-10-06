@@ -10,17 +10,19 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { useState } from "react";
 import ClientIcon from "../../../../assets/icons/clients.svg";
 import CloseIcon from "../../../../assets/icons/closeIcon.svg";
-import useGlobal from "../../../../hooks/useGlobal";
 import { edityCustomer } from "../../../../services";
 
-function AddCustomer({ setOpenEditModal, personalData }) {
+function AddCustomer({
+  setOpenEditModal,
+  personalData,
+  setShowAlert }) {
   const { address, cpf, email, phone, name } = personalData
-  const { setAddClientSuccessAlert } = useGlobal();
   const [errorMsg, setErrorMsg] = useState({
     name: "",
     email: "",
     cpf: "",
     phone: "",
+    cep: "",
   });
 
   const [valueInput, setValueInput] = useState({
@@ -28,13 +30,12 @@ function AddCustomer({ setOpenEditModal, personalData }) {
     email: email,
     cpf: cpf,
     phone: phone,
-    cep: personalData.cep || "",
-    public_place: personalData.public_place || "",
-    complement: personalData.complement || "",
-    neighborhood: personalData.neighborhood || "",
-    city: personalData.city || "",
-    state: personalData.state || "",
-
+    cep: address.cep || "",
+    public_place: address.public_place || "",
+    complement: address.complement || "",
+    neighborhood: address.neighborhood || "",
+    city: address.city || "",
+    state: address.state || "",
   });
 
   async function handleSendForm() {
@@ -92,7 +93,7 @@ function AddCustomer({ setOpenEditModal, personalData }) {
     if (!valueInput.phone.length) {
       setErrorMsg((prevValue) => ({
         ...prevValue,
-        phone: "O campo phone é obrigatório",
+        phone: "O campo Telefone é obrigatório",
       }));
       return;
     }
@@ -113,11 +114,20 @@ function AddCustomer({ setOpenEditModal, personalData }) {
       return;
     }
 
+    if (!numberRegex.test(valueInput.cep)) {
+      setErrorMsg((prevValue) => ({
+        ...prevValue,
+        cep: "O CEP deve conter exatamente 8 dígitos numéricos.",
+      }));
+      return;
+    }
+
     setErrorMsg({
       name: "",
       email: "",
       cpf: "",
       phone: "",
+      cep: "",
     });
 
     const user = {
@@ -146,6 +156,11 @@ function AddCustomer({ setOpenEditModal, personalData }) {
     }
 
     setOpenEditModal(false);
+    setShowAlert({
+      message: "Edições do cadastro concluídas com sucesso",
+      theme: "sucess",
+      width: "Large"
+    })
   }
 
   function handleInput(e) {
@@ -422,6 +437,8 @@ function AddCustomer({ setOpenEditModal, personalData }) {
                   placeholder="Digite o CEP"
                   value={valueInput.cep}
                   onChange={handleInput}
+                  error={!!errorMsg.cep}
+                  helperText={errorMsg.cep}
                   inputMode="none"
                   pattern="[0-9]*"
                   sx={{

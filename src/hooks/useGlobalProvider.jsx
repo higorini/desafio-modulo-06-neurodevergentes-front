@@ -11,8 +11,13 @@ function useGlobalProvider() {
   const [pendingCharge, setPendingCharge] = useState([]);
   const [overdueCharge, setOverdueCharge] = useState([]);
 
-  const [addClientSuccessAlert, setAddClientSuccessAlert] = useState(false);
-  const [addChargeSuccessAlert, setAddChargeSuccessAlert] = useState(false);
+  const [selectedCharge, setSelectedCharge] = useState([]);
+  const [selectedClient, setSelectedClient] = useState([]);
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  const [clientsHome, setClientsHome] = useState("")
+  const [chargesHome, setChargesHome] = useState("")
 
   useEffect(() => {
     async function loadClients() {
@@ -34,7 +39,7 @@ function useGlobalProvider() {
       }
     }
     loadClients();
-  }, [addClientSuccessAlert, addChargeSuccessAlert]);
+  }, [showAlert]);
 
   useEffect(() => {
     async function loadCharges() {
@@ -61,22 +66,28 @@ function useGlobalProvider() {
       }
     }
     loadCharges();
-  }, [addChargeSuccessAlert]);
+  }, [showAlert]);
 
   return {
     clients,
     setClients,
-    addClientSuccessAlert,
-    setAddClientSuccessAlert,
     loyalClients,
     defaultingClients,
     charges,
     setCharges,
     paidCharge,
     pendingCharge,
-    addChargeSuccessAlert,
     overdueCharge,
-    setAddChargeSuccessAlert,
+    selectedCharge,
+    setSelectedCharge,
+    selectedClient,
+    setSelectedClient,
+    showAlert,
+    setShowAlert,
+    clientsHome,
+    setClientsHome,
+    chargesHome,
+    setChargesHome
   };
 }
 export default useGlobalProvider;

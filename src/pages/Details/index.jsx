@@ -1,10 +1,11 @@
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Link, Stack, Typography } from "@mui/material";
-import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import ClientIcon from "../../assets/icons/clients.svg";
+import AlertPopup from "../../components/AlertPopup";
 import AddCharge from "../../components/ChargeModal";
+import EditChargeModal from "../../components/ChargeModalEdit";
+import DeleteChargeModal from "../../components/DeleteChargeModal";
 import Header from "../../components/Header";
 import SideNavigation from "../../components/sideNavigation";
 import useGlobal from "../../hooks/useGlobal";
@@ -16,13 +17,21 @@ import "./style.css";
 
 function Details() {
   const { id } = useParams();
+
+  const { setSelectedClient, clients } = useGlobal();
   const [openCharge, setOpenCharge] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditChargeModal, setOpenEditChargeModal] = useState(false);
+  const [openDeleteChargeModal, setOpenDeleteChargeModal] = useState(false);
+
   const [dataClient, setDataClient] = useState({
     personalData: "",
     charges: "",
   });
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const { addChargeSuccessAlert, setAddChargeSuccessAlert } = useGlobal();
+
+  const [chargeData, setChargeData] = useState("");
+
+  const { showAlert, setShowAlert } = useGlobal(false);
 
   useEffect(() => {
     async function loadDataCustomer() {
@@ -30,37 +39,33 @@ function Details() {
       setDataClient((prevValue) => ({
         ...prevValue,
         personalData: response.personalData,
-      }));
-      setDataClient((prevValue) => ({
-        ...prevValue,
         charges: response.charges,
       }));
     }
-    if (addChargeSuccessAlert) {
+    if (showAlert) {
       const timer = setTimeout(() => {
-        setAddChargeSuccessAlert(false);
+        setShowAlert(false);
       }, 5000);
-
       return () => {
         clearTimeout(timer);
       };
     }
     loadDataCustomer();
-  }, []);
+  }, [openCharge, showAlert, openEditModal, openDeleteChargeModal]);
 
   const customerDetailsBreadcrubs = [
-    <Link
-      key="1"
-      color="#0e8750"
-      fontWeight="400"
-      href="/customer"
-      sx={{
-        fontFamily: "var(--font-body)",
-        fontSize: "var(--subtitle)",
-      }}
-    >
-      Clientes
-    </Link>,
+    <RouterLink key="1" to="/customer" style={{ textDecoration: "none" }}>
+      <Link
+        color="#0e8750"
+        fontWeight="400"
+        sx={{
+          fontFamily: "var(--font-body)",
+          fontSize: "var(--subtitle)",
+        }}
+      >
+        Clientes
+      </Link>
+    </RouterLink>,
     <Typography
       key="2"
       fontFamily="var(--font-body)"
@@ -80,13 +85,28 @@ function Details() {
           sx={{
             padding: "40px 32px 40px",
             backgroundColor: "var(--gray-100)",
+            overflowX: "hidden",
           }}
           marginLeft="108px"
         >
+          {openDeleteChargeModal && (
+            <DeleteChargeModal
+              setOpenDeleteChargeModal={setOpenDeleteChargeModal}
+              chargeData={chargeData}
+            />
+          )}
+
           {openEditModal && (
             <EditCustomerModal
               setOpenEditModal={setOpenEditModal}
               personalData={dataClient.personalData}
+            />
+          )}
+
+          {openEditChargeModal && (
+            <EditChargeModal
+              setOpenEditChargeModal={setOpenEditChargeModal}
+              chargeData={chargeData}
             />
           )}
 
@@ -116,38 +136,18 @@ function Details() {
             </div>
             <div>
               <DetailsCharge
+                setChargeData={setChargeData}
                 detailsCharge={dataClient.charges}
+                setDataClient={setDataClient}
+                setOpenDeleteChargeModal={setOpenDeleteChargeModal}
                 setOpenCharge={setOpenCharge}
+                setOpenEditChargeModal={setOpenEditChargeModal}
               />
             </div>
           </div>
           <Stack position="relative">
-            {addChargeSuccessAlert && (
-              <Alert
-                iconMapping={{
-                  success: (
-                    <CheckCircleOutlineIcon color="info" fontSize="inherit" />
-                  ),
-                }}
-                onClose={() => setAddChargeSuccessAlert(false)}
-                sx={{
-                  position: "fixed",
-                  bottom: "4.125rem",
-                  right: "7rem",
-
-                  width: "20.625rem",
-                  height: "3.375rem",
-                  paddingTop: "9px",
-
-                  fontFamily: "var(--font-subtitle)",
-                  color: "var(--blue-700)",
-
-                  borderRadius: "10px",
-                  backgroundColor: "var(--blue-300)",
-                }}
-              >
-                Cobrança cadastrada com sucesso
-              </Alert>
+            {showAlert && (
+              <AlertPopup showAlert={showAlert} setShowAlert={setShowAlert} />
             )}
           </Stack>
         </Stack>

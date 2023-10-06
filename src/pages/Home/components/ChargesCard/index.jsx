@@ -1,4 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { NavLink } from "react-router-dom";
+import useGlobal from "../../../../hooks/useGlobal";
 import ChargesTable from "../ChargesTable";
 import EmptyContent from "../EmptyContent";
 
@@ -9,6 +11,7 @@ function ChargesCard({
   indexNumber,
   chargeTableContent,
 }) {
+  const { setChargesHome } = useGlobal();
   return (
     <Box
       borderRadius="32px"
@@ -55,21 +58,29 @@ function ChargesCard({
       {chargeTableContent.length === 0 ? (
         <EmptyContent />
       ) : (
-        <ChargesTable chargeContent={chargeTableContent} />
+        <ChargesTable chargeContent={chargeTableContent.slice(0, 4)} />
       )}
       <Box>
-        <Typography
-          textAlign="center"
-          component="p"
-          color="var(--pink-500)"
-          fontFamily="var(--font-body)"
-          fontWeight="400"
-          fontSize="18px"
-          padding="13px 0"
-          borderTop="1px solid var(--gray-300)"
+        <NavLink
+          to="/charge"
+          style={{
+            textDecorationColor: "var(--pink-500)",
+          }}
         >
-          Ver Todos
-        </Typography>
+          <Typography
+            textAlign="center"
+            component="p"
+            color="var(--pink-500)"
+            fontFamily="var(--font-body)"
+            fontWeight="400"
+            fontSize="18px"
+            padding="13px 0"
+            borderTop="1px solid var(--gray-300)"
+            onClick={() => setChargesHome(chargeTableContent)}
+          >
+            Ver Todos
+          </Typography>
+        </NavLink>
       </Box>
     </Box>
   );

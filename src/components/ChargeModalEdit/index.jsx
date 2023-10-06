@@ -13,19 +13,24 @@ import { format } from 'date-fns';
 import { useState } from "react";
 import ChargeIcon from "../../assets/icons/charge.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
-import { addCharge } from "../../services";
 import useGlobal from "../../hooks/useGlobal";
-function AddCharge({
-  setOpenCharge,
-  selectedClientId,
-  selectedClientName }) {
+import { editCharge } from "../../services";
+
+function EditCharge({
+  setOpenEditChargeModal,
+  chargeData }) {
+  const { costumer_name, description, value, status, charge_date, id } = chargeData
+  const dateString = charge_date;
+  const dateObject = new Date(dateString);
+  const formattedDate = format(dateObject, "yyyy-MM-dd");
   const { setShowAlert } = useGlobal();
+
   const [valueInput, setValueInput] = useState({
-    costumer_name: selectedClientName,
-    description: "",
-    value: "",
+    costumer_name: costumer_name,
+    description: description,
+    value: value,
     status: "paga",
-    charge_date: ""
+    charge_date: formattedDate
   })
 
   const [errorMsg, setErrorMsg] = useState({
@@ -74,19 +79,18 @@ function AddCharge({
     const formattedDate = format(new Date(valueInput.charge_date), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     const user = {
-      costumer_name: valueInput.costumer_name,
       description: valueInput.description,
       value: valueInput.value,
       status: valueInput.status,
       charge_date: formattedDate
     };
 
-    await addCharge(user, selectedClientId);
+    await editCharge(id, user);
 
-    setOpenCharge(false)
+    setOpenEditChargeModal(false)
     setShowAlert({
-      message: "Cobrança cadastrada com sucesso",
-      theme: "sucess",
+      message: "Cobrança editada com sucesso",
+      theme: "sucess"
     })
   }
 
@@ -125,10 +129,10 @@ function AddCharge({
           }}
         >
           <img src={ChargeIcon} />
-          Cadastro de Cobrança
+          Edição de Cobrança
         </Typography>
         <Box
-          onClick={() => setOpenCharge(false)}
+          onClick={() => setOpenEditChargeModal(false)}
           sx={{
             position: "absolute",
             top: "24px",
@@ -332,7 +336,7 @@ function AddCharge({
             >
               <Button
                 variant="contained"
-                onClick={() => setOpenCharge(false)}
+                onClick={() => setOpenEditChargeModal(false)}
                 sx={{
                   textTransform: "capitalize",
                   width: "231.5px",
@@ -382,4 +386,4 @@ function AddCharge({
   );
 }
 
-export default AddCharge;
+export default EditCharge;

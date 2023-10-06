@@ -56,7 +56,8 @@ function Charge() {
         clearTimeout(timer);
       };
     }
-  }, [showAlert]);
+    setSelectedCharge(charges)
+  }, [showAlert, charges]);
 
   async function loadChargeOnSearch(charge) {
     const response = await searchCharge({ searchCharge: charge });

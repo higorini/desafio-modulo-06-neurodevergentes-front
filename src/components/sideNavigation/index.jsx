@@ -69,7 +69,6 @@ function LateralMenu() {
       <NavLink
         to="/customer"
         className={({ isActive }) => (isActive ? "link-active" : "link")}
-        onClick={() => setSelectedClient(clients)}
       >
         <Stack
           alignItems="center"
@@ -128,7 +127,6 @@ function LateralMenu() {
       <NavLink
         to="/charge"
         className={({ isActive }) => (isActive ? "link-active" : "link")}
-        onClick={() => setSelectedCharge(charges)}
       >
         <Stack
           alignItems="center"

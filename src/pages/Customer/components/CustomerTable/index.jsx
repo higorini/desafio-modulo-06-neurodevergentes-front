@@ -18,7 +18,7 @@ function CustomerTable() {
   const [openCharge, setOpenCharge] = useState(false);
   const [selectedClientId, setSelectedClientId] = useState("");
   const [selectedClientName, setSelectedClientName] = useState("");
-  const { clients, selectedClient, setSelectedClient } = useGlobal();
+  const { selectedClient, setSelectedClient } = useGlobal();
   const [orderChanger, setOrderChanger] = useState(false);
 
   function handleClickCustomer(e) {
@@ -248,7 +248,6 @@ function CustomerTable() {
                     }}
                     sx={{
                       cursor: "pointer",
-                      // height: "38px",
                     }}
                   />
                 </TableCell>

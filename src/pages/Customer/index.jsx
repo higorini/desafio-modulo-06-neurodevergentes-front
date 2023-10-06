@@ -20,6 +20,7 @@ function Customer() {
   const [openAdd, setOpenAdd] = useState(false);
 
   useEffect(() => {
+    console.log(clients)
     if (showAlert) {
       const timer = setTimeout(() => {
         setShowAlert(false);
@@ -29,7 +30,8 @@ function Customer() {
         clearTimeout(timer);
       };
     }
-  }, [showAlert]);
+    setSelectedClient(clients)
+  }, [showAlert, selectedClient]);
 
   async function loadClientOnSearch(client) {
     const response = await searchClient({ searchCustumer: client });

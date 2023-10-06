@@ -154,15 +154,25 @@ export async function searchClient(body) {
   }
 }
 
+export async function searchCharge(body) {
+  try {
+    const data = await api.post("searchCharge", body, getToken());
+    return data;
+  } catch (erro) {
+    return erro.response;
+  }
+}
+
 export default (newUser,
-login,
-validateEmail,
-edityUserData,
-getUserData,
-listCustumers,
-listCharges,
-loadDetailsCustomer,
-deleteCharge,
-editCharge,
-detailCharge,
-searchClient);
+  login,
+  validateEmail,
+  edityUserData,
+  getUserData,
+  listCustumers,
+  listCharges,
+  loadDetailsCustomer,
+  deleteCharge,
+  editCharge,
+  detailCharge,
+  searchClient,
+  searchCharge);

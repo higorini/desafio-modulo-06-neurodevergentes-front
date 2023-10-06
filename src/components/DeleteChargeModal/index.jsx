@@ -1,34 +1,26 @@
-import {
-  Box,
-  Button,
-  Stack,
-  Typography
-} from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import attentionIcon from "../../assets/icons/attentionTriangle2.svg";
 import CloseIcon from "../../assets/icons/closeIcon.svg";
-import { deleteCharge } from "../../services";
 import useGlobal from "../../hooks/useGlobal";
-function DeleteChargeModal({
-  setOpenDeleteChargeModal,
-  chargeData,
-}) {
+import { deleteCharge } from "../../services";
+function DeleteChargeModal({ setOpenDeleteChargeModal, chargeData }) {
   const { setShowAlert } = useGlobal();
   async function handleConfirmDelete() {
-    if (chargeData.status === "paga" || chargeData.status === "pendente") {
-      await deleteCharge(chargeData.id)
-      setOpenDeleteChargeModal(false)
+    if (chargeData.status === "pendente") {
+      await deleteCharge(chargeData.id);
+      setOpenDeleteChargeModal(false);
       setShowAlert({
         message: "Cobrança excluída com sucesso!",
-        theme: "sucess"
-      })
-      return
+        theme: "sucess",
+      });
+      return;
     }
-    setOpenDeleteChargeModal(false)
+    setOpenDeleteChargeModal(false);
     setShowAlert({
       message: "Esta cobrança não pode ser excluída!",
       theme: "failure",
-      width: "Small"
-    })
+      width: "Small",
+    });
   }
 
   return (
@@ -56,9 +48,7 @@ function DeleteChargeModal({
           alignItems: "center",
         }}
       >
-        <img
-          width={"160px"}
-          src={attentionIcon} />
+        <img width={"160px"} src={attentionIcon} />
         <Typography
           display="flex"
           component="p"

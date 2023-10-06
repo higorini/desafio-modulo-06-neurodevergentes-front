@@ -5,18 +5,17 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { useState } from "react";
 import ChargeDelete from "../../../../assets/icons/chargeIcons/chargeDelete.svg";
 import ChargeEdit from "../../../../assets/icons/chargeIcons/chargeEdit.svg";
 import ChargeOrder from "../../../../assets/icons/chargeIcons/chargeOrder.svg";
+import EmptyContentOnSearch from "../../../../components/EmptyContentOnSearch";
 import useGlobal from "../../../../hooks/useGlobal";
 import ChargeType from "../ChargeType";
 
 function ChargeTable({
   setOpenDeleteChargeModal,
-  setChargeId,
-  setChargeStatus,
   setChargeData,
   setOpenEditChargeModal,
   setOpenChargeDetails,
@@ -35,8 +34,8 @@ function ChargeTable({
   };
 
   function handleClickCustomer(charge) {
-    setChargeData(charge)
-    setOpenChargeDetails(true)
+    setChargeData(charge);
+    setOpenChargeDetails(true);
   }
 
   function orderChargesByAlphabeticalOrder(order) {
@@ -94,189 +93,192 @@ function ChargeTable({
         minHeight: "640px",
       }}
     >
-      <Table sx={{ minWidth: "100%" }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-                cursor: "pointer",
-              }}
-              onClick={() => orderChargesByAlphabeticalOrder(orderChanger)}
-            >
-              <img src={ChargeOrder} alt="Cobrança" />
-              Cliente
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-                cursor: "pointer",
-              }}
-              onClick={() => orderChargesByIdNumericalOrder(orderChanger)}
-            >
-              <img src={ChargeOrder} alt="Cobrança" />
-              ID Cob.
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Valor
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Data de venc.
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Status
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            >
-              Descrição
-            </TableCell>
-            <TableCell
-              align="left"
-              sx={{
-                color: "var(--gray-700)",
-                fontFamily: "var(--font-body)",
-                fontWeight: "700",
-                fontSize: "var(--subtitle)",
-              }}
-            ></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {selectedCharge.map((charge) => (
-            <TableRow
-              key={charge.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              onClick={() => handleClickCustomer(charge)}
-            >
+      {selectedCharge.length === 0 ? (
+        <EmptyContentOnSearch />
+      ) : (
+        <Table sx={{ minWidth: "100%" }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
               <TableCell
-                component="th"
-                scope="row"
                 sx={{
-                  maxWidth: "8.375rem",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
+                  color: "var(--gray-700)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "700",
+                  fontSize: "var(--subtitle)",
+                  cursor: "pointer",
                 }}
+                onClick={() => orderChargesByAlphabeticalOrder(orderChanger)}
               >
-                {charge["costumer_name"]}
+                <img src={ChargeOrder} alt="Cobrança" />
+                Cliente
               </TableCell>
               <TableCell
                 align="left"
                 sx={{
-                  color: "var(--gray-600)",
+                  color: "var(--gray-700)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "700",
+                  fontSize: "var(--subtitle)",
+                  cursor: "pointer",
                 }}
+                onClick={() => orderChargesByIdNumericalOrder(orderChanger)}
               >
-                {charge.id}
+                <img src={ChargeOrder} alt="Cobrança" />
+                ID Cob.
               </TableCell>
               <TableCell
                 align="left"
                 sx={{
-                  maxWidth: "6.375 ",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  color: "var(--gray-600)",
+                  color: "var(--gray-700)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "700",
+                  fontSize: "var(--subtitle)",
                 }}
               >
-                {moneyMask(charge.value.toString())}
+                Valor
               </TableCell>
               <TableCell
                 align="left"
                 sx={{
-                  color: "var(--gray-600)",
+                  color: "var(--gray-700)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "700",
+                  fontSize: "var(--subtitle)",
                 }}
               >
-                {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
+                Data de venc.
               </TableCell>
               <TableCell
                 align="left"
                 sx={{
-                  color: "var(--gray-600)",
+                  color: "var(--gray-700)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "700",
+                  fontSize: "var(--subtitle)",
                 }}
               >
-                <ChargeType type={charge.status} />
+                Status
               </TableCell>
               <TableCell
                 align="left"
                 sx={{
-                  maxWidth: "16rem",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  color: "var(--gray-600)",
+                  color: "var(--gray-700)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "700",
+                  fontSize: "var(--subtitle)",
                 }}
               >
-                {charge.description}
+                Descrição
               </TableCell>
               <TableCell
                 align="left"
                 sx={{
-                  display: "flex",
-                  gap: "24px",
+                  color: "var(--gray-700)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "700",
+                  fontSize: "var(--subtitle)",
                 }}
-              >
-                <img
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setChargeData(charge);
-                    setOpenEditChargeModal(true);
-                  }}
-                  src={ChargeEdit}
-                  alt="Cobrança"
-                />
-                <img
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenDeleteChargeModal(true);
-                    setChargeStatus(charge.status);
-                    setChargeId(charge.id);
-                  }}
-                  src={ChargeDelete}
-                  alt="Cobrança"
-                />
-              </TableCell>
+              ></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {selectedCharge.map((charge) => (
+              <TableRow
+                key={charge.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                onClick={() => handleClickCustomer(charge)}
+              >
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{
+                    maxWidth: "8.375rem",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {charge["costumer_name"]}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {charge.id}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    maxWidth: "6.375 ",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {moneyMask(charge.value.toString())}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {format(new Date(charge["charge_date"]), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  <ChargeType type={charge.status} />
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    maxWidth: "16rem",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                    color: "var(--gray-600)",
+                  }}
+                >
+                  {charge.description}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    display: "flex",
+                    gap: "24px",
+                  }}
+                >
+                  <img
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setChargeData(charge);
+                      setOpenEditChargeModal(true);
+                    }}
+                    src={ChargeEdit}
+                    alt="Cobrança"
+                  />
+                  <img
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpenDeleteChargeModal(true);
+                      setChargeData(charge);
+                    }}
+                    src={ChargeDelete}
+                    alt="Cobrança"
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </TableContainer>
   );
 }

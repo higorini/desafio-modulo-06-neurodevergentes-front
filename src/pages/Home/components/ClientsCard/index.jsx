@@ -12,7 +12,7 @@ function ClientsCard({
   indexNumber,
   clientTableContent,
 }) {
-  const { setSelectedClient } = useGlobal();
+  const { setClientsHome } = useGlobal();
   return (
     <Box
       borderRadius="32px"
@@ -82,7 +82,7 @@ function ClientsCard({
             fontSize="18px"
             padding="13px 0"
             borderTop="1px solid var(--gray-300)"
-            onClick={() => setSelectedClient(clientTableContent)}
+            onClick={() => setClientsHome(clientTableContent)}
           >
             Ver Todos
           </Typography>

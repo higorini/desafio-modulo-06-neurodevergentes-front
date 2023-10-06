@@ -16,8 +16,6 @@ import ChargeTable from "./components/ChargeTable";
 import "./style.css";
 
 function Charge() {
-  const [chargeId, setChargeId] = useState("");
-  const [chargeStatus, setChargeStatus] = useState("");
   const [chargeData, setChargeData] = useState("");
 
   const { showAlert, setShowAlert, setSelectedCharge, charges } = useGlobal();
@@ -103,8 +101,7 @@ function Charge() {
           {openDeleteChargeModal && (
             <DeleteChargeModal
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}
-              chargeStatus={chargeStatus}
-              chargeId={chargeId}
+              chargeData={chargeData}
             />
           )}
 
@@ -143,8 +140,6 @@ function Charge() {
 
           <div className="charge__main">
             <ChargeTable
-              setChargeStatus={setChargeStatus}
-              setChargeId={setChargeId}
               setChargeData={setChargeData}
               setOpenEditChargeModal={setOpenEditChargeModal}
               setOpenDeleteChargeModal={setOpenDeleteChargeModal}

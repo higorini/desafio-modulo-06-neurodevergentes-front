@@ -16,8 +16,6 @@ import ChargeType from "../ChargeType";
 
 function ChargeTable({
   setOpenDeleteChargeModal,
-  setChargeId,
-  setChargeStatus,
   setChargeData,
   setOpenEditChargeModal,
   setOpenChargeDetails,
@@ -270,8 +268,7 @@ function ChargeTable({
                     onClick={(e) => {
                       e.stopPropagation();
                       setOpenDeleteChargeModal(true);
-                      setChargeStatus(charge.status);
-                      setChargeId(charge.id);
+                      setChargeData(charge);
                     }}
                     src={ChargeDelete}
                     alt="Cobrança"
